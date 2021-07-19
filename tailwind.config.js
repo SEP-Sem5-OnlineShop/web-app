@@ -23,7 +23,7 @@ module.exports = {
       backgroundImage: theme => ({
         'register-pattern-left': "url('/src/assets/svg/backgrounds/curve-line.svg')",
         'register-pattern-right': "url('/src/assets/svg/backgrounds/icon-grid.svg')",
-        'food-style': "url('/src/assets/svg/backgrounds/icon-grid.svg')",
+        'food-style': "url('/src/assets/svg/backgrounds/food-style.svg')",
       })
     }
   },
