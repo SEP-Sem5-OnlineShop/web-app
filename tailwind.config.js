@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
@@ -14,7 +16,11 @@ module.exports = {
       text: '#838383',
       link: '#FF7000',
       accent: '#E5E5E5',
-      white: '#fff'
+      white: '#fff',
+      danger: colors.red[600],
+      warn: colors.amber[400],
+      success: colors.emerald[600],
+      info: colors.blue[700],
     },
     fontFamily: {
       sans: ['Poppins', 'sans-serif'],

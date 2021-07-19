@@ -1,5 +1,7 @@
 import React from "react"
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { thunks } from "../../store"
 import * as Yup from 'yup';
 
 import logo from '../../assets/svg/logo/logo-big.svg'
@@ -7,35 +9,25 @@ import googleLogo from '../../assets/svg/icons/google.svg'
 import facebookLogo from '../../assets/svg/icons/facebook.svg'
 import InputWithValidation from "../../components/input-with-validation";
 
-export default function Register() {
+export default function Login() {
+
+    const dispatch = useDispatch()
 
     const formik = useFormik({
         initialValues: {
-            firstName: '',
-            lastName: '',
             telephone: '',
             password: '',
-            confirmPassword: '',
         },
         validationSchema: Yup.object({
-            firstName: Yup.string()
-                .required('Required').min(2, 'First name is too short!').max(50, 'First name is too long!'),
-            lastName: Yup.string()
-                .required('Required').min(2, 'First name is too short!').max(50, 'First name is too long!'),
             telephone: Yup.string()
                 .required('Required')
                 .matches('^(?:0|94|\\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\\d)\\d{6}$',
                     'Telephone number did not matched with requirements!'),
             password: Yup.string()
                 .required('Required')
-                .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                    "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-                ),
-            confirmPassword: Yup.string()
-                .required('Required').oneOf([Yup.ref('password'), null], 'Password not matched!'),
         }),
-        onSubmit: values => {
-            console.log(values)
+        onSubmit: async values => {
+            await dispatch(thunks.user.localSignIn(values.telephone, values.password))
         },
     });
 
@@ -50,7 +42,7 @@ export default function Register() {
 
                     <div className="flex flex-col align-center">
                         <div className="flex justify-center text-5xl font-bold">USER</div>
-                        <div className="flex justify-center text-6xl font-bold mt-4">REGISTER</div>
+                        <div className="flex justify-center text-6xl font-bold mt-4">LOGIN</div>
                     </div>
 
                     <div className="w-2/3 p-8 flex flex-col items-center bg-accent mt-8 rounded-2xl" >
@@ -68,20 +60,6 @@ export default function Register() {
 
                         <form onSubmit={formik.handleSubmit} className="w-3/4">
                             <InputWithValidation
-                                label='First Name'
-                                id='firstName'
-                                name='firstName'
-                                type='text'
-                                formik={formik}
-                            />
-                            <InputWithValidation
-                                label='Last Name'
-                                id='lastName'
-                                name='lastName'
-                                type='text'
-                                formik={formik}
-                            />
-                            <InputWithValidation
                                 label='Telephone Number'
                                 id='telephone'
                                 name='telephone'
@@ -95,14 +73,7 @@ export default function Register() {
                                 type='password'
                                 formik={formik}
                             />
-                            <InputWithValidation
-                                label='Confirm Number'
-                                id='confirmPassword'
-                                name='confirmPassword'
-                                type='password'
-                                formik={formik}
-                            />
-                            <button className="w-full p-4 mt-2 rounded-xl bg-primary text-black font-bold">Register</button>
+                            <button type="submit" className="w-full p-4 mt-2 rounded-xl bg-primary text-black font-bold">Register</button>
                         </form>
                     </div>
                 </div>
