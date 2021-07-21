@@ -53,7 +53,7 @@ export default function Register() {
                         <div className="flex justify-center text-6xl font-bold mt-4">REGISTER</div>
                     </div>
 
-                    <div className="w-2/3 p-8 flex flex-col items-center bg-accent mt-8 rounded-2xl" >
+                    <div className="w-2/3 p-8 flex flex-col items-center bg-accent bg-opacity-80 mt-8 rounded-2xl" >
 
                         {/*google and facebook login buttons*/}
                         <div className="flex justify-center">

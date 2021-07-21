@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { thunks } from "../../store"
 import * as Yup from 'yup';
+import {authApi} from "../../api/index"
 
 import logo from '../../assets/svg/logo/logo-big.svg'
 import googleLogo from '../../assets/svg/icons/google.svg'
@@ -31,6 +32,11 @@ export default function Login() {
         },
     });
 
+    const testRoute = async () => {
+        const {status, data} = await authApi.test()
+        console.log(data)
+    }
+
     return (
         <div className="w-screen h-screen flex">
             <div className="w-7/12 h-full flex justify-center align-center">
@@ -58,7 +64,7 @@ export default function Login() {
                         </div>
                         <div className="text-base text-text flex justify-center mt-5">Or Login with Email</div>
 
-                        <form onSubmit={formik.handleSubmit} className="w-3/4">
+                        <form onSubmit={formik.handleSubmit} className="w-3/4 mt-6">
                             <InputWithValidation
                                 label='Telephone Number'
                                 id='telephone'
@@ -73,7 +79,7 @@ export default function Login() {
                                 type='password'
                                 formik={formik}
                             />
-                            <button type="submit" className="w-full p-4 mt-2 rounded-xl bg-primary text-black font-bold">Register</button>
+                            <button type="submit" className="w-full p-4 mt-2 rounded-xl bg-primary text-black font-bold">Login</button>
                         </form>
                     </div>
                 </div>
