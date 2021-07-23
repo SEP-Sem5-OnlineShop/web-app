@@ -42,17 +42,14 @@ export default function Login() {
             <div className="w-full lg:w-7/12 lg:w-5/12 h-full
                             bg-primary
                             relative">
-                <div className="w-full h-full bg-food-style bg-cover absolute top-0 left-0 z-0" />
                 <div className="w-full h-full
-                                bg-cover bg-center
+                                bg-food-style bg-cover bg-cover bg-center
                                 md:flex md:flex-col md:items-center md:justify-center">
 
                     {/*heading text is here*/}
                     <div className="
                     flex flex-col align-center
-                    absolute md:static left-1/2 md:top-0
-                    transform -translate-x-1/2 md:translate-x-0
-                    w-full">
+                    w-full" style={{minHeight: 260}}>
                         <div className="flex justify-center text-3xl md:text-6xl font-bold text-secondary mt-4">Login
                         </div>
                         <div className="flex justify-center text-xl font-medium text-secondary mt-2">Access Your
@@ -61,18 +58,17 @@ export default function Login() {
                     </div>
 
                     <div className="
-                    w-full md:w-3/4 lg:w-2/3 xl:w-1/2 h-3/4 md:h-auto
+                    w-full md:w-3/4 xl:w-1/2 h-3/4 md:h-auto
                     pt-8 sm:py-8 sm:p-4 mt-8
                     flex flex-col items-center justify-center
-                    absolute z-10 md:static bottom-0
                     bg-accent
-                    rounded-tl-3.5xl md:rounded-2xl">
+                    rounded-tl-3.5xl md:rounded-2xl" style={{minHeight: 520}}>
 
                         <div className="absolute md:hidden right-0" style={{top: '-49px'}}>
                             <img src={sideDesign} alt='sideDesign'/>
                         </div>
 
-                        <div className="w-3/4 mb-10 sm:hidden">
+                        <div className="w-3/4 mb-10 md:hidden">
                             <img src={logo} alt="logo" />
                         </div>
 
