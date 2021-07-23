@@ -44,12 +44,12 @@ export default function Login() {
                             relative">
                 <div className="w-full h-full
                                 bg-food-style bg-cover bg-cover bg-center
-                                md:flex md:flex-col md:items-center md:justify-center">
+                                flex flex-col justify-between md:items-center md:justify-center">
 
                     {/*heading text is here*/}
                     <div className="
                     flex flex-col align-center
-                    w-full" style={{minHeight: 260}}>
+                    w-full" style={{minHeight: 100}}>
                         <div className="flex justify-center text-3xl md:text-6xl font-bold text-secondary mt-4">Login
                         </div>
                         <div className="flex justify-center text-xl font-medium text-secondary mt-2">Access Your
@@ -61,7 +61,7 @@ export default function Login() {
                     w-full md:w-3/4 xl:w-1/2 h-3/4 md:h-auto
                     pt-8 sm:py-8 sm:p-4 mt-8
                     flex flex-col items-center justify-center
-                    bg-accent
+                    bg-accent relative
                     rounded-tl-3.5xl md:rounded-2xl" style={{minHeight: 520}}>
 
                         <div className="absolute md:hidden right-0" style={{top: '-49px'}}>
