@@ -1,14 +1,15 @@
 import React from "react"
-import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { thunks } from "../../store"
+import {useFormik} from 'formik';
+import {useDispatch} from 'react-redux';
+import {thunks} from "../../store"
 import * as Yup from 'yup';
-import {authApi} from "../../api/index"
 
 import logo from '../../assets/svg/logo/logo-big.svg'
+import sideDesign from '../../assets/svg/fixes/edge-corner.svg'
 import googleLogo from '../../assets/svg/icons/google.svg'
 import facebookLogo from '../../assets/svg/icons/facebook.svg'
-import InputWithValidation from "../../components/input-with-validation";
+import InputWithValidation from "../../components/input-with-next-button";
+import {motion} from "framer-motion"
 
 export default function Login() {
 
@@ -32,55 +33,95 @@ export default function Login() {
         },
     });
 
-    const testRoute = async () => {
-        const {status, data} = await authApi.test()
-        console.log(data)
-    }
-
     return (
         <div className="w-screen h-screen flex">
-            <div className="w-7/12 h-full flex justify-center align-center">
-                <img className="w-3/5" src={logo} alt="logo big" />
-            </div>
-            <div className="w-5/12 h-full bg-primary">
-                <div className="w-full h-full bg-food-style bg-cover
-                bg-center flex flex-col items-center justify-center">
+            <motion.div animate={{x: 0}} transition={{duration: 1}}
+                        className="w-5/12 lg:w-7/12 h-full justify-center align-center hidden lg:flex">
+                <img className="w-4/5 lg:w-3/5" src={logo} alt="logo big"/>
+            </motion.div>
+            <div className="w-full lg:w-7/12 lg:w-5/12 h-full
+                            bg-primary
+                            relative">
+                <div className="w-full h-full
+                                bg-food-style bg-cover bg-center
+                                md:flex md:flex-col md:items-center md:justify-center">
 
-                    <div className="flex flex-col align-center">
-                        <div className="flex justify-center text-5xl font-bold">USER</div>
-                        <div className="flex justify-center text-6xl font-bold mt-4">LOGIN</div>
+                    {/*heading text is here*/}
+                    <div className="
+                    flex flex-col align-center
+                    absolute md:sticky left-1/2 md:top-0
+                    transform -translate-x-1/2 md:translate-x-0
+                    w-full">
+                        <div className="flex justify-center text-3xl md:text-6xl font-bold text-secondary mt-4">Login
+                        </div>
+                        <div className="flex justify-center text-xl font-medium text-secondary mt-2">Access Your
+                            Account
+                        </div>
                     </div>
 
-                    <div className="w-2/3 p-8 flex flex-col items-center bg-accent mt-8 rounded-2xl" >
+                    <div className="
+                    w-full md:w-3/4 lg:w-2/3 xl:w-1/2 h-3/4 md:h-auto
+                    pt-8 sm:py-8 sm:p-4 mt-8
+                    flex flex-col items-center justify-center
+                    absolute md:static bottom-0
+                    bg-accent
+                    rounded-tl-3.5xl md:rounded-2xl">
 
-                        {/*google and facebook login buttons*/}
-                        <div className="flex justify-center">
-                            <button className="rounded-xl w-16 h-16 flex justify-center items-center p-1 bg-white">
-                                <img width={32} src={googleLogo} alt="google-logo" />
-                            </button>
-                            <button className="rounded-xl w-16 h-16 ml-5 flex justify-center items-center p-1 bg-white">
-                                <img width={14} src={facebookLogo} alt="google-logo" />
-                            </button>
+                        <div className="absolute md:hidden right-0" style={{top: '-49px'}}>
+                            <img src={sideDesign} alt='sideDesign'/>
                         </div>
-                        <div className="text-base text-text flex justify-center mt-5">Or Login with Email</div>
 
-                        <form onSubmit={formik.handleSubmit} className="w-3/4 mt-6">
+                        <div className="w-3/4 mb-10 sm:hidden">
+                            <img src={logo} alt="logo" />
+                        </div>
+
+                        <form onSubmit={formik.handleSubmit} className="w-full">
                             <InputWithValidation
                                 label='Telephone Number'
                                 id='telephone'
                                 name='telephone'
                                 type='text'
                                 formik={formik}
+                                className='mb-4'
                             />
-                            <InputWithValidation
-                                label='Password'
-                                id='password'
-                                name='password'
-                                type='password'
-                                formik={formik}
-                            />
-                            <button type="submit" className="w-full p-4 mt-2 rounded-xl bg-primary text-black font-bold">Login</button>
+                            {/*<InputWithValidation*/}
+                            {/*    label='Password'*/}
+                            {/*    id='password'*/}
+                            {/*    name='password'*/}
+                            {/*    type='password'*/}
+                            {/*    formik={formik}*/}
+                            {/*/>*/}
+                            {/*<button type="submit" className="*/}
+                            {/*w-full*/}
+                            {/*p-4 mt-2*/}
+                            {/*rounded-xl*/}
+                            {/*bg-primary*/}
+                            {/*text-secondary font-bold text-xl md:text-base">Sign In*/}
+                            {/*</button>*/}
                         </form>
+
+                        <div className="text-sm text-text flex justify-center mt-0 md:mt-5">Or Login with Email</div>
+
+                        {/*google and facebook login buttons*/}
+                        <div className="flex justify-center mt-3">
+                            <button className="rounded-xl w-14 h-14 flex justify-center items-center p-1 bg-white">
+                                <img width={32} src={googleLogo} alt="google-logo"/>
+                            </button>
+                            <button className="rounded-xl w-14 h-14 ml-5 flex justify-center items-center p-1 bg-white">
+                                <img width={14} src={facebookLogo} alt="google-logo"/>
+                            </button>
+                        </div>
+
+                        <div className="mt-4">
+                            <div className="flex justify-center">
+                                <span className="text-secondary text-xs xxs:text-sm xs:text-base">Don’t have an account?</span>
+                                <span className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">Register</span>
+                            </div>
+                            <div className="flex justify-center">
+                                <span className="text-secondary text-xs xxs:text-sm xs:text-base">Forgot password?</span>
+                                <span className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">Change password</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
