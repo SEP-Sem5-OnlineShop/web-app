@@ -5,6 +5,8 @@ import {
 } from "react-router-dom";
 import Register from "../views/auth/register"
 import Login from "../views/auth/login"
+import Item from '../views/app/item'
+import Home from '../views/app/home'
 
 export default function MainRouter() {
     return (
@@ -15,6 +17,12 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/login">
                     <Login />
+                </Route>
+                <Route path="/item">
+                    <Item />
+                </Route>
+                <Route path="/home">
+                    <Home />
                 </Route>
             </Switch>
         </Router>
