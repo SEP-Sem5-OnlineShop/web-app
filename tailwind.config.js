@@ -1,8 +1,12 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
+      xxs: '300px',
+      xs: '380px',
       sm: '480px',
       md: '768px',
       lg: '976px',
@@ -14,7 +18,11 @@ module.exports = {
       text: '#838383',
       link: '#FF7000',
       accent: '#E5E5E5',
-      white: '#fff'
+      white: '#fff',
+      danger: colors.red[600],
+      warn: colors.amber[400],
+      success: colors.emerald[600],
+      info: colors.blue[700],
     },
     fontFamily: {
       sans: ['Poppins', 'sans-serif'],
@@ -24,7 +32,14 @@ module.exports = {
         'register-pattern-left': "url('/src/assets/svg/backgrounds/curve-line.svg')",
         'register-pattern-right': "url('/src/assets/svg/backgrounds/icon-grid.svg')",
         'food-style': "url('/src/assets/svg/backgrounds/food-style.svg')",
-      })
+      }),
+      borderRadius: {
+        '3.5xl': '3.5rem',
+      },
+      screens: {
+        'portrait': {'raw': '(orientation: portrait)'},
+        'landscape': {'raw': '(orientation: landscape)'},
+      }
     }
   },
   variants: {
