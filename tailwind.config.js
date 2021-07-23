@@ -39,6 +39,9 @@ module.exports = {
       screens: {
         'portrait': {'raw': '(orientation: portrait)'},
         'landscape': {'raw': '(orientation: landscape)'},
+      },
+      zIndex: {
+        '-10': '-10',
       }
     }
   },

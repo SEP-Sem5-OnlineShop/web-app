@@ -42,14 +42,15 @@ export default function Login() {
             <div className="w-full lg:w-7/12 lg:w-5/12 h-full
                             bg-primary
                             relative">
+                <div className="w-full h-full bg-food-style bg-cover absolute top-0 left-0 z-0" />
                 <div className="w-full h-full
-                                bg-food-style bg-cover bg-center
+                                bg-cover bg-center
                                 md:flex md:flex-col md:items-center md:justify-center">
 
                     {/*heading text is here*/}
                     <div className="
                     flex flex-col align-center
-                    absolute md:sticky left-1/2 md:top-0
+                    absolute md:static left-1/2 md:top-0
                     transform -translate-x-1/2 md:translate-x-0
                     w-full">
                         <div className="flex justify-center text-3xl md:text-6xl font-bold text-secondary mt-4">Login
@@ -63,7 +64,7 @@ export default function Login() {
                     w-full md:w-3/4 lg:w-2/3 xl:w-1/2 h-3/4 md:h-auto
                     pt-8 sm:py-8 sm:p-4 mt-8
                     flex flex-col items-center justify-center
-                    absolute md:static bottom-0
+                    absolute z-10 md:static bottom-0
                     bg-accent
                     rounded-tl-3.5xl md:rounded-2xl">
 
