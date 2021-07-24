@@ -4,6 +4,7 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import {thunks} from "../../../store";
 import {useDispatch} from "react-redux";
+import {motion} from "framer-motion";
 
 const LoginForm = (props, ref) => {
 
@@ -30,7 +31,7 @@ const LoginForm = (props, ref) => {
 
     return (
 
-        <form className='w-5/6 flex flex-col justify-center items-center'>
+        <motion.form layout className='w-5/6 flex flex-col justify-center items-center'>
             <InputWithValidation
                 label='Telephone Number'
                 id='telephone'
@@ -50,7 +51,7 @@ const LoginForm = (props, ref) => {
             <button type="button" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
                 Submit
             </button>
-        </form>
+        </motion.form>
     );
 };
 export default forwardRef(LoginForm)

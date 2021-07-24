@@ -64,8 +64,8 @@ const RegisterForm = (props, ref) => {
                                 />
                             </ItemTemplate>
                             <ItemTemplate title='Password' disabled={
-                                formik.errors.firstName && formik.errors.lastName && formik.errors.telephone &&
-                                !formik.values.firstName && !formik.values.lastName && !formik.values.telephone
+                                formik.errors.firstName || formik.errors.lastName || formik.errors.telephone ||
+                                !formik.values.firstName || !formik.values.lastName || !formik.values.telephone
                             }>
                                 <InputWithValidation
                                     label='Password'
@@ -87,41 +87,6 @@ const RegisterForm = (props, ref) => {
                             </ItemTemplate>
                         </motion.div>
                     </AnimateSharedLayout>
-                    {/*<InputWithValidation*/}
-                    {/*    label='First Name'*/}
-                    {/*    id='firstName'*/}
-                    {/*    name='firstName'*/}
-                    {/*    type='firstName'*/}
-                    {/*    formik={formik}*/}
-                    {/*/>*/}
-                    {/*<InputWithValidation*/}
-                    {/*    label='Last Name'*/}
-                    {/*    id='lastName'*/}
-                    {/*    name='lastName'*/}
-                    {/*    type='lastName'*/}
-                    {/*    formik={formik}*/}
-                    {/*/>*/}
-                    {/*<InputWithValidation*/}
-                    {/*    label='Telephone Number'*/}
-                    {/*    id='telephone'*/}
-                    {/*    name='telephone'*/}
-                    {/*    type='telephone'*/}
-                    {/*    formik={formik}*/}
-                    {/*/>*/}
-                    {/*<InputWithValidation*/}
-                    {/*    label='Password'*/}
-                    {/*    id='password'*/}
-                    {/*    name='password'*/}
-                    {/*    type='password'*/}
-                    {/*    formik={formik}*/}
-                    {/*/>*/}
-                    {/*<InputWithValidation*/}
-                    {/*    label='Confirm Password'*/}
-                    {/*    id='confirmPassword'*/}
-                    {/*    name='confirmPassword'*/}
-                    {/*    type='confirmPassword'*/}
-                    {/*    formik={formik}*/}
-                    {/*/>*/}
                 </form>
     );
 };
@@ -134,7 +99,8 @@ function ItemTemplate(props) {
 
     return (
         <motion.div layout>
-            <button type="button" disabled={props.disabled || false} onClick={toggleOpen} className="w-full p-2 mt-2 rounded-xl bg-primary text-black font-bold">
+            <button type="button" disabled={props.disabled || false} onClick={toggleOpen}
+                    className="w-full p-2 mt-2 rounded-xl bg-primary text-black font-bold disabled:opacity-50">
                 {props.title}
             </button>
             <AnimatePresence>

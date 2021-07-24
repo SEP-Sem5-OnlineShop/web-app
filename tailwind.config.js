@@ -65,6 +65,15 @@ module.exports = {
         '4/5': '80%',
         'full': '100%',
       },
+      maxWidth: {
+        '280': '280px',
+        '560': '560px',
+        '1/4': '25%',
+        '1/2': '50%',
+        '3/4': '75%',
+        '4/5': '80%',
+        'full': '100%',
+      },
       height: {
         '23': '5.75rem',
 
@@ -72,7 +81,9 @@ module.exports = {
     }
   },
   variants: {
-    extend: {},
+    extend: {
+      opacity: ['disabled'],
+    },
   },
   plugins: [],
 }
