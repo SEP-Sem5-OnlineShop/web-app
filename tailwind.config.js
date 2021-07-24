@@ -40,11 +40,9 @@ module.exports = {
         'portrait': {'raw': '(orientation: portrait)'},
         'landscape': {'raw': '(orientation: landscape)'},
       },
-      zIndex: {
-        '-10': '-10',
-      },
-      width: {
-        '480': '120rem'
+      minHeight: {
+        '100': '100px',
+        '560': '560px',
       }
     }
   },
