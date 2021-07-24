@@ -11,7 +11,7 @@ import {useDispatch} from "react-redux";
 const variants = {
     enter: (direction) => {
         return {
-            x: direction > 0 ? 10 : -10,
+            x: direction > 0 ? 0 : -0,
             opacity: 0
         };
     },
@@ -23,7 +23,7 @@ const variants = {
     exit: (direction) => {
         return {
             zIndex: 0,
-            x: direction < 0 ? 10 : -10,
+            x: direction < 0 ? 0 : -0,
             opacity: 0
         };
     }
@@ -58,7 +58,7 @@ const swipePower = (offset, velocity) => {
     return Math.abs(offset) * velocity;
 };
 
-const Example = (props, ref) => {
+const LoginForm = (props, ref) => {
     const [[page, direction], setPage] = useState([0, 0]);
     const item = wrap(0, items.length, page);
 
@@ -144,4 +144,4 @@ const Example = (props, ref) => {
         </>
     );
 };
-export default forwardRef(Example)
+export default forwardRef(LoginForm)

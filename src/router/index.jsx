@@ -3,8 +3,8 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import Register from "../views/auth/register"
-import Login from "../views/auth/login/login"
+import Register from "../views/auth/register/index"
+import Index from "../views/auth/login/index"
 
 export default function MainRouter() {
     return (
@@ -14,7 +14,7 @@ export default function MainRouter() {
                     <Register />
                 </Route>
                 <Route path="/login">
-                    <Login />
+                    <Index />
                 </Route>
             </Switch>
         </Router>

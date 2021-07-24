@@ -1,17 +1,11 @@
-import React, {useEffect, useRef} from "react"
+import React from "react"
 
-import logo from '../../../assets/svg/logo/logo-big.svg'
-import sideDesign from '../../../assets/svg/fixes/edge-corner.svg'
-import googleLogo from '../../../assets/svg/icons/google.svg'
-import facebookLogo from '../../../assets/svg/icons/facebook.svg'
-import Example from "./login-form";
+import logo from '../../assets/svg/logo/logo-big.svg'
+import sideDesign from '../../assets/svg/fixes/edge-corner.svg'
+import googleLogo from '../../assets/svg/icons/google.svg'
+import facebookLogo from '../../assets/svg/icons/facebook.svg'
 
-export default function Login() {
-    const formRef = useRef(null)
-
-    useEffect(() => {
-        console.log(formRef.page)
-    })
+export default function AuthTemplate(props) {
 
     return (
         <div className="w-screen h-screen flex">
@@ -35,7 +29,6 @@ export default function Login() {
                             Account
                         </div>
                     </div>
-
                     <div className="
                     w-full md:w-3/4 xl:w-1/2 h-3/4 md:h-auto
                     pt-8 sm:py-8 sm:p-4 mt-8
@@ -47,12 +40,16 @@ export default function Login() {
                             <img src={sideDesign} alt='sideDesign'/>
                         </div>
 
-                        <div className="w-3/4 mb-10 md:hidden">
-                            <img src={logo} alt="logo"/>
-                        </div>
+                        {
+                            props.withImage ?
+                                <div className="w-3/4 mb-10 md:hidden">
+                                    <img src={logo} alt="logo"/>
+                                </div> :
+                                null
+                        }
 
                         <div className="flex justify-center items-center w-full relative">
-                            <Example ref={formRef} />
+                            {props.children}
                         </div>
 
                         <div className="text-sm text-text flex justify-center mt-0 md:mt-5">Or Login with Email</div>
@@ -70,15 +67,18 @@ export default function Login() {
                         <div className="mt-4">
                             <div className="flex justify-center">
                                 <span
-                                    className="text-secondary text-xs xxs:text-sm xs:text-base">Don’t have an account?</span>
+                                    className="text-secondary text-xs xxs:text-sm xs:text-base">{props.bottomText1 || 'Don’t have an account?'}</span>
                                 <span
-                                    className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">Register</span>
+                                    className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">{props.bottomText2 || 'Register'}</span>
                             </div>
-                            <div className="flex justify-center">
-                                <span
-                                    className="text-secondary text-xs xxs:text-sm xs:text-base">Forgot password?</span>
-                                <span className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">Change password</span>
-                            </div>
+                            {
+                                props.login ?
+                                    <div className="flex justify-center">
+                                        <span className="text-secondary text-xs xxs:text-sm xs:text-base">Forgot password?</span>
+                                        <span
+                                            className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">Change password</span>
+                                    </div> : ""
+                            }
                         </div>
                     </div>
                 </div>

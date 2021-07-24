@@ -1,4 +1,5 @@
 import React from "react"
+import {motion} from "framer-motion"
 
 /**
  * This is the standard element for input tags with validation
@@ -26,7 +27,7 @@ export default function InputWithValidation (props) {
 
     return (
         <React.Fragment>
-            <div className={compProps.className}>
+            <div className={`w-5/6 mb-2 ${compProps.className}`}>
                 <label className='font-medium text-secondary text-xl md:text-base'>{compProps.label}</label>
                 <input
                     id={compProps.id}
@@ -42,9 +43,9 @@ export default function InputWithValidation (props) {
                     }
                 />
                 {compProps.formik.touched[compProps.name] && compProps.formik.errors[compProps.name] ? (
-                    <div className="mt-1 text-danger text-base">
+                    <motion.div className="mt-1 text-danger text-sm">
                         {compProps.formik.errors[compProps.name]}
-                    </div>
+                    </motion.div>
                 ) : null}
             </div>
         </React.Fragment>
