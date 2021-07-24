@@ -40,7 +40,7 @@ const RegisterForm = (props, ref) => {
                 <form className='w-5/6 flex flex-col justify-center items-center'>
                     <AnimateSharedLayout>
                         <motion.div className="w-full" layout>
-                            <ItemTemplate title='Your Details' initial={true}>
+                            <ItemTemplate title='Your Details' isOpen={true}>
                                 <InputWithValidation
                                     label='First Name'
                                     id='firstName'
@@ -63,7 +63,10 @@ const RegisterForm = (props, ref) => {
                                     formik={formik}
                                 />
                             </ItemTemplate>
-                            <ItemTemplate title='Password'>
+                            <ItemTemplate title='Password' disabled={
+                                formik.errors.firstName && formik.errors.lastName && formik.errors.telephone &&
+                                !formik.values.firstName && !formik.values.lastName && !formik.values.telephone
+                            }>
                                 <InputWithValidation
                                     label='Password'
                                     id='password'
@@ -78,7 +81,7 @@ const RegisterForm = (props, ref) => {
                                     type='confirmPassword'
                                     formik={formik}
                                 />
-                                <button type="button" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
+                                <button type="button" className="w-full py-4 mt-2 rounded-xl bg-primary text-black font-bold">
                                     Submit
                                 </button>
                             </ItemTemplate>
@@ -125,13 +128,13 @@ const RegisterForm = (props, ref) => {
 
 function ItemTemplate(props) {
 
-    const [isOpen, setIsOpen] = useState(props.initial || false);
+    const [isOpen, setIsOpen] = useState(props.isOpen || false);
 
     const toggleOpen = () => setIsOpen(!isOpen);
 
     return (
         <motion.div layout>
-            <button type="button" onClick={toggleOpen} className="w-full p-2 mt-2 rounded-xl bg-primary text-black font-bold">
+            <button type="button" disabled={props.disabled || false} onClick={toggleOpen} className="w-full p-2 mt-2 rounded-xl bg-primary text-black font-bold">
                 {props.title}
             </button>
             <AnimatePresence>
