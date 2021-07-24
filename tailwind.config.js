@@ -35,6 +35,7 @@ module.exports = {
       }),
       borderRadius: {
         '3.5xl': '3.5rem',
+        '6xl': '6rem',
       },
       screens: {
         'portrait': {'raw': '(orientation: portrait)'},

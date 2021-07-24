@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import Register from "../views/auth/register/index"
 import Index from "../views/auth/login/index"
-import Test from "../views/app/index"
+import HomeDsand from "../views/home-dsand";
 
 export default function MainRouter() {
     return (
@@ -18,7 +18,7 @@ export default function MainRouter() {
                     <Index />
                 </Route>
                 <Route path="/">
-                    <Test />
+                    <HomeDsand />
                 </Route>
             </Switch>
         </Router>
