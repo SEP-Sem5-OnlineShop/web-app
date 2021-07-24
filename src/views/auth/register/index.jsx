@@ -13,6 +13,8 @@ export default function Index(props) {
     return (
         <AuthTemplate
             withImage={true}
+            upperText1='Register'
+            upperText2='Create your free account'
             bottomText1='Already Registered?'
             bottomText2='Sing In'
             login={false}

@@ -27,7 +27,7 @@ export default function InputWithValidation (props) {
 
     return (
         <React.Fragment>
-            <div className={`w-5/6 mb-2 ${compProps.className}`}>
+            <div className={`mb-2 ${compProps.className}`}>
                 <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>{compProps.label}</label>
                 <input
                     id={compProps.id}
@@ -40,7 +40,7 @@ export default function InputWithValidation (props) {
                         `rounded-xl
                         w-full
                         mt-1 p-2
-                        h-10
+                        h-10 w-full
                         focus:outline-none
                         focus:shadow-md
                         ${compProps.formik.touched[compProps.name] && compProps.formik.errors[compProps.name] ?

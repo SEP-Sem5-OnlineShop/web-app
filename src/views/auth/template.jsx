@@ -25,10 +25,9 @@ export default function AuthTemplate(props) {
                     <div className="
                     flex flex-col align-center
                     w-full min-h-100 md:min-h-0">
-                        <div className="flex justify-center text-3xl md:text-6xl font-bold text-secondary mt-4">Login
+                        <div className="flex justify-center text-3xl md:text-6xl font-bold text-secondary mt-4">{props.upperText1}
                         </div>
-                        <div className="flex justify-center text-xl font-medium text-secondary mt-2">Access Your
-                            Account
+                        <div className="flex justify-center text-xl font-medium text-secondary mt-2">{props.upperText2}
                         </div>
                     </div>
 
@@ -51,7 +50,7 @@ export default function AuthTemplate(props) {
                                 null
                         }
 
-                        <div className="flex justify-center items-center w-full relative">
+                        <div className="flex h-64 justify-center items-center w-full relative">
                             {props.children}
                         </div>
 

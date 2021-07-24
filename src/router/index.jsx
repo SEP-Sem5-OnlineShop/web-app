@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Register from "../views/auth/register/index"
 import Index from "../views/auth/login/index"
+import Test from "../views/app/index"
 
 export default function MainRouter() {
     return (
@@ -15,6 +16,9 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/login">
                     <Index />
+                </Route>
+                <Route path="/">
+                    <Test />
                 </Route>
             </Switch>
         </Router>

@@ -51,7 +51,8 @@ module.exports = {
         'full': '100%',
       },
       height: {
-        '23': '5.75rem'
+        '23': '5.75rem',
+
       }
     }
   },
