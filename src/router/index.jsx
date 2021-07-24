@@ -3,8 +3,9 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import Register from "../views/auth/register"
-import Login from "../views/auth/login"
+import Register from "../views/auth/register/index"
+import Index from "../views/auth/login/index"
+import Test from "../views/app/index"
 
 export default function MainRouter() {
     return (
@@ -14,7 +15,10 @@ export default function MainRouter() {
                     <Register />
                 </Route>
                 <Route path="/login">
-                    <Login />
+                    <Index />
+                </Route>
+                <Route path="/">
+                    <Test />
                 </Route>
             </Switch>
         </Router>

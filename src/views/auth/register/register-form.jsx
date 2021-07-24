@@ -1,0 +1,154 @@
+import React, {forwardRef, useState} from "react";
+import InputWithValidation from "../../../components/input-with-validation";
+import {useFormik} from "formik";
+import * as Yup from "yup";
+import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
+
+const RegisterForm = (props, ref) => {
+
+    const formik = useFormik({
+        initialValues: {
+            firstName: '',
+            lastName: '',
+            telephone: '',
+            password: '',
+            confirmPassword: '',
+        },
+        validationSchema: Yup.object({
+            firstName: Yup.string()
+                .required('Required').min(2, 'First name is too short!').max(50, 'First name is too long!'),
+            lastName: Yup.string()
+                .required('Required').min(2, 'First name is too short!').max(50, 'First name is too long!'),
+            telephone: Yup.string()
+                .required('Required')
+                .matches('^(?:0|94|\\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\\d)\\d{6}$',
+                    'Telephone number did not matched with requirements!'),
+            password: Yup.string()
+                .required('Required')
+                .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                    "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+                ),
+            confirmPassword: Yup.string()
+                .required('Required').oneOf([Yup.ref('password'), null], 'Password not matched!'),
+        }),
+        onSubmit: values => {
+            console.log(values)
+        },
+    });
+
+    return (
+                <form className='w-5/6 flex flex-col justify-center items-center'>
+                    <AnimateSharedLayout>
+                        <motion.div className="w-full" layout>
+                            <ItemTemplate title='Your Details' initial={true}>
+                                <InputWithValidation
+                                    label='First Name'
+                                    id='firstName'
+                                    name='firstName'
+                                    type='firstName'
+                                    formik={formik}
+                                />
+                                <InputWithValidation
+                                    label='Last Name'
+                                    id='lastName'
+                                    name='lastName'
+                                    type='lastName'
+                                    formik={formik}
+                                />
+                                <InputWithValidation
+                                    label='Telephone Number'
+                                    id='telephone'
+                                    name='telephone'
+                                    type='telephone'
+                                    formik={formik}
+                                />
+                            </ItemTemplate>
+                            <ItemTemplate title='Password'>
+                                <InputWithValidation
+                                    label='Password'
+                                    id='password'
+                                    name='password'
+                                    type='password'
+                                    formik={formik}
+                                />
+                                <InputWithValidation
+                                    label='Confirm Password'
+                                    id='confirmPassword'
+                                    name='confirmPassword'
+                                    type='confirmPassword'
+                                    formik={formik}
+                                />
+                                <button type="button" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
+                                    Submit
+                                </button>
+                            </ItemTemplate>
+                        </motion.div>
+                    </AnimateSharedLayout>
+                    {/*<InputWithValidation*/}
+                    {/*    label='First Name'*/}
+                    {/*    id='firstName'*/}
+                    {/*    name='firstName'*/}
+                    {/*    type='firstName'*/}
+                    {/*    formik={formik}*/}
+                    {/*/>*/}
+                    {/*<InputWithValidation*/}
+                    {/*    label='Last Name'*/}
+                    {/*    id='lastName'*/}
+                    {/*    name='lastName'*/}
+                    {/*    type='lastName'*/}
+                    {/*    formik={formik}*/}
+                    {/*/>*/}
+                    {/*<InputWithValidation*/}
+                    {/*    label='Telephone Number'*/}
+                    {/*    id='telephone'*/}
+                    {/*    name='telephone'*/}
+                    {/*    type='telephone'*/}
+                    {/*    formik={formik}*/}
+                    {/*/>*/}
+                    {/*<InputWithValidation*/}
+                    {/*    label='Password'*/}
+                    {/*    id='password'*/}
+                    {/*    name='password'*/}
+                    {/*    type='password'*/}
+                    {/*    formik={formik}*/}
+                    {/*/>*/}
+                    {/*<InputWithValidation*/}
+                    {/*    label='Confirm Password'*/}
+                    {/*    id='confirmPassword'*/}
+                    {/*    name='confirmPassword'*/}
+                    {/*    type='confirmPassword'*/}
+                    {/*    formik={formik}*/}
+                    {/*/>*/}
+                </form>
+    );
+};
+
+function ItemTemplate(props) {
+
+    const [isOpen, setIsOpen] = useState(props.initial || false);
+
+    const toggleOpen = () => setIsOpen(!isOpen);
+
+    return (
+        <motion.div layout>
+            <button type="button" onClick={toggleOpen} className="w-full p-2 mt-2 rounded-xl bg-primary text-black font-bold">
+                {props.title}
+            </button>
+            <AnimatePresence>
+                {
+                    isOpen &&
+                    <motion.div
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        {props.children}
+                    </motion.div>
+                }
+            </AnimatePresence>
+        </motion.div>
+    )
+}
+
+export default forwardRef(RegisterForm)
