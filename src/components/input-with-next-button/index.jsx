@@ -1,5 +1,4 @@
 import React from "react"
-import {motion} from "framer-motion";
 
 /**
  * This is the standard element for input tags with validation

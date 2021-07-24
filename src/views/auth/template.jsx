@@ -8,11 +8,13 @@ import facebookLogo from '../../assets/svg/icons/facebook.svg'
 export default function AuthTemplate(props) {
 
     return (
-        <div className="w-screen h-screen flex">
+        <div className="w-screen min-h-screen md:h-screen flex">
+
             <div className="w-5/12 lg:w-7/12 h-full justify-center align-center hidden lg:flex">
                 <img className="w-4/5 lg:w-3/5" src={logo} alt="logo big"/>
             </div>
-            <div className="w-full lg:w-7/12 lg:w-5/12 h-full
+
+            <div className="w-full lg:w-7/12 lg:w-5/12 min-h-screen
                             bg-primary
                             relative">
                 <div className="w-full h-full
@@ -29,12 +31,13 @@ export default function AuthTemplate(props) {
                             Account
                         </div>
                     </div>
+
                     <div className="
-                    w-full md:w-3/4 xl:w-1/2 h-3/4 md:h-auto
-                    pt-8 sm:py-8 sm:p-4 mt-8
+                    w-full md:w-3/4 xl:w-1/2 h-auto min-h-4/5
+                    py-8 sm:p-4 mt-8
                     flex flex-col items-center justify-center
                     bg-accent
-                    rounded-tl-3.5xl md:rounded-2xl min-h-560 md:min-h-0">
+                    rounded-tl-3.5xl md:rounded-2xl md:min-h-0">
 
                         <div className="absolute md:hidden right-0" style={{top: '-49px'}}>
                             <img src={sideDesign} alt='sideDesign'/>

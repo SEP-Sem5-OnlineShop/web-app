@@ -28,7 +28,7 @@ export default function InputWithValidation (props) {
     return (
         <React.Fragment>
             <div className={`w-5/6 mb-2 ${compProps.className}`}>
-                <label className='font-medium text-secondary text-xl md:text-base'>{compProps.label}</label>
+                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>{compProps.label}</label>
                 <input
                     id={compProps.id}
                     name={compProps.name}
@@ -37,13 +37,18 @@ export default function InputWithValidation (props) {
                     onBlur={compProps.formik.handleBlur}
                     value={compProps.formik.values[compProps.name]}
                     className={
-                        `rounded-xl mt-1 h-12 md:h-10 p-2 w-full focus:outline-none
+                        `rounded-xl
+                        w-full
+                        mt-1 p-2
+                        h-10
+                        focus:outline-none
+                        focus:shadow-md
                         ${compProps.formik.touched[compProps.name] && compProps.formik.errors[compProps.name] ?
                                 'outline-none ring-2 ring-danger border-transparent' : ''}`
                     }
                 />
                 {compProps.formik.touched[compProps.name] && compProps.formik.errors[compProps.name] ? (
-                    <motion.div className="mt-1 text-danger text-sm">
+                    <motion.div className="mt-1 text-danger text-xs xs:text-sm">
                         {compProps.formik.errors[compProps.name]}
                     </motion.div>
                 ) : null}
