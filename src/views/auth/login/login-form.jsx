@@ -30,13 +30,14 @@ const LoginForm = (props, ref) => {
 
     return (
 
-        <form className='w-full flex flex-col justify-center items-center'>
+        <form className='w-5/6 flex flex-col justify-center items-center'>
             <InputWithValidation
                 label='Telephone Number'
                 id='telephone'
                 name='telephone'
                 type='telephone'
                 formik={formik}
+                className='w-full'
             />
             <InputWithValidation
                 label='Password'
@@ -44,7 +45,11 @@ const LoginForm = (props, ref) => {
                 name='password'
                 type='password'
                 formik={formik}
+                className='w-full'
             />
+            <button type="button" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
+                Submit
+            </button>
         </form>
     );
 };
