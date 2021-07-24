@@ -50,7 +50,7 @@ export default function AuthTemplate(props) {
                                 null
                         }
 
-                        <div className="flex h-64 justify-center items-center w-full relative">
+                        <div className="flex justify-center items-center w-full relative">
                             {props.children}
                         </div>
 
