@@ -81,7 +81,7 @@ const RegisterForm = (props, ref) => {
                                     type='confirmPassword'
                                     formik={formik}
                                 />
-                                <button type="button" className="w-full py-4 mt-2 rounded-xl bg-primary text-black font-bold">
+                                <button type="button" className="w-full py-4 mt-2 rounded-xl bg-textLight text-white font-bold">
                                     Submit
                                 </button>
                             </ItemTemplate>
@@ -100,7 +100,7 @@ function ItemTemplate(props) {
     return (
         <motion.div layout>
             <button type="button" disabled={props.disabled || false} onClick={toggleOpen}
-                    className="w-full p-2 mt-2 rounded-xl bg-primary text-black font-bold disabled:opacity-50">
+                    className="w-full p-2 mt-2 rounded-xl bg-textLight text-white font-bold disabled:opacity-50">
                 {props.title}
             </button>
             <AnimatePresence>
