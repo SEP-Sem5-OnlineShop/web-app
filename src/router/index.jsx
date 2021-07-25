@@ -6,6 +6,7 @@ import {
 import Register from "../views/auth/register"
 import Login from "../views/auth/login"
 import Alert from '../views/app/alert'
+import Vendor from '../views/app/vendor'
 
 export default function MainRouter() {
     return (
@@ -19,6 +20,9 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/alert">
                     <Alert />
+                </Route>
+                <Route path="/vendor">
+                    <Vendor />
                 </Route>
             </Switch>
         </Router>
