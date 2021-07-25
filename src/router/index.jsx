@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Register from "../views/auth/register"
 import Login from "../views/auth/login"
+import Alert from '../views/app/alert'
 
 export default function MainRouter() {
     return (
@@ -15,6 +16,9 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/login">
                     <Login />
+                </Route>
+                <Route path="/alert">
+                    <Alert />
                 </Route>
             </Switch>
         </Router>
