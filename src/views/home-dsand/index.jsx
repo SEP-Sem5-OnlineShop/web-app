@@ -31,8 +31,8 @@ export default function HomeDsand() {
                     </div>
 
                     <div className="w-11/12 mb-10 mt-20">
-                        <span className="text-3xl font-medium">Today's Deals</span>
-                        <div className="mt-8 w-full">
+                        <span className="text-xl lg:text-3xl font-medium">Today's Deals</span>
+                        <div className="mt-4 lg:mt-8 w-full">
                             <SwiperSliderContainer>
                                 <SwiperSlide>
                                     <HomeItem
@@ -109,8 +109,8 @@ export default function HomeDsand() {
                     </div>
 
                     <div className="w-11/12">
-                        <span className="text-3xl font-medium">Hot Deals</span>
-                        <div className="mt-8 w-full">
+                        <span className="text-xl lg:text-3xl font-medium">Hot Deals</span>
+                        <div className="mt-4 lg:mt-8 w-full">
                             <SwiperSliderContainer>
                                 <SwiperSlide>
                                     <HomeItem
