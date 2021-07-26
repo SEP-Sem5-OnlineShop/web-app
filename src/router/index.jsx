@@ -7,6 +7,7 @@ import Register from "../views/auth/register"
 import Login from "../views/auth/login"
 import PaymentPopup from '../views/app/paymentPopup'
 import ThankPopup from '../views/app/thankPopup'
+import History from '../views/app/history'
 
 export default function MainRouter() {
     return (
@@ -23,6 +24,9 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/thankPopup">
                     <ThankPopup />
+                </Route>
+                <Route path="/history">
+                    <History />
                 </Route>
             </Switch>
         </Router>
