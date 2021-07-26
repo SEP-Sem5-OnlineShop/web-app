@@ -12,7 +12,8 @@ function PaymentPopup() {
   const [buttonPopup,setButtonPopup]=useState(true);
 //   const [buttonPopup,setButtonPopup]=useState(false);
   return (
-      <body class="h-screen bg-accent content-around flex items-center flex justify-center">
+      // <body class="h-screen bg-accent sm:bg-green content-around flex items-center flex justify-center">
+        <body class="h-screen bg-accent content-around flex items-center flex justify-center"> 
     <div className="">
       <main>
       <br></br>

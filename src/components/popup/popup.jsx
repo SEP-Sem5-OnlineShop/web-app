@@ -10,7 +10,7 @@ import React from 'react'
 
 function popup(props) {
     return (props.trigger)?(
-        <div className="bg-white box-border rounded-lg  h-65 w-96 p-4 
+        <div className="bg-white box-border rounded-lg  h-55 sm:h-65 w-86 sm:w-96 p-4 
         border-1 border-blue-500 border-opacity-75 md:border-opacity-50
         filter drop-shadow-lg lg:drop-shadow-2xl
         ">
