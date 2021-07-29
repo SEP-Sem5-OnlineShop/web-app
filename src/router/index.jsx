@@ -6,9 +6,6 @@ import {
 import Register from "../views/auth/register"
 import Login from "../views/auth/login"
 import Alert from '../views/app/alert'
-import AlertComponent from '../views/app/alertComponent'
-import Vendor from '../views/app/vendor'
-import VendorComponent from '../views/app/vendorComponent'
 
 export default function MainRouter() {
     return (
@@ -22,15 +19,6 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/alert">
                     <Alert />
-                </Route>
-                <Route path="/alertCom">
-                    <AlertComponent />
-                </Route>
-                <Route path="/vendor">
-                    <Vendor />
-                </Route>
-                <Route path="/vendorCom">
-                    <VendorComponent />
                 </Route>
             </Switch>
         </Router>
