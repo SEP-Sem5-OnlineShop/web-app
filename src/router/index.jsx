@@ -9,6 +9,7 @@ import HomeDsand from "../views/home-dsand";
 import PaymentPopup from '../views/app/paymentPopup'
 import ThankPopup from '../views/app/thankPopup'
 import History from '../views/app/history'
+import Alert from '../views/app/alert'
 
 export default function MainRouter() {
     return (
@@ -20,9 +21,6 @@ export default function MainRouter() {
                 <Route path="/login">
                     <Index />
                 </Route>
-                <Route path="/">
-                    <HomeDsand />
-                </Route>
                 <Route path="/paymentPopup">
                     <PaymentPopup />
                 </Route>
@@ -31,6 +29,11 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/history">
                     <History />
+                </Route><Route path="/alert">
+                    <Alert />
+                </Route>
+                <Route path="/">
+                    <HomeDsand />
                 </Route>
             </Switch>
         </Router>

@@ -13,7 +13,7 @@ function PaymentPopup() {
 //   const [buttonPopup,setButtonPopup]=useState(false);
   return (
       // <body class="h-screen bg-accent sm:bg-green content-around flex items-center flex justify-center">
-        <body class="h-screen bg-accent content-around flex items-center flex justify-center"> 
+        <div className="h-screen bg-accent content-around flex items-center flex justify-center">
     <div className="">
       <main>
       <br></br>
@@ -22,7 +22,7 @@ function PaymentPopup() {
       <PopupComponent trigger={buttonPopup} setTrigger={setButtonPopup}>
         
         
-          <div class="">
+          <div className="">
               <div className="flex justify-center">
               <img width={152} src={card} alt="card" />
               
@@ -30,14 +30,14 @@ function PaymentPopup() {
               <br></br>
 
               <div className="flex justify-center">
-              <h1 class="font-sans md:font-serif text-base md:text-lg"><b>Complete Your Payment!!</b></h1>
+              <h1 className="font-sans md:font-serif text-base md:text-lg"><b>Complete Your Payment!!</b></h1>
               </div>
               <br></br>
               <br></br>
             
-            <div class="flex justify-between relative h-32">
-                <button class="bg-accent h-10 w-20 rounded-sm  filter drop-shadow-lg lg:drop-shadow-xl">cancel</button>
-                <button class="bg-accent h-10 w-20 rounded-sm  filter drop-shadow-lg lg:drop-shadow-xl">Pay</button>
+            <div className="flex justify-between relative h-32">
+                <button className="bg-accent h-10 w-20 rounded-sm  filter drop-shadow-lg lg:drop-shadow-xl">cancel</button>
+                <button className="bg-accent h-10 w-20 rounded-sm  filter drop-shadow-lg lg:drop-shadow-xl">Pay</button>
             </div>
             
           </div>
@@ -49,7 +49,7 @@ function PaymentPopup() {
       {/* <MainRouter /> */}
       
     </div>
-    </body>
+    </div>
   );
 }
 
