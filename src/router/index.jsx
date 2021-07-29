@@ -20,9 +20,6 @@ export default function MainRouter() {
                 <Route path="/login">
                     <Index />
                 </Route>
-                <Route path="/">
-                    <HomeDsand />
-                </Route>
                 <Route path="/paymentPopup">
                     <PaymentPopup />
                 </Route>
@@ -31,6 +28,9 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/history">
                     <History />
+                </Route>
+                <Route path="/">
+                    <HomeDsand />
                 </Route>
             </Switch>
         </Router>

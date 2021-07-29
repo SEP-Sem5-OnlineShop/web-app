@@ -12,7 +12,7 @@ function ThankPopup() {
   const [buttonPopup,setButtonPopup]=useState(true);
 //   const [buttonPopup,setButtonPopup]=useState(false);
   return (
-      <body class="h-screen bg-accent content-around flex items-center flex justify-center text-success">
+      <div className="h-screen bg-accent content-around flex items-center flex justify-center text-success">
     <div className="">
       <main>
       <br></br>
@@ -21,7 +21,7 @@ function ThankPopup() {
       <PopupComponent trigger={buttonPopup} setTrigger={setButtonPopup}>
         
         
-          <div class="">
+          <div className="">
               <div className="flex justify-center text-green-600">
               <img width={152} src={smile} alt="smile" />
               {/* <svg xmlns="card" /> */}
@@ -30,10 +30,10 @@ function ThankPopup() {
               <br></br>
 
               <div className="flex justify-center">
-              <h1 class="font-sans md:font-serif text-base md:text-lg "><b>Thanks for Buying</b></h1>
+              <h1 className="font-sans md:font-serif text-base md:text-lg "><b>Thanks for Buying</b></h1>
               </div>
               <div className="flex justify-center">
-              <h1 class="font-sans md:font-serif text-base md:text-lg "><b>Food from us!!</b></h1>
+              <h1 className="font-sans md:font-serif text-base md:text-lg "><b>Food from us!!</b></h1>
               </div>
               <br></br>
               <br></br>
@@ -47,7 +47,7 @@ function ThankPopup() {
       {/* <MainRouter /> */}
       
     </div>
-    </body>
+    </div>
   );
 }
 
