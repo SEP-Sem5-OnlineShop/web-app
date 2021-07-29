@@ -8,6 +8,8 @@ import Index from "../views/auth/login/index"
 import HomeDsand from "../views/home-dsand";
 import PaymentPopup from '../views/app/paymentPopup'
 import ThankPopup from '../views/app/thankPopup'
+import RejectPopup from '../views/app/rejectPopup'
+import RemovePopup from '../views/app/removePopup'
 import History from '../views/app/history'
 import Alert from '../views/app/alert'
 
@@ -23,6 +25,12 @@ export default function MainRouter() {
                 </Route>
                 <Route path="/paymentPopup">
                     <PaymentPopup />
+                </Route>
+                <Route path="/rejectPopup">
+                    <RejectPopup />
+                </Route>
+                <Route path="/removePopup">
+                    <RemovePopup />
                 </Route>
                 <Route path="/thankPopup">
                     <ThankPopup />
