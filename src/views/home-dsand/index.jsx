@@ -12,6 +12,8 @@ import vegetables from "../../assets/img/vegetables.jpg"
 import IconPanel from "./icon-panel"
 import SwiperSliderContainer from "./swiper-slider-container";
 import {SwiperSlide} from "swiper/react";
+import {MenuToggle} from "../../layout/hamburger-menu/icon";
+
 
 export default function HomeDsand() {
 
@@ -21,6 +23,7 @@ export default function HomeDsand() {
                 <div className="bg-food-style opacity-40 w-full h-full absolute top-0 left-0"/>
                 <div className="h-44 w-full flex px-10 items-center">
                     <img className="h-3/4" src={logo} alt="logo" />
+                    <MenuToggle />
                 </div>
 
                 <div className="w-full bg-white rounded-t-3xl lg:rounded-t-6xl relative flex flex-col items-center"
