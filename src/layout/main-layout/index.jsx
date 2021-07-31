@@ -10,7 +10,7 @@ export default function MainLayout(props) {
                     <img className="h-3/4" src={logo} alt="logo" />
                 </div>
 
-                <div className="w-full bg-white rounded-t-3xl lg:rounded-t-6xl relative z-10 flex flex-col items-center"
+                <div className="w-full bg-white rounded-t-3xl lg:rounded-t-6xl relative z-10"
                      style={{minHeight: 'calc(100vh - 11rem)'}}>
                     {props.children}
                 </div>
