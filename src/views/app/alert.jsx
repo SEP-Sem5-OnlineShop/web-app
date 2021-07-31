@@ -15,15 +15,26 @@ const Alert = () => {
     ]);
 
     // const [alerts, setAlerts] = useState(null);
+    // const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     // useEffect(() => {
     //     fetch('http://localhost:8000/customer/customer1/alerts')
-    //       .then(res => {
-    //           return res.json();
-    //       })
-    //       .then(data => {
-    //           setAlerts(data)
-    //       });
+    //         .then(res => {
+    //             if(!res.ok){
+    //                 throw Error('data does not exist')
+    //             }
+    //             return res.json();
+    //         })
+    //         .then(data => {
+    //             setAlerts(data);
+    //             setIsLoading(false);
+    //             setError(null);
+    //         })
+    //         .catch(err => {
+    //             setIsLoading(false);
+    //             setError(err.message);
+    //         });
     // }, []);
 
     const handleRemove = (id) => {
@@ -47,6 +58,10 @@ const Alert = () => {
                     {/* alert component */}
                     <div className="px-2 py-4 sm:px-12 sm:py-12">
                         <h1 className="text-3xl text-secondary flex flex-col">Alerts</h1>
+                        {/* error */}
+                        { error && <div className="mt-4">{ error}</div>}
+                        {/* loding */}
+                        {/* { isLoading && <div className="mt-4">Loding...</div>} */}
                         <div className="mt-4 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-10">
                             {alerts && <>
                                 {alerts.map((alert) => (
