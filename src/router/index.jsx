@@ -3,37 +3,27 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import Register from "../views/auth/register/index"
-import Index from "../views/auth/login/index"
 import HomeDsand from "../views/home-dsand";
-import PaymentPopup from '../views/app/paymentPopup'
-import ThankPopup from '../views/app/thankPopup'
-import History from '../views/app/history'
-import Alert from '../views/app/alert'
+import AppRouter from "./app";
+import AuthRouter from "./auth";
+import MainLayout from "../layout/main-layout";
 
 export default function MainRouter() {
     return (
         <Router>
             <Switch>
-                <Route path="/register">
-                    <Register />
+                <Route path="/auth">
+                    <AuthRouter />
                 </Route>
-                <Route path="/login">
-                    <Index />
-                </Route>
-                <Route path="/paymentPopup">
-                    <PaymentPopup />
-                </Route>
-                <Route path="/thankPopup">
-                    <ThankPopup />
-                </Route>
-                <Route path="/history">
-                    <History />
-                </Route><Route path="/alert">
-                    <Alert />
+                <Route path="/app">
+                    <MainLayout>
+                        <AppRouter />
+                    </MainLayout>
                 </Route>
                 <Route path="/">
-                    <HomeDsand />
+                    <MainLayout>
+                        <HomeDsand />
+                    </MainLayout>
                 </Route>
             </Switch>
         </Router>
