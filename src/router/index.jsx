@@ -12,6 +12,11 @@ import RejectPopup from '../views/app/rejectPopup'
 import RemovePopup from '../views/app/removePopup'
 import History from '../views/app/history'
 import Alert from '../views/app/alert'
+import HomeAdmin from '../views/home-admin'
+// import productList from '../views/app/ProductsList'
+import Product from '../views/app/productList'
+import VendorProductList from '../views/app/vendorProductList'
+
 
 export default function MainRouter() {
     return (
@@ -32,13 +37,25 @@ export default function MainRouter() {
                 <Route path="/removePopup">
                     <RemovePopup />
                 </Route>
+                <Route path="/Product">
+                    <Product />
+                </Route>
                 <Route path="/thankPopup">
                     <ThankPopup />
                 </Route>
+
+                <Route path="/vendorProduct">
+                    <VendorProductList />
+                </Route>
+
+
                 <Route path="/history">
                     <History />
                 </Route><Route path="/alert">
                     <Alert />
+                </Route>
+                <Route path="/homeAdmin">
+                    <HomeAdmin />
                 </Route>
                 <Route path="/">
                     <HomeDsand />
