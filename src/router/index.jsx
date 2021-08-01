@@ -16,6 +16,8 @@ import HomeAdmin from '../views/home-admin'
 // import productList from '../views/app/ProductsList'
 import Product from '../views/app/productList'
 import VendorProductList from '../views/app/vendorProductList'
+import Pizza from '../assets/img/pizza.jpg'
+import SingleProduct from '../views/app/singleProduct'
 
 
 export default function MainRouter() {
@@ -46,6 +48,10 @@ export default function MainRouter() {
 
                 <Route path="/vendorProduct">
                     <VendorProductList />
+                </Route>
+
+                <Route path="/SingleProduct">
+                    <SingleProduct name='Pizza' img={Pizza} description='ingredients: flour, vegetables, cheese, ketchup, mayoneese'/>
                 </Route>
 
 
