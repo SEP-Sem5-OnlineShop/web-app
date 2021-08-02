@@ -15,7 +15,7 @@ function VendorProductList() {
         
       
 
-      <div className="px-2 py-4 sm:px-12 sm:py-12 bg-primary">
+      <div className="px-2 py-4 sm:px-12 sm:py-12 bg-white">
 {/* 
 <div className="h-32 mt-4 flex justify-center" >
                         <IconPanel />

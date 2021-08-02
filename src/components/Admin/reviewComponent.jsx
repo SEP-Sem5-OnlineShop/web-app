@@ -16,10 +16,12 @@ export default function ReviewComponent(props) {
     }
     return(
         <div>
-            <div className='rounded-sm border-4 border-white w-1/2'>
-            <p>from: {compProps.name}</p>
-            <p>{compProps.review}</p>
-            <p>{compProps.date}</p><br></br>
+            <div className='rounded-sm shadow-md bg-white border-blck w-20 md:w-1/2'>
+            <p className='text-base sm:text-lg px-4'>{compProps.name}</p><br></br>
+
+            <p className='text-xs sm:text-sm font-extralight'>{compProps.date}</p>
+            <p className='text-xs sm:text-sm'>{compProps.review}</p>
+            <br></br>
         </div><br></br>
         </div>
         

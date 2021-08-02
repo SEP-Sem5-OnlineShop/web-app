@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import ReviewComponent from '../../components/Admin/reviewComponent'
+import VendorProductComponent from '../../views/app/reviewVendorComponent'
+import card from '../../../src/assets/img/bread.jpg';
 
 export default function SingleProduct(props){
     const comProps = {
@@ -12,18 +14,71 @@ export default function SingleProduct(props){
     }
 
     return(
-        <div className='bg-primary'>
-            <div classNmae="">
-                <h1 className="text-center text-4xl sm:text-6xl">{comProps.name}</h1>
-                <br></br>
-                <div className='flex flex-col justify-center items-center'>
-                    <img src={comProps.img} alt="item1" className="h-40 w-40 sm:h-96 sm:w-96 rounded-2xl  shadow-md"/>
+        <div className='bg-white'>
+            <h1 className="px-4 text-start text-4xl sm:text-6xl">{comProps.name}</h1>
+            <div className='flex justify-between sm:justify-start '>
+
+            <div className="">
+                    
+                    <br></br>
+                    <div className='flex flex-col justify-start items-start px-8'>
+                        <img src={comProps.img} alt="item1" className="h-24 w-24 sm:h-96 sm:w-96 rounded-2xl  shadow-md"/>
+                    </div>
+                
                 </div>
                 
+                <div >
+               
+                <div className="bg-white rounded-lg w-44 sm:w-96 pl-10 pr-1 sm:pr-5  m-auto ">
+                <h2><b><u>Ratings: </u></b></h2><br></br>
+                    
+                    <div className="w-full h-4 flex justify-between">
+                        <label>5:</label>
+                        <div className="w-3/4 h-full text-center text-xs text-white bg-warn rounded-full">
+                             75%
+                         </div>
+                    </div><br></br>
+
+                    <div className="w-full h-4 flex justify-between">
+                        <label>4:</label>
+                        <div className="w-1/4 h-full text-center text-xs text-white bg-warn rounded-full">
+                             25%
+                         </div>
+                    </div><br></br>
+
+                    <div className="w-full h-4 flex justify-between">
+                        <label>3:</label>
+                        <div className="w-1/2 h-full text-center text-xs text-white bg-warn rounded-full">
+                             50%
+                         </div>
+                    </div><br></br>
+
+                    <div className="w-full h-4 flex justify-between">
+                        <label>2:</label>
+                        <div className="w-1/5 h-full text-center text-xs text-white bg-warn rounded-full">
+                             20%
+                         </div>
+                    </div><br></br>
+
+                    <div className="w-full h-4 flex justify-between">
+                        <label>1:</label>
+                        <div className="w-1/2 h-full text-center text-xs text-white bg-warn rounded-full">
+                             50%
+                         </div>
+                    </div><br></br>
+
+                </div>
+                </div>
+
+                
+
             </div>
+            
+
+
             <br></br>
 
-            <div className='flex flex-col justify-center items-center text-4xl sm:text-6xl'>
+            <div className='flex flex-col justify-star items-start text-4xl sm:text-6xl px-4'>
             <StarRatingComponent 
                 name="rate1" 
                 starCount={5}
@@ -42,13 +97,22 @@ export default function SingleProduct(props){
 
             <br></br>
             <br></br>
-
-            <div className='px-4 text-lg sm:text-xl'>
+            <div className='flex justify-between'>
+            <div className='px-4 text-lg sm:text-xl w-1/4 sm:w-1/2'>
                 <h2><b><u>Reviews: </u></b></h2><br></br>
                 <ReviewComponent name='Perera' review='Really a good product' date='12/01/2021'/>
                 <ReviewComponent name='Perera' review='Really a good product' date='12/01/2021'/>
                 <ReviewComponent name='Perera' review='Really a good product' date='12/01/2021'/>
             </div>
+
+            <div className='px-2 py-14 sm:py-5 sm:px-20'>
+            <VendorProductComponent name='Burger' image={card} number='10' price='100.00'/><br></br>
+            <VendorProductComponent name='Burger' image={card} number='10' price='100.00'/><br></br>
+            <VendorProductComponent name='Burger' image={card} number='10' price='100.00'/>
+            </div>
+
+            </div>
+            
             <br></br>
             <br></br>
 
@@ -60,7 +124,7 @@ export default function SingleProduct(props){
                     feedback={comProps.feedback}
                     className={
                         `rounded-xl
-                        bg-white
+                        bg-primary
                         w-1/2
                         mt-1 p-2
                         h-30 w-1/2
@@ -68,7 +132,7 @@ export default function SingleProduct(props){
                         focus:shadow-md`}
                     
                         />
-                    <button type="button" className="w-1/3 py-3 mt-2 rounded-xl bg-white text-secondary text-sm xs:text-lg md:text-base font-bold transform hover:scale-105 hover:shadow-md transition ease-out duration-400">
+                    <button type="button" className="w-1/3 py-3 mt-2 rounded-xl bg-primary text-secondary text-sm xs:text-lg md:text-base font-bold transform hover:scale-105 hover:shadow-md transition ease-out duration-400">
                     Submit
                     </button>
                 </div>
