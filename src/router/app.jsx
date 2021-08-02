@@ -8,6 +8,7 @@ import ThankPopup from '../views/app/thankPopup'
 import History from '../views/app/history'
 import Alert from '../views/app/alert'
 import Profile from "../views/app/profile";
+import VendorRegistration from "../views/app/admin/vendor-registration";
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -27,6 +28,9 @@ export default function AppRouter() {
             </Route>
             <Route path={`${match.path}/profile`}>
                 <Profile />
+            </Route>
+            <Route path={`${match.path}/register/vendor`}>
+                <VendorRegistration />
             </Route>
         </Switch>
     )

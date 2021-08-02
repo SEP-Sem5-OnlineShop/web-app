@@ -1,12 +1,10 @@
-import React, {useRef, useState} from "react";
+import React, {useRef} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {thunks} from "../../../store";
 import {useDispatch} from "react-redux";
-import { FilePond, registerPlugin } from 'react-filepond';
-import InputWithValidation from "../../../components/input-with-validation";
-import {AnimatePresence, motion} from "framer-motion";
-import EditableCardItem from "../../../components/card/editable-card-item";
+import { FilePond } from 'react-filepond';
+import {motion} from "framer-motion";
+import EditableCardItem from "../../../components/card/editable-card-item/editable-card-item";
 import CardTemplate from "../../../components/card/template";
 
 export default function Profile() {
