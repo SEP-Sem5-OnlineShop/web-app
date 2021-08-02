@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import InputWithValidation from "../input-with-validation";
 
 export default function EditableCardItem(props) {
@@ -14,16 +14,24 @@ export default function EditableCardItem(props) {
     return (
         <motion.div className="mb-8">
             <div className="text-text font-medium">{comProps.label}</div>
-            {
-                !value ?
-                    <div className="flex justify-between">
-                        <span>{comProps.fieldValue}</span>
-                        <button onClick={() => setValue(true)}
-                                className="bg-buttonColor text-secondary font-semibold rounded
+            <AnimatePresence>
+                {
+                    !value &&
+                        <motion.div key="detail" initial={{opacity: 0, display: "none"}}
+                                    animate={{opacity: 1, display: "flex"}}
+                                    exit={{opacity: 0, display: "none"}}
+                                    className="flex justify-between">
+                            <span>{comProps.fieldValue}</span>
+                            <button onClick={() => setValue(true)}
+                                    className="bg-buttonColor text-secondary font-semibold rounded
                                                 py-1 px-4 h-8">Edit</button>
-                    </div>
-                    :
-                    <div className="flex justify-between">
+                        </motion.div>
+                }
+                {
+                    value &&
+                    <motion.div key="edit" initial={{opacity: 0, display: "none"}}
+                         animate={{opacity: 1, display: "flex"}}
+                         exit={{opacity: 0, display: "none"}} className="flex justify-between">
                         <InputWithValidation
                             id={comProps.id}
                             name={comProps.name}
@@ -33,9 +41,9 @@ export default function EditableCardItem(props) {
                         <button onClick={() => setValue(false)}
                                 className="bg-buttonColor text-secondary font-semibold rounded
                                                 py-1 px-4 h-8">Submit</button>
-                    </div>
-
-            }
+                    </motion.div>
+                }
+            </AnimatePresence>
         </motion.div>
     )
 }
