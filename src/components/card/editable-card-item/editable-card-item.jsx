@@ -12,12 +12,13 @@ export default function EditableCardItem(props) {
     }
     const [value, setValue] = useState(false)
     return (
-        <motion.div className="mb-8">
-            <div className="text-text font-medium">{comProps.label}</div>
+        <motion.div layout className="mb-8">
+            <motion.div className="text-text font-medium">{comProps.label}</motion.div>
             <AnimatePresence>
                 {
                     !value &&
-                        <motion.div key="detail" initial={{opacity: 0, display: "none"}}
+                        <motion.div key="detail"
+                                    initial={{opacity: 0, display: "none"}}
                                     animate={{opacity: 1, display: "flex"}}
                                     exit={{opacity: 0, display: "none"}}
                                     className="flex justify-between">
@@ -29,19 +30,21 @@ export default function EditableCardItem(props) {
                 }
                 {
                     value &&
-                    <motion.div key="edit" initial={{opacity: 0, display: "none"}}
-                         animate={{opacity: 1, display: "flex"}}
-                         exit={{opacity: 0, display: "none"}} className="flex justify-between">
-                        <InputWithValidation
-                            id={comProps.id}
-                            name={comProps.name}
-                            formik={comProps.formik}
-                            className="w-2/3"
-                        />
-                        <button onClick={() => setValue(false)}
-                                className="bg-buttonColor text-secondary font-semibold rounded
-                                                py-1 px-4 h-8">Submit</button>
-                    </motion.div>
+                        <motion.div key="edit"
+                                    initial={{opacity: 0, display: "none"}}
+                                    animate={{opacity: 1, display: "flex"}}
+                                    exit={{opacity: 0, display: "none"}}
+                                    className="flex justify-between">
+                            <InputWithValidation
+                                id={comProps.id}
+                                name={comProps.name}
+                                formik={comProps.formik}
+                                className="w-2/3"
+                            />
+                            <button onClick={() => setValue(false)}
+                                    className="bg-buttonColor text-secondary font-semibold rounded
+                                                    py-1 px-4 h-8">Submit</button>
+                        </motion.div>
                 }
             </AnimatePresence>
         </motion.div>
