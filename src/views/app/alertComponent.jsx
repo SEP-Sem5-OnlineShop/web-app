@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const AlertComponent = ({ alert, handleRemove }) => {
 
@@ -15,10 +16,12 @@ const AlertComponent = ({ alert, handleRemove }) => {
 
     return (
         <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-28 sm:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
+            <Link className="text-base sm:text-xl text-secondary font-semibold" to={`vendor-${alert.vendor_id}/item-${alert.item_id}`}>
             <img src={ alert.image } alt="" className="h-full w-20 sm:w-36 sm:h-36 object-cover"/>
+            </Link>
             <div className="mx-2 my-2 flex flex-col justify-between items-center">
-                <a className="text-base sm:text-xl text-secondary font-semibold" href="/vendor/product1">{ alert.itemname }</a>
-                <a className="text-sm sm:text-lg text-secondary" href="/vendor">{ alert.vendor }</a>
+                <Link className="text-base sm:text-xl text-secondary font-semibold" to={`vendor-${alert.vendor_id}/item-${alert.item_id}`}>{ alert.itemname }</Link>
+                <Link className="text-sm sm:text-lg text-secondary" to={`vendor-${alert.vendor_id}`}>{ alert.vendor }</Link>
                 <div className="sm:mt-1 flex flex-row justify-between items-center">
                     <button className="rounded-xl shadow w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-105 hover:shadow-md transition ease-out duration-400" onClick={ handleDecrease }>
                         <span className="text-3xl sm:text-4xl text-text">-</span>
