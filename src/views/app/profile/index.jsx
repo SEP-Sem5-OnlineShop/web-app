@@ -1,15 +1,12 @@
 import React, {useRef} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {useDispatch} from "react-redux";
 import { FilePond } from 'react-filepond';
-import {motion} from "framer-motion";
 import EditableCardItem from "../../../components/card/editable-card-item/editable-card-item";
 import CardTemplate from "../../../components/card/template";
 
 export default function Profile() {
 
-    const dispatch = useDispatch()
     const ref = useRef()
     const nameFormik = useFormik({
         initialValues: {
