@@ -8,7 +8,7 @@ import ThankPopup from '../views/app/thankPopup'
 import History from '../views/app/history'
 import Alert from '../views/app/alert'
 import Profile from "../views/app/profile";
-import VendorRegistration from "../views/app/admin/vendor-registration";
+import VendorRegistration from "../views/app/vendor/register";
 
 export default function AppRouter() {
     const match = useRouteMatch()
