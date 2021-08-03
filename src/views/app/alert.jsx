@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import AlertComponent from './alertComponent';
 import useFetch from './useFetch';
 
@@ -5,10 +6,14 @@ const Alert = () => {
     // const [customer_id, setCustomer_id] = useState("01");
     const { data: alerts, isLoading , error} = useFetch(`http://localhost:8000/alerts`);
     // `http://localhost:8000/customer-${customer_id}/alerts`
+    const history = useHistory();
 
     const handleRemove = (id) => {
-        // const newAlerts = alerts.filter(alert => alert.id !== id);
-        // setAlerts(newAlerts);
+        fetch('http://localhost:8000/alerts/'+id , {
+            method: 'DELETE'
+        }).then(() => {
+            history.go(0);
+        })
     };
 
     return (
