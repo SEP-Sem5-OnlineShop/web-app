@@ -1,44 +1,14 @@
 import AlertComponent from './alertComponent';
-import { useState, useEffect } from 'react';
+import useFetch from './useFetch';
 
 const Alert = () => {
-    const [alerts, setAlerts] = useState([
-        {item_id:'001', vendor_id:'01', itemname: 'Burger with some', vendor: 'Yummy Bakers', image: '../img/item1.png', price: 100.00, id: 1 },
-        {item_id:'001', vendor_id:'02', itemname: 'Pizza saf sff', vendor: 'Sammy Bakers', image: '../img/item1.png', price: 500.00, id: 2 },
-        {item_id:'002', vendor_id:'03', itemname: 'Dasd dsfs sfs', vendor: 'Leo Bakers', image: '../img/item1.png', price: 60.00, id: 3 },
-        {item_id:'003', vendor_id:'04', itemname: 'Bread dfs fsd', vendor: 'Asta Bakers', image: '../img/item1.png', price: 80.00, id: 4 },
-        {item_id:'005', vendor_id:'05', itemname: 'Fgggd hfdh jhg', vendor: 'Yuno Bakers', image: '../img/item1.png', price: 70.00, id: 5 },
-        {item_id:'0060', vendor_id:'06', itemname: 'Ydfh sdjkf ds', vendor: 'Luck Bakers', image: '../img/item1.png', price: 150.00, id: 6 },
-        {item_id:'001', vendor_id:'07', itemname: 'Hdffd fds gd', vendor: 'Magna Bakers', image: '../img/item1.png', price: 90.00, id: 7 },
-        {item_id:'001', vendor_id:'08', itemname: 'Jdgs kks dij', vendor: 'Charmi Bakers', image: '../img/item1.png', price: 120.00, id: 8 },
-    ]);
-
-    // const [alerts, setAlerts] = useState(null);
-    // const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    // useEffect(() => {
-    //     fetch('http://localhost:8000/customer/customer1/alerts')
-    //         .then(res => {
-    //             if(!res.ok){
-    //                 throw Error('data does not exist')
-    //             }
-    //             return res.json();
-    //         })
-    //         .then(data => {
-    //             setAlerts(data);
-    //             setIsLoading(false);
-    //             setError(null);
-    //         })
-    //         .catch(err => {
-    //             setIsLoading(false);
-    //             setError(err.message);
-    //         });
-    // }, []);
+    // const [customer_id, setCustomer_id] = useState("01");
+    const { data: alerts, isLoading , error} = useFetch(`http://localhost:8000/alerts`);
+    // `http://localhost:8000/customer-${customer_id}/alerts`
 
     const handleRemove = (id) => {
-        const newAlerts = alerts.filter(alert => alert.id !== id);
-        setAlerts(newAlerts);
+        // const newAlerts = alerts.filter(alert => alert.id !== id);
+        // setAlerts(newAlerts);
     };
 
     return (
@@ -47,7 +17,7 @@ const Alert = () => {
             {/* error */}
             { error && <div className="mt-4">{ error}</div>}
             {/* loding */}
-            {/* { isLoading && <div className="mt-4">Loding...</div>} */}
+            { isLoading && <div className="mt-4">Loding...</div>}
             <div className="mt-4 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-10">
                 {alerts && <>
                     {alerts.map((alert) => (
