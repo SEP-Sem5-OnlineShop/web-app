@@ -8,7 +8,7 @@ import ThankPopup from '../views/app/thankPopup'
 import History from '../views/app/history'
 import Alert from '../views/app/alert'
 
-
+import VendorRequestList from '../views/app/vendorRequestList'
 
 import RejectPopup from '../views/app/rejectPopup'
 import RemovePopup from '../views/app/removePopup'
@@ -41,6 +41,12 @@ export default function AppRouter() {
             <Route path={`${match.path}/toggleButton`}>
                 <Toggle />
             </Route>
+
+            <Route path={`${match.path}/VendorRequestList`}>
+                <VendorRequestList />
+                
+            </Route>
+
 
     
                
