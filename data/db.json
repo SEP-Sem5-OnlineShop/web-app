@@ -1,76 +1,76 @@
 {
     "alerts": [
         {
-            "item_id": "001",
+            "product_id": "001",
             "vendor_id": "01",
-            "itemname": "Burger with some",
-            "vendor": "Yummy Bakers",
+            "product_name": "Burger with some",
+            "vendor_name": "Yummy Bakers",
             "image": "../img/item1.png",
             "price": "100.00",
-            "id": "1"
+            "alert_id": "1"
         },
         {
-            "item_id": "001",
+            "product_id": "001",
             "vendor_id": "02",
-            "itemname": "Pizza saf sff",
-            "vendor": "Yummy Bakers",
+            "product_name": "Pizza saf sff",
+            "vendor_name": "Yummy Bakers",
             "image": "../img/item1.png",
             "price": "500.00",
-            "id": "2"
+            "alert_id": "2"
         },
         {
-            "item_id": "002",
+            "product_id": "002",
             "vendor_id": "03",
-            "itemname": "Leo Bakers",
-            "vendor": "Leo Bakers",
+            "product_name": "Leo Bakers",
+            "vendor_name": "Leo Bakers",
             "image": "../img/item1.png",
             "price": "60.00",
-            "id": "3"
+            "alert_id": "3"
         },
         {
-            "item_id": "003",
+            "product_id": "003",
             "vendor_id": "04",
-            "itemname": "Bread dfs fsd",
-            "vendor": "Asta Bakers",
+            "product_name": "Bread dfs fsd",
+            "vendor_name": "Asta Bakers",
             "image": "../img/item1.png",
             "price": "80.00",
-            "id": "4"
+            "alert_id": "4"
         },
         {
-            "item_id": "005",
+            "product_id": "005",
             "vendor_id": "05",
-            "itemname": "Fgggd hfdh jhg",
-            "vendor": "Yuno Bakers",
+            "product_name": "Fgggd hfdh jhg",
+            "vendor_name": "Yuno Bakers",
             "image": "../img/item1.png",
             "price": "70.00",
-            "id": "5"
+            "alert_id": "5"
         },
         {
-            "item_id": "0060",
+            "product_id": "0060",
             "vendor_id": "06",
-            "itemname": "Ydfh sdjkf ds",
-            "vendor": "Luck Bakers",
+            "product_name": "Ydfh sdjkf ds",
+            "vendor_name": "Luck Bakers",
             "image": "../img/item1.png",
             "price": "150.00",
-            "id": "6"
+            "alert_id": "6"
         },
         {
-            "item_id": "001",
+            "product_id": "001",
             "vendor_id": "07",
-            "itemname": "Hdffd fds gd",
-            "vendor": "Magna Bakers",
+            "product_name": "Hdffd fds gd",
+            "vendor_name": "Magna Bakers",
             "image": "../img/item1.png",
             "price": "90.00",
-            "id": "7"
+            "alert_id": "7"
         },
         {
-            "item_id": "001",
+            "product_id": "001",
             "vendor_id": "08",
-            "itemname": "Jdgs kks dij",
-            "vendor": "Charmi Bakers",
+            "product_name": "Jdgs kks dij",
+            "vendor_name": "Charmi Bakers",
             "image": "../img/item1.png",
             "price": "120.00",
-            "id": "8"
+            "alert_id": "8"
         }
     ]
 }

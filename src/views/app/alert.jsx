@@ -1,12 +1,39 @@
+import { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import AlertComponent from './alertComponent';
-import useFetch from './useFetch';
 
 const Alert = () => {
     // const [customer_id, setCustomer_id] = useState("01");
-    const { data: alerts, isLoading , error} = useFetch(`http://localhost:8000/alerts`);
-    // `http://localhost:8000/customer-${customer_id}/alerts`
     const history = useHistory();
+    const [alerts, setAlerts] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    // `http://localhost:8000/customer_${customer_id}/alerts`
+    useEffect(() => {
+        const abortConst = new AbortController();
+        fetch(`http://localhost:8000/alerts`, { signal: abortConst.signal })
+            .then(res => {
+                if(!res.ok){
+                    throw Error('data does not exist')
+                }
+                return res.json();
+            })
+            .then(data => {
+                setAlerts(data);
+                setIsLoading(false);
+                setError(null);
+            })
+            .catch(err => {
+                if (err.name === 'AbortError') {
+                    console.log('fetch aborted');
+                } else {
+                    setIsLoading(false);
+                    setError(err.message);
+                }
+            });
+        return () => abortConst.abort();
+    }, []);
 
     const handleRemove = (id) => {
         fetch('http://localhost:8000/alerts/'+id , {
@@ -26,7 +53,7 @@ const Alert = () => {
             <div className="mt-4 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-10">
                 {alerts && <>
                     {alerts.map((alert) => (
-                        <AlertComponent alert={alert} handleRemove={handleRemove} key={alert.id} />
+                        <AlertComponent alert={alert} handleRemove={handleRemove} key={alert.alert_id} />
                     ))}
                 </>}
             </div>
