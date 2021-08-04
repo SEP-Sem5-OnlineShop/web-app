@@ -2,10 +2,13 @@
 import ProductComponent from './productComponent';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import StarRating from './starRating';
 
 const VendorScreen = () => {
     const { id: vendor_id } = useParams();
     const [vendor_name, setVendor_name] = useState("Yummy Backers");
+    const [rating, setRating] = useState('4.0');
+    const [ratingCount, setRatingCount] = useState(50);
     const [products, setProducts] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -48,13 +51,14 @@ const VendorScreen = () => {
             <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
                 <div style={{ backgroundImage: `url("/img/vendor.jpg")` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full absolute top-0 left-0 z-0"/>
                 <div className="h-44 w-full flex px-10 items-end relative z-10">
-                    <span className="mx-8 my-8 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor_name}</span>
-                    <span className="mx-7 my-8 text-3xl sm:text-5xl text-white font-semibold relative z-10">{vendor_name}</span>
+                    <span className="ml-8 my-8 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor_name}</span>
+                    <span className="ml-7 my-8 text-3xl sm:text-5xl text-white font-semibold relative z-10">{vendor_name}</span>
                 </div>
 
                 <div className="w-full bg-white lg:rounded-t-6xl relative z-10" style={{minHeight: 'calc(100vh - 11rem)'}}>
-                    <div className="pl-4 pt-4 sm:pl-24 sm:pt-12">
-                        Rating placeholder
+                    <div className="pl-4 pt-2 sm:pl-20 sm:pt-6">
+                        <StarRating rating={rating} />
+                        {rating} ({ratingCount}+)
                     </div>
 
                     <div className="px-2 py-4 sm:px-12 sm:py-12">
