@@ -6,7 +6,7 @@ import {
 import PaymentPopup from '../views/app/paymentPopup'
 import ThankPopup from '../views/app/thankPopup'
 import History from '../views/app/history'
-import Alert from '../views/app/alert'
+import AlertScreen from '../views/app/alertScreen'
 import VendorScreen from "../views/app/vendorScreen";
 
 export default function AppRouter() {
@@ -23,7 +23,7 @@ export default function AppRouter() {
                 <History />
             </Route>
             <Route path={`${match.path}/alert`}>
-                <Alert />
+                <AlertScreen />
             </Route>
             <Route path={`${match.path}/vendor_:id`}>
                 <VendorScreen />
