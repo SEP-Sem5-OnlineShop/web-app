@@ -1,6 +1,6 @@
 import { FaStar } from "react-icons/fa";
 
-const StarRating = ({rating}) => {
+const RatingComponent = ({rating}) => {
     return (
         <div className="flex">
             {[...Array(5)].map((star, i) => {
@@ -12,4 +12,4 @@ const StarRating = ({rating}) => {
     );
 };
 
-export default StarRating;
+export default RatingComponent;

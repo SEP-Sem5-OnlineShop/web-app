@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import AlertComponent from './alertComponent';
 
-const Alert = () => {
+const AlertScreen = () => {
     // const [customer_id, setCustomer_id] = useState("01");
     const history = useHistory();
     const [alerts, setAlerts] = useState(null);
@@ -61,4 +61,4 @@ const Alert = () => {
     );
 }
  
-export default Alert;
+export default AlertScreen;
