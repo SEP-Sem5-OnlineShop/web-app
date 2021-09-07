@@ -20,7 +20,7 @@ function VendorProductComponent(props) {
 
   return (
     <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-40 sm:h-36" >
-    <img src={comProps.image} alt="item1" className="h-40 w-36 sm:h-36"/>
+    <img src={comProps.image} alt="item1" className="h-40 w-2 md:w-36 sm:h-36"/>
     <div className="mx-2 my-4 flex flex-col justify-between items-center">
         <a className="text-base sm:text-xl text-secondary font-semibold" href="/">Item - {comProps.name}</a>
 

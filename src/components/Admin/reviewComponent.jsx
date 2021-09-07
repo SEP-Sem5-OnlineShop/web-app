@@ -16,7 +16,7 @@ export default function ReviewComponent(props) {
     }
     return(
         <div>
-            <div className='rounded-sm shadow-md bg-white border-blck w-20 md:w-1/2'>
+            <div className='rounded-sm shadow-md bg-white border-blck w-full md:w-3/5'>
             <p className='text-base sm:text-lg px-4'>{compProps.name}</p><br></br>
 
             <p className='text-xs sm:text-sm font-extralight'>{compProps.date}</p>
