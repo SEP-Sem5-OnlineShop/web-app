@@ -3,7 +3,7 @@ import React from 'react'
 export default function LoadingBox() {
     return (
         <div>
-            <i className="mt-4"></i>Loading...
+            <p className="ml-20 p-10">Loading...</p>
         </div>
     )
 }

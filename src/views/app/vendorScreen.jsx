@@ -5,6 +5,9 @@ import { useParams } from 'react-router-dom';
 import RatingComponent from '../../components/ratingComponent';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
+import { useDispatch, useSelector } from 'react-redux';
+import { listProducts } from '../../actions/productActions';
+
 
 const VendorScreen = () => {
     const { id: vendor_id } = useParams();
@@ -12,27 +15,37 @@ const VendorScreen = () => {
     const [vendor_description, setVendor_description] = useState("Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.");
     const [rating, setRating] = useState('4.0');
     const [ratingCount, setRatingCount] = useState(50);
+
+
     const [products, setProducts] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    // const history = useHistory();
+    // const dispatch = useDispatch();
+    // const productList = useSelector(state => state.productList);
+    // const { loading, error, products } = productList;
+    // useEffect(() => {
+    //     dispatch(listProducts());
+    //   }, [dispatch]);
 
     useEffect(() => {
         const abortConst = new AbortController();
         fetch(`http://localhost:8000/api/products`, { signal: abortConst.signal })
             .then(res => {
+                if(!res.ok){
+                    throw Error('data does not exist')
+                }
                 return res.json();
             })
             .then(data => {
                 setProducts(data);
-                setIsLoading(false);
+                setLoading(false);
                 setError(null);
             })
             .catch(err => {
                 if (err.name === 'AbortError') {
                     console.log('fetch aborted');
                 } else {
-                    setIsLoading(false);
+                    setLoading(false);
                     setError(err.message);
                 }
             });
@@ -48,6 +61,12 @@ const VendorScreen = () => {
     // };
 
     return (
+        <div>
+        {loading ? (
+            <LoadingBox></LoadingBox>
+        ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
             <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
                 <div style={{ backgroundImage: `url("/img/vendor.jpg")` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full absolute top-0 left-0 z-0"/>
                 <div className="h-52 w-full flex px-10 items-end relative z-10">
@@ -64,7 +83,7 @@ const VendorScreen = () => {
 
                     <div className="px-2 py-4 sm:px-12 sm:py-8">
                         { error && <MessageBox>{error}</MessageBox>}
-                        { isLoading && <LoadingBox></LoadingBox>}
+                        { loading && <LoadingBox></LoadingBox>}
                         <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
                             {products && <>
                                 {products.map((product) => (
@@ -76,6 +95,8 @@ const VendorScreen = () => {
 
                 </div>
             </div>
+        )}
+        </div>
     );
 }
  
