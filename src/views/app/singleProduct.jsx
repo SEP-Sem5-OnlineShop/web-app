@@ -23,8 +23,10 @@ export default function SingleProduct(props){
             <div className="flex justify-center">
                     
                     <br></br>
-                    <div className='flex flex-col items-start px-8'>
-                        <img src={comProps.img} alt="item1" className="h-24 w-24 sm:h-96 sm:w-96 rounded-2xl  shadow-md"/>
+                    <div className='flex flex-col items-start px-8 w-full'>
+                        <div className="bg-pizza bg-center bg-cover w-full h-48 md:h-96 md:w-96 rounded-2xl  shadow-md">
+
+                        </div>
                     </div>
                 
                 </div>
@@ -122,8 +124,8 @@ export default function SingleProduct(props){
 
             <br></br>
             <br></br>
-            <div className='flex justify-center md:justify-between '>
-            <div className='pl-2 md:pl-4 text-lg sm:text-xl w-1/2 md:w-4/5'>
+            <div className='flex md:justify-between '>
+            <div className='pl-2 md:pl-4 text-lg sm:text-xl w-full md:w-4/5'>
             {/* <div className='w-full'> */}
                 <h2><b><u>Reviews: </u></b></h2><br></br>
                 <ReviewComponent name='Perera' review='Really a good product' date='12/01/2021'/>
@@ -131,7 +133,7 @@ export default function SingleProduct(props){
                 <ReviewComponent name='Perera' review='Really a good product' date='12/01/2021'/>
             </div>
 
-            <div className='pr-0 md:py-5 md:pr-16 invisible md:visible'>
+            <div className='pr-0 md:py-5 md:pr-16 hidden md:block'>
             {/* <div className='invisible md:visible'> */}
             <VendorProductComponent name='Burger' image={card} number='10' price='100.00'/><br></br>
             <VendorProductComponent name='Burger' image={card} number='10' price='100.00'/><br></br>
