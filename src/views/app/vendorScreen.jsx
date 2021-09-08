@@ -1,8 +1,10 @@
 // import { useHistory } from 'react-router-dom';
-import ProductComponent from './productComponent';
+import ProductComponent from '../../components/productComponent';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import RatingComponent from './ratingComponent';
+import RatingComponent from '../../components/ratingComponent';
+import LoadingBox from '../../components/LoadingBox';
+import MessageBox from '../../components/MessageBox';
 
 const VendorScreen = () => {
     const { id: vendor_id } = useParams();
@@ -17,11 +19,8 @@ const VendorScreen = () => {
 
     useEffect(() => {
         const abortConst = new AbortController();
-        fetch(`http://localhost:8000/products`, { signal: abortConst.signal })
+        fetch(`http://localhost:8000/api/products`, { signal: abortConst.signal })
             .then(res => {
-                if(!res.ok){
-                    throw Error('data does not exist')
-                }
                 return res.json();
             })
             .then(data => {
@@ -64,10 +63,8 @@ const VendorScreen = () => {
                     </div>
 
                     <div className="px-2 py-4 sm:px-12 sm:py-8">
-                        {/* error */}
-                        { error && <div className="mt-4">{ error}</div>}
-                        {/* loding */}
-                        { isLoading && <div className="mt-4">Loding...</div>}
+                        { error && <MessageBox>{error}</MessageBox>}
+                        { isLoading && <LoadingBox></LoadingBox>}
                         <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
                             {products && <>
                                 {products.map((product) => (
