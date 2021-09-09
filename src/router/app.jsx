@@ -46,6 +46,9 @@ export default function AppRouter() {
             <Route path={`${match.path}/profile`}>
                 <Profile />
             </Route>
+            <Route path={`${match.path}/vendor_:id`}>
+                <VendorScreen />
+            </Route>
             <Route path={`${match.path}/register/vendor`}>
                 <VendorRegistration />
             </Route>
