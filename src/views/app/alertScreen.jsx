@@ -1,62 +1,47 @@
 import { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
-import AlertComponent from './alertComponent';
+import AlertComponent from '../../components/alertComponent';
+import { deleteAlert, listAlerts } from '../../actions/alertActions';
+import LoadingBox from "../../components/LoadingBox";
+import MessageBox from "../../components/MessageBox";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const AlertScreen = () => {
-    // const [customer_id, setCustomer_id] = useState("01");
-    const history = useHistory();
-    const [alerts, setAlerts] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [customer_id, setCustomer_id] = useState("01");
     
-    // `http://localhost:8000/customer_${customer_id}/alerts`
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const alertList = useSelector(state => state.alertList);
+    const { loading, error, alerts } = alertList;
     useEffect(() => {
-        const abortConst = new AbortController();
-        fetch(`http://localhost:8000/alerts`, { signal: abortConst.signal })
-            .then(res => {
-                if(!res.ok){
-                    throw Error('data does not exist')
-                }
-                return res.json();
-            })
-            .then(data => {
-                setAlerts(data);
-                setIsLoading(false);
-                setError(null);
-            })
-            .catch(err => {
-                if (err.name === 'AbortError') {
-                    console.log('fetch aborted');
-                } else {
-                    setIsLoading(false);
-                    setError(err.message);
-                }
-            });
-        return () => abortConst.abort();
-    }, []);
+        if (customer_id) {
+            dispatch(listAlerts(customer_id));
+        };
+      }, [dispatch, customer_id]);
 
     const handleRemove = (id) => {
-        fetch('http://localhost:8000/alerts/'+id , {
-            method: 'DELETE'
-        }).then(() => {
-            history.go(0);
-        })
+        dispatch(deleteAlert(id)).then(() => {history.go(0);});
     };
 
     return (
-        <div className="px-2 py-4 sm:px-12 sm:py-12">
-            <h1 className="text-3xl text-secondary flex flex-col">Alerts</h1>
-            {/* error */}
-            { error && <div className="mt-4">{ error}</div>}
-            {/* loding */}
-            { isLoading && <div className="mt-4">Loding...</div>}
-            <div className="mt-4 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-10">
-                {alerts && <>
-                    {alerts.map((alert) => (
-                        <AlertComponent alert={alert} handleRemove={handleRemove} key={alert.alert_id} />
-                    ))}
-                </>}
+        <div>
+        {loading ? (
+            <LoadingBox></LoadingBox>
+        ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+            <div className="px-2 py-4 sm:px-12 sm:py-12">
+                <h1 className="text-3xl text-secondary flex flex-col">Alerts</h1>
+                <div className="mt-4 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-10">
+                    {alerts && <>
+                        {alerts.map((alert) => (
+                            <AlertComponent alert={alert} handleRemove={handleRemove} key={alert.alert_id} />
+                        ))}
+                    </>}
+                </div>
             </div>
+        )}
         </div>
     );
 }

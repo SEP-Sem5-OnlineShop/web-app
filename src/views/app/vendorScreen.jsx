@@ -1,7 +1,7 @@
 // import { useHistory } from 'react-router-dom';
 import ProductComponent from '../../components/productComponent';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import RatingComponent from '../../components/ratingComponent';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
@@ -71,10 +71,12 @@ const VendorScreen = () => {
         ) : (
             <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
                 <div style={{ backgroundImage: `url("/img/vendor.jpg")` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full absolute top-0 left-0 z-0"/>
+                <Link to={`/app/vendor_${vendor_id}`}>
                 <div className="h-52 w-full flex px-10 items-end relative z-10">
                     <span className="ml-8 my-6 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor.vendor_name}</span>
                     <span className="ml-7 my-6 text-3xl sm:text-5xl text-white font-semibold relative z-10">{vendor.vendor_name}</span>
                 </div>
+                </Link>
 
                 <div className="w-full bg-white relative z-10" style={{minHeight: 'calc(100vh - 11rem)'}}>
                     <div className="pl-4 pr-4 pt-2 sm:pl-20 sm:pt-6">
