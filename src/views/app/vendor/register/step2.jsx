@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import InputWithValidation from "../../../../components/input-with-validation";
+import { uploadFileToBlob } from "../../../../api/azure-storage-blob";
 
 export default function Step2(props) {
 
@@ -7,6 +8,36 @@ export default function Step2(props) {
         formik: props.formik || {},
         setActiveTab: props.setActiveTab || (() => {})
     }
+    // all blobs in container
+    const [blobList, setBlobList] = useState([]);
+
+    // current file to upload into container
+    const [fileSelected, setFileSelected] = useState(null);
+
+    // UI/form management
+    const [uploading, setUploading] = useState(false);
+    const [inputKey, setInputKey] = useState(Math.random().toString(36));
+
+    const onFileChange = (event) => {
+        // capture file into state
+        setFileSelected(event.target.files[0]);
+    };
+
+    const onFileUpload = async () => {
+        // prepare UI
+        setUploading(true);
+
+        // *** UPLOAD TO AZURE STORAGE ***
+        const blobsInContainer = await uploadFileToBlob(fileSelected);
+
+        // prepare UI for results
+        setBlobList(blobsInContainer);
+
+        // reset state/form
+        setFileSelected(null);
+        setUploading(false);
+        setInputKey(Math.random().toString(36));
+    };
 
     return (
         <React.Fragment>
@@ -47,6 +78,12 @@ export default function Step2(props) {
                         type="button"
                         onClick={() => comProps.setActiveTab(3)}
                         className="p-2 text-white rounded bg-textLight">Next</button>
+                </div>
+                <div>
+                <input type="file" onChange={onFileChange} key={inputKey || ''} />
+                <button type="submit" onClick={onFileUpload}>
+                    Upload!
+                </button>
                 </div>
             </div>
         </React.Fragment>

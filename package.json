@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@azure/storage-blob": "^12.7.0",
     "@craco/craco": "^6.2.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@reduxjs/toolkit": "^1.6.1",
