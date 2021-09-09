@@ -44,8 +44,7 @@ export default function InputWithValidation (props) {
                     onBlur={compProps.formik.handleBlur}
                     value={compProps.formik.values[compProps.name]}
                     className={
-                        `rounded-xl
-                        w-full
+                        `rounded-md
                         mt-1 p-2
                         h-10 w-full
                         focus:outline-none

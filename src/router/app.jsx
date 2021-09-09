@@ -9,6 +9,7 @@ import History from '../views/app/history'
 import Alert from '../views/app/alert'
 import Profile from "../views/app/profile";
 import VendorRegistration from "../views/app/vendor/register";
+import AddProduct from "../views/app/product/add";
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -31,6 +32,9 @@ export default function AppRouter() {
             </Route>
             <Route path={`${match.path}/register/vendor`}>
                 <VendorRegistration />
+            </Route>
+            <Route path={`${match.path}/product/add`}>
+                <AddProduct />
             </Route>
         </Switch>
     )
