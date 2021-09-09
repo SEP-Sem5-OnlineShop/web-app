@@ -6,7 +6,7 @@ import React from "react"
  * @returns {JSX.Element}
  * @constructor
  */
-export default function InputWithValidation(props) {
+export default function InputWithNextButton(props) {
 
     /**
      * label: This is for element label

@@ -3,22 +3,27 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import Register from "../views/auth/register/index"
-import Index from "../views/auth/login/index"
 import HomeDsand from "../views/home-dsand";
+import AppRouter from "./app";
+import AuthRouter from "./auth";
+import MainLayout from "../layout/main-layout";
 
 export default function MainRouter() {
     return (
         <Router>
             <Switch>
-                <Route path="/register">
-                    <Register />
+                <Route path="/auth">
+                    <AuthRouter />
                 </Route>
-                <Route path="/login">
-                    <Index />
+                <Route path="/app">
+                    <MainLayout>
+                        <AppRouter />
+                    </MainLayout>
                 </Route>
                 <Route path="/">
-                    <HomeDsand />
+                    <MainLayout>
+                        <HomeDsand />
+                    </MainLayout>
                 </Route>
             </Switch>
         </Router>

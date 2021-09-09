@@ -5,6 +5,9 @@ import store from "./store";
 // Import Swiper styles
 import 'swiper/swiper-bundle.css'
 
+// Import FilePond styles
+import 'filepond/dist/filepond.min.css';
+
 function App() {
   return (
     <div className="App">

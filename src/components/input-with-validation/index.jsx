@@ -28,7 +28,14 @@ export default function InputWithValidation (props) {
     return (
         <React.Fragment>
             <div className={`mb-2 ${compProps.className}`}>
-                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>{compProps.label}</label>
+                {
+                    compProps.label
+                        ?
+                    <label
+                    className='font-medium text-secondary text-sm xs:text-lg md:text-base'>{compProps.label}</label>
+                        :
+                        null
+                }
                 <input
                     id={compProps.id}
                     name={compProps.name}

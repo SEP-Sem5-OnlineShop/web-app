@@ -19,6 +19,8 @@ module.exports = {
       text: '#838383',
       link: '#FF7000',
       accent: '#E5E5E5',
+      cardColor: '#f5ede4',
+      buttonColor: '#cbc2bc',
       white: '#fff',
       danger: colors.red[600],
       warn: colors.amber[400],
@@ -77,8 +79,12 @@ module.exports = {
         'full': '100%',
       },
       height: {
+        '33': '8.25rem',
         '23': '5.75rem',
-
+        '13': '3.25rem'
+      },
+      width: {
+        '1/8': '12.5%'
       }
     }
   },
