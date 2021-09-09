@@ -97,7 +97,7 @@ export default function AddProduct () {
                                 placeholder="Add your product description here..."
                                 onEditorStateChange={setEditorState} 
                             />
-                            <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Description</label>
+                            <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Images</label>
                             <FilePond
                                 files={files}
                                 onupdatefiles={setFiles}
