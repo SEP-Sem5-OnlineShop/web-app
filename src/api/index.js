@@ -2,7 +2,7 @@ import Axios  from 'axios'
 import auth from './auth/index'
 
 /*
- * Setup axios
+ * Setup axios  
  */
 // const BASE_URL = 'https://ontheway-backend-auth-api.herokuapp.com/api'
 const BASE_URL = 'http://localhost:8000/api'

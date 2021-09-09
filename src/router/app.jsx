@@ -23,6 +23,9 @@ import Product from '../views/app/productList'
 import VendorProductList from '../views/app/vendorProductList'
 import Pizza from '../assets/img/pizza.jpg'
 import SingleProduct from '../views/app/singleProduct'
+import AddProduct from '../views/app/product/add/index'
+import Profile from '../views/app/profile/index'
+import VendorRegistration from '../views/app/vendor/register/index'
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -40,8 +43,14 @@ export default function AppRouter() {
             <Route path={`${match.path}/alert`}>
                 <AlertScreen />
             </Route>
-            <Route path={`${match.path}/vendor_:id`}>
-                <VendorScreen />
+            <Route path={`${match.path}/profile`}>
+                <Profile />
+            </Route>
+            <Route path={`${match.path}/register/vendor`}>
+                <VendorRegistration />
+            </Route>
+            <Route path={`${match.path}/product/add`}>
+                <AddProduct />
             </Route>
 
             <Route path={`${match.path}/toggleButton`}>
