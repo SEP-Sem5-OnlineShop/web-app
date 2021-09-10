@@ -8,6 +8,7 @@ import ThankPopup from '../views/app/thankPopup'
 import History from '../views/app/history'
 import VendorScreen from "../views/app/vendorScreen";
 import AlertScreen from "../views/app/alertScreen";
+import ProductScreen from "../views/app/productScreen";
 
 import VendorRequestList from '../views/app/vendorRequestList'
 

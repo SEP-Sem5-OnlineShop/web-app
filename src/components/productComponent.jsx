@@ -4,7 +4,7 @@ import { FaBell } from "react-icons/fa";
 
 const ProductComponent = ({ product, vendor_id }) => {
 
-    const [customer_id, setCustomer_id] = useState(1);
+    const customer_id = 1;
     const [isAlert, setIsAlert] = useState(false);
 
     const handleRemove = (product_id) => {
