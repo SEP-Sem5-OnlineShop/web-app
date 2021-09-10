@@ -35,6 +35,7 @@ module.exports = {
         'register-pattern-left': "url('/src/assets/svg/backgrounds/curve-line.svg')",
         'register-pattern-right': "url('/src/assets/svg/backgrounds/icon-grid.svg')",
         'food-style': "url('/src/assets/svg/backgrounds/food-style.svg')",
+        'pizza': "url('/src/assets/img/pizza.jpg')",
       }),
       borderRadius: {
         '3.5xl': '3.5rem',
