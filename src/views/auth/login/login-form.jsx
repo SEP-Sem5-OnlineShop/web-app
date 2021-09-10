@@ -2,7 +2,7 @@ import React, {forwardRef} from "react";
 import InputWithValidation from "../../../components/input-with-validation";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {thunks} from "../../../store";
+import {thunks} from "../../../store/index";
 import {useDispatch} from "react-redux";
 import {motion} from "framer-motion";
 
