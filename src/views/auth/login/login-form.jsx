@@ -31,7 +31,7 @@ const LoginForm = (props, ref) => {
 
     return (
 
-        <motion.form layout className='w-5/6 flex flex-col justify-center items-center'>
+        <motion.form layout className='w-5/6 flex flex-col justify-center items-center' onSubmit={formik.handleSubmit}>
             <InputWithValidation
                 label='Telephone Number'
                 id='telephone'
@@ -48,7 +48,7 @@ const LoginForm = (props, ref) => {
                 formik={formik}
                 className='w-full'
             />
-            <button type="button" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
+            <button type="submit" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
                 Submit
             </button>
         </motion.form>

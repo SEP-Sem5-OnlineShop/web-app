@@ -1,4 +1,5 @@
 import React from "react"
+import { useHistory, useLocation } from "react-router-dom";
 
 import logo from '../../assets/svg/logo/logo-big.svg'
 import sideDesign from '../../assets/svg/fixes/edge-corner.svg'
@@ -8,7 +9,8 @@ import streetFood from '../../assets/svg/designs/street-food.svg'
 import donuts from '../../assets/svg/designs/donut-love.svg'
 
 export default function AuthTemplate(props) {
-
+    const history = useHistory()
+    const location = useLocation()
     return (
         <div className="w-screen min-h-screen overflow-x-hidden flex">
 
@@ -21,7 +23,7 @@ export default function AuthTemplate(props) {
                             bg-primary
                             relative">
                 <div className="w-full h-full overflow-x-hidden
-                                bg-food-style bg-cover bg-cover bg-center
+                                bg-food-style bg-cover bg-center
                                 flex flex-col justify-between md:items-center md:justify-center">
 
                     {/*heading text is here*/}
@@ -62,7 +64,7 @@ export default function AuthTemplate(props) {
                             {props.children}
                         </div>
 
-                        <div className="text-sm mt-4 text-text flex justify-center mt-0 md:mt-5 relative z-index-10">Or Login with Email</div>
+                        <div className="text-sm text-text flex justify-center mt-0 md:mt-5 relative z-index-10">Or Login with Email</div>
 
                         {/*google and facebook login buttons*/}
                         <div className="flex justify-center mt-3 relative z-index-10">
@@ -79,7 +81,8 @@ export default function AuthTemplate(props) {
                                 <span
                                     className="text-secondary text-xs xxs:text-sm xs:text-base">{props.bottomText1 || 'Don’t have an account?'}</span>
                                 <span
-                                    className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">{props.bottomText2 || 'Register'}</span>
+                                    onClick={() => location.pathname === '/auth/register' ? history.push('/auth/login') : history.push('/auth/register')}
+                                    className="text-secondary cursor-pointer font-semibold text-xs xxs:text-sm xs:text-base ml-2">{props.bottomText2 || 'Register'}</span>
                             </div>
                             {
                                 props.login ?
