@@ -1,6 +1,6 @@
 import React from "react"
 
-import logo from '../../assets/svg/logo/logo-big.svg'
+import logo from '../../assets/svg/logo/logo-264A75.svg'
 import sideDesign from '../../assets/svg/fixes/edge-corner.svg'
 import googleLogo from '../../assets/svg/icons/google.svg'
 import facebookLogo from '../../assets/svg/icons/facebook.svg'
@@ -13,7 +13,7 @@ export default function AuthTemplate(props) {
         <div className="w-screen min-h-screen overflow-x-hidden flex">
 
             <div className="xl:w-7/12 min-h-screen h-full justify-center items-center hidden xl:flex flex-col relative">
-                <img className="w-1/2 mb-6 opacity-50 z-index-0 bottom-16" src={streetFood} alt="donut love" />
+                {/*<img className="w-1/2 mb-6 opacity-50 z-index-0 bottom-16" src={streetFood} alt="donut love" />*/}
                 <img className="w-4/5 lg:w-3/5 relative z-index-10" src={logo} alt="logo big"/>
             </div>
 

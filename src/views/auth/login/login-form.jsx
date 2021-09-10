@@ -48,7 +48,7 @@ const LoginForm = (props, ref) => {
                 formik={formik}
                 className='w-full'
             />
-            <button type="button" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
+            <button type="button" className="w-full py-3 mt-2 rounded-xl bg-textLight text-white font-bold">
                 Submit
             </button>
         </motion.form>
