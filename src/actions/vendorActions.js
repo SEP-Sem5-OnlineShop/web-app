@@ -11,7 +11,7 @@ import {
 export const listVendors = () => async (dispatch) => {
   dispatch({ type: VENDOR_LIST_REQUEST,});
   try {
-    const { data } = await Axios.get(`/api/vendors`);
+    const { data } = await Axios.get(`/vendors`);
     dispatch({ type: VENDOR_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: VENDOR_LIST_FAIL, payload: error.message });
@@ -21,7 +21,7 @@ export const listVendors = () => async (dispatch) => {
 export const detailsVendor = (vendorId) => async (dispatch) => {
   dispatch({ type: VENDOR_DETAILS_REQUEST, payload: vendorId });
   try {
-    // const { data } = await Axios.get(`/api/vendors/${vendorId}`);
+    // const { data } = await Axios.get(`/vendors/${vendorId}`);
     const vendor =
     {
       vendor_id: "1",

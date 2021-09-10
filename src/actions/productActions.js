@@ -11,7 +11,7 @@ import {
 export const listProducts = (vendor_id) => async (dispatch) => {
   dispatch({ type: PRODUCT_LIST_REQUEST,});
   try {
-    // const { data } = await Axios.get(`/api/products/${vendor_id}`);
+    // const { data } = await Axios.get(`/products/${vendor_id}`);
     const products = [
       {
         product_id: '1',
@@ -74,7 +74,7 @@ export const listProducts = (vendor_id) => async (dispatch) => {
 export const detailsProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
-    const { data } = await Axios.get(`/api/products/${productId}`);
+    const { data } = await Axios.get(`/products/${productId}`);
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
