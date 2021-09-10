@@ -13,41 +13,6 @@ import { detailsVendor } from '../../actions/vendorActions';
 const VendorScreen = () => {
     const { id: vendor_id } = useParams();
 
-    // delete this later
-    // const vendor = {
-    //     vendor_name: "Yummy Backers",
-    //     vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
-    //     rating: '4.0',
-    //     ratingCount: 50,
-    // }
-    // const [products, setProducts] = useState(null);
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState(null);
-    // useEffect(() => {
-    //     const abortConst = new AbortController();
-    //     fetch(`http://localhost:8000/api/products/${vendor_id}`, { signal: abortConst.signal })
-    //         .then(res => {
-    //             if(!res.ok){
-    //                 throw Error('data does not exist')
-    //             }
-    //             return res.json();
-    //         })
-    //         .then(data => {
-    //             setProducts(data);
-    //             setLoading(false);
-    //             setError(null);
-    //         })
-    //         .catch(err => {
-    //             if (err.name === 'AbortError') {
-    //                 console.log('fetch aborted');
-    //             } else {
-    //                 setLoading(false);
-    //                 setError(err.message);
-    //             }
-    //         });
-    //     return () => abortConst.abort();
-    // }, []);
-
     const dispatch = useDispatch();
     const vendorDetails = useSelector(state => state.vendorDetails);
     const { loading, error, vendor } = vendorDetails;
@@ -86,8 +51,6 @@ const VendorScreen = () => {
                     </div>
 
                     <div className="px-2 py-4 sm:px-12 sm:py-8">
-                        { error && <MessageBox>{error}</MessageBox>}
-                        { loading && <LoadingBox></LoadingBox>}
                         <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
                             {products && <>
                                 {products.map((product) => (
