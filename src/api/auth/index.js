@@ -7,6 +7,9 @@ const auth = {
             password: password
         })
     },
+    register: async function (formData) {
+        return await axios.post("/register", formData)
+    },
     test: async function () {
         return await axios.get("/test")
     },

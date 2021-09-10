@@ -90,7 +90,7 @@ export default function AppRouter() {
                     <VendorProductList />
                 </Route>
 
-                <Route path={`${match.path}/SingleProduct`}>
+                <Route path={`${match.path}/vendor_:id/product_:id`}>
                     <SingleProduct name='Pizza' img={Pizza} description='ingredients: flour, vegetables, cheese, ketchup, mayoneese'/>
                 </Route>
 

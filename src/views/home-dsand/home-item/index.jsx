@@ -1,6 +1,8 @@
 import React from "react"
+import { useHistory } from "react-router-dom";
 
 export default function HomeItem(props) {
+    let history = useHistory()
 
     const comProps = {
         image: props.image || '',
@@ -12,7 +14,7 @@ export default function HomeItem(props) {
     }
 
     return (
-        <div>
+        <div className="cursor-pointer" onClick={() => history.push('/app/vendor_1')}>
             <div className="w-full h-40 bg-center bg-cover rounded-xl" style={{backgroundImage: `url(${comProps.image})`}} />
             <div className="text-sm lg:text-lg font-medium">{`${comProps.vendor} - ${comProps.road}`}</div>
             <div className="text-xs lg:text-base">{comProps.city}</div>
