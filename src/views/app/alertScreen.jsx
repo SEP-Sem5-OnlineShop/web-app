@@ -36,7 +36,7 @@ const AlertScreen = () => {
                 <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
                     {alerts && <>
                         {alerts.map((alert) => (
-                            <AlertComponent alert={alert} handleRemove={handleRemove} key={alert.alert_id} />
+                            <AlertComponent alert={alert} handleRemove={handleRemove} key={alert._id} />
                         ))}
                     </>}
                 </div>

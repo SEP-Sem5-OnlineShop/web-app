@@ -11,60 +11,7 @@ import {
 export const listProducts = (vendor_id) => async (dispatch) => {
   dispatch({ type: PRODUCT_LIST_REQUEST,});
   try {
-    // const { data } = await Axios.get(`/products/${vendor_id}`);
-    const products = [
-      {
-        product_id: '1',
-        product_name: 'Burger with some',
-        image: '/img/item1.png',
-        price: 100,
-        stock: 10,
-        status: 'available',
-        rating: 4.5,
-        numReviews: 10,
-      },
-      {
-        product_id: '2',
-        product_name: 'Burger with some',
-        image: '/img/item1.png',
-        price: 100,
-        stock: 10,
-        status: 'available',
-        rating: 4.5,
-        numReviews: 10,
-      },
-      {
-        product_id: '3',
-        product_name: 'Burger with some',
-        image: '/img/item1.png',
-        price: 100,
-        stock: 10,
-        status: 'available',
-        rating: 4.5,
-        numReviews: 10,
-      },
-      {
-        product_id: '4',
-        product_name: 'Burger with some',
-        image: '/img/item1.png',
-        price: 100,
-        stock: 10,
-        status: 'available',
-        rating: 4.5,
-        numReviews: 10,
-      },
-      {
-        product_id: '5',
-        product_name: 'Burger with some',
-        image: '/img/item1.png',
-        price: 100,
-        stock: 10,
-        status: 'available',
-        rating: 4.5,
-        numReviews: 10,
-      },
-    ];
-    const data = products;
+    const { data } = await Axios.get(`/products/${vendor_id}`);
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });

@@ -54,7 +54,7 @@ const VendorScreen = () => {
                         <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
                             {products && <>
                                 {products.map((product) => (
-                                    <ProductComponent product={product} vendor_id={vendor_id} key={product.product_id} />
+                                    <ProductComponent product={product} vendor_id={vendor_id} key={product._id} />
                                 ))}
                             </>}
                         </div>
