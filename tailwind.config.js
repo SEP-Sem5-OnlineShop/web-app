@@ -19,6 +19,8 @@ module.exports = {
       text: '#838383',
       link: '#FF7000',
       accent: '#E5E5E5',
+      cardColor: '#f5ede4',
+      buttonColor: '#cbc2bc',
       white: '#fff',
       danger: colors.red[600],
       warn: colors.amber[400],
@@ -33,7 +35,7 @@ module.exports = {
         'register-pattern-left': "url('/src/assets/svg/backgrounds/curve-line.svg')",
         'register-pattern-right': "url('/src/assets/svg/backgrounds/icon-grid.svg')",
         'food-style': "url('/src/assets/svg/backgrounds/food-style.svg')",
-        'pizza': "url('/src/assets/img/bread.jpg')",
+        'pizza': "url('/src/assets/img/pizza.jpg')",
       }),
       borderRadius: {
         '3.5xl': '3.5rem',
@@ -45,8 +47,8 @@ module.exports = {
       },
       minHeight: {
         '100': '100px',
-        '560': '560px',
         '300': '300px',
+        '560': '560px',
         '0': '0',
         '1/4': '25%',
         '1/2': '50%',
@@ -79,8 +81,12 @@ module.exports = {
         'full': '100%',
       },
       height: {
+        '33': '8.25rem',
         '23': '5.75rem',
-
+        '13': '3.25rem'
+      },
+      width: {
+        '1/8': '12.5%'
       }
     }
   },

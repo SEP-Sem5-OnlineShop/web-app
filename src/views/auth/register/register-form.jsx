@@ -4,6 +4,8 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
 
+import {authApi} from "../../../api/index"
+
 const RegisterForm = (props, ref) => {
 
     const formik = useFormik({
@@ -31,13 +33,21 @@ const RegisterForm = (props, ref) => {
             confirmPassword: Yup.string()
                 .required('Required').oneOf([Yup.ref('password'), null], 'Password not matched!'),
         }),
-        onSubmit: values => {
-            console.log(values)
+        onSubmit: async values => {
+            await authApi.register({
+                firstName: values.firstName,
+                lastName: values.lastName,
+                telephone: values.telephone,
+                role: "customer",
+                location: values.location,
+                password: values.password,
+                password_confirmation: values.confirmPassword
+            })
         },
     });
 
     return (
-                <form className='w-5/6 flex flex-col justify-center items-center'>
+                <form className='w-5/6 flex flex-col justify-center items-center' onSubmit={formik.handleSubmit}>
                     <AnimateSharedLayout>
                         <motion.div className="w-full" layout>
                             <ItemTemplate title='Your Details' isOpen={true}>
@@ -81,7 +91,7 @@ const RegisterForm = (props, ref) => {
                                     type='confirmPassword'
                                     formik={formik}
                                 />
-                                <button type="button" className="w-full py-4 mt-2 rounded-xl bg-primary text-black font-bold">
+                                <button type="submit" className="w-full py-4 mt-2 rounded-xl bg-primary text-black font-bold">
                                     Submit
                                 </button>
                             </ItemTemplate>
