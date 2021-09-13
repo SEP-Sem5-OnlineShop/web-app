@@ -3,7 +3,6 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
     userData: {},
     token: "",
-    linkedInToken: ""
 }
 
 const userSlice = createSlice({
