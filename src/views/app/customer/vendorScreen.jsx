@@ -1,13 +1,13 @@
 // import { useHistory } from 'react-router-dom';
-import ProductComponent from '../../components/productComponent';
+import ProductComponent from '../../../components/customer/productComponent';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import RatingComponent from '../../components/ratingComponent';
-import LoadingBox from '../../components/LoadingBox';
-import MessageBox from '../../components/MessageBox';
+import RatingComponent from '../../../components/ratingComponent';
+import LoadingBox from '../../../components/LoadingBox';
+import MessageBox from '../../../components/MessageBox';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../../actions/productActions';
-import { detailsVendor } from '../../actions/vendorActions';
+import { listProducts } from '../../../actions/productActions';
+import { detailsVendor } from '../../../actions/vendorActions';
 
 
 const VendorScreen = () => {

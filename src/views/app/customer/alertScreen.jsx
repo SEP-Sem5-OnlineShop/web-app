@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useHistory } from 'react-router-dom';
-import AlertComponent from '../../components/alertComponent';
-import { deleteAlert, listAlerts } from '../../actions/alertActions';
-import LoadingBox from "../../components/LoadingBox";
-import MessageBox from "../../components/MessageBox";
+import AlertComponent from '../../../components/customer/alertComponent';
+import { deleteAlert, listAlerts } from '../../../actions/alertActions';
+import LoadingBox from "../../../components/LoadingBox";
+import MessageBox from "../../../components/MessageBox";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
