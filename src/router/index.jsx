@@ -6,7 +6,8 @@ import {
 import HomeDsand from "../views/home-dsand";
 import AppRouter from "./app";
 import AuthRouter from "./auth";
-import MainLayout from "../layout/main-layout";
+import MainLayout from "../layout/home-layout";
+import InnerPageLayout from "../layout/inner-page-layout"
 
 export default function MainRouter() {
     return (
@@ -16,9 +17,9 @@ export default function MainRouter() {
                     <AuthRouter />
                 </Route>
                 <Route path="/app">
-                    <MainLayout>
+                    <InnerPageLayout>
                         <AppRouter />
-                    </MainLayout>
+                    </InnerPageLayout>
                 </Route>
                 <Route path="/">
                     <MainLayout>
