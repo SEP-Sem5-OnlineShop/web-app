@@ -27,6 +27,7 @@ export const detailsVendor = (vendorId) => async (dispatch) => {
       vendor_id: "1",
       vendor_name: "Yummy Backers",
       vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
+      image:"/img/vendor.jpg",
       rating: '4.0',
       ratingCount: 50,
     };

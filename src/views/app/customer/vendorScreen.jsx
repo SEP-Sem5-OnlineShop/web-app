@@ -35,7 +35,7 @@ const VendorScreen = () => {
             <MessageBox variant="danger">{error}{error1}</MessageBox>
         ) : (
             <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
-                <div style={{ backgroundImage: `url("/img/vendor.jpg")` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full absolute top-0 left-0 z-0"/>
+                <div style={{ backgroundImage: `url(${vendor.image})` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full absolute top-0 left-0 z-0"/>
                 <Link to={`/app/vendor_${vendor_id}`}>
                 <div className="h-52 w-full flex px-10 items-end relative z-10">
                     <span className="ml-8 my-6 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor.vendor_name}</span>

@@ -40,7 +40,7 @@ export default function AppRouter() {
             <Route path={`${match.path}/vendor_:id`} exact>
                 <VendorScreen />
             </Route>
-            <Route path={`${match.path}/vendor_:id/product_:id`}>
+            <Route path={`${match.path}/vendor_:id/product_:pid`}>
                 <ProductScreen />
             </Route>
             <Route path={`${match.path}/alert`}>
