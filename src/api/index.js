@@ -1,5 +1,6 @@
 import Axios  from 'axios'
 import auth from './auth/index'
+import vendor from './general/vendor'
 
 /*
  * Setup axios  
@@ -48,3 +49,4 @@ export const axios = Axios
 export const baseURL = BASE_URL;
 
 export const authApi = auth
+export const vendorApi = vendor
