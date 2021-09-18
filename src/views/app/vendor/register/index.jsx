@@ -6,6 +6,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import Step2 from "./step2";
 import Step3 from "./step3";
 import CardTemplate from "../../../../components/card/template";
+import {vendorApi} from "../../../../api/index"
 
 export default function VendorRegistration() {
 
@@ -22,7 +23,6 @@ export default function VendorRegistration() {
             address: '',
             vehicles: '1',
             vehicleNo1: '',
-            vehicleNo2: '',
 
         },
         validationSchema: Yup.object({
@@ -44,12 +44,19 @@ export default function VendorRegistration() {
                 .required('Required'),
             vehicleNo1: Yup.string()
                 .required('Required'),
-            vehicleNo2: Yup.string()
-                .required('Required'),
+            // vehicleNo2: Yup.string()
+            //     .required('Required'),
         }),
         onSubmit: async values => {
             // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
-            console.log(values)
+            try {
+                const data = await vendorApi.request(values)
+                console.log(data)
+                console.log('safdadsf')
+            }
+            catch(e) {
+
+            }
         },
     });
 
