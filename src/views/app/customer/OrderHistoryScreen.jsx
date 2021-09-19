@@ -15,6 +15,7 @@ const OrderHistoryScreen = () => {
     const orders = [
         {
             _id:1,
+            customer_id:1,
             vendor_id:1,
             image:"/img/vendor.jpg",
             date: '2021/09/12',
@@ -27,9 +28,9 @@ const OrderHistoryScreen = () => {
                     vendor_id: '613a23c0dd295c38362b2cbe',
                     image: '/img/item1.png',
                     price: 100,
-                    stock: 10,
-                    status: 'available',
                     amount: 3,
+                    rated: 4,
+                    review: 'good',
                 },
                 {
                     product_id: '2',
@@ -37,21 +38,20 @@ const OrderHistoryScreen = () => {
                     vendor_id: '613a23c0dd295c38362b2cbe',
                     image: '/img/item1.png',
                     price: 100,
-                    stock: 10,
-                    status: 'available',
-                    rating: 4.5,
-                    numReviews: 10,
                     amount: 4,
+                    rated: null,
+                    review: null,
                 }
             ]
         },
         {
             _id:2,
-            seller_id:1,
+            customer_id:1,
+            vendor_id:1,
             image:"/img/vendor.jpg",
             date: '2021/09/13',
-            totalItems:3,
-            totalCost:300,
+            totalItems:4,
+            totalCost:400,
             products:[
                 {
                     product_id: '1',
@@ -59,9 +59,9 @@ const OrderHistoryScreen = () => {
                     vendor_id: '613a23c0dd295c38362b2cbe',
                     image: '/img/item1.png',
                     price: 100,
-                    stock: 10,
-                    status: 'available',
                     amount: 1,
+                    rated: 5,
+                    review: 'good',
                 },
                 {
                     product_id: '2',
@@ -69,11 +69,19 @@ const OrderHistoryScreen = () => {
                     vendor_id: '613a23c0dd295c38362b2cbe',
                     image: '/img/item1.png',
                     price: 100,
-                    stock: 10,
-                    status: 'available',
-                    rating: 4.5,
-                    numReviews: 10,
                     amount: 2,
+                    rated: 3,
+                    review: 'good',
+                },
+                {
+                    product_id: '3',
+                    product_name: 'Burger with some',
+                    vendor_id: '613a23c0dd295c38362b2cbe',
+                    image: '/img/item1.png',
+                    price: 100,
+                    amount: 1,
+                    rated: 4,
+                    review: 'good',
                 }
             ]
         }
@@ -101,7 +109,7 @@ const OrderHistoryScreen = () => {
         ) : (
             <div className="px-2 py-4 sm:px-12 sm:py-12">
                 <h1 className="text-3xl text-secondary flex flex-col">Order History</h1>
-                <div className="mt-4 sm:mt-8 grid grid-cols-1 gap-4 lg:gap-6">
+                <div className="mt-4 sm:mt-8 sm:mx-6 grid grid-cols-1 gap-4 lg:gap-6">
                     {orders && <>
                         {orders.map((order) => (
                             <OrderComponent order={order} handleReview={handleReview} key={order._id} />

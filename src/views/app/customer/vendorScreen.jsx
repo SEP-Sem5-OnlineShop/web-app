@@ -44,8 +44,8 @@ const VendorScreen = () => {
                 </Link>
 
                 <div className="w-full bg-white relative z-10" style={{minHeight: 'calc(100vh - 11rem)'}}>
-                    <div className="pl-4 pr-4 pt-2 sm:pl-20 sm:pt-6">
-                        <RatingComponent rating={vendor.rating} />
+                    <div className="px-4 pt-2 sm:px-14 sm:pt-6">
+                        <RatingComponent rating={vendor.rating} size={25} />
                         {vendor.rating} ({vendor.ratingCount}+)
                         <p className="mt-2">{vendor.vendor_description}</p>
                     </div>
