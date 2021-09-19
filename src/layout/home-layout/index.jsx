@@ -6,7 +6,7 @@ import { useDimensions } from "../mobile-navigation/use-dimensions";
 import { useHistory } from "react-router-dom";
 import { MenuToggle } from "../mobile-navigation/menu-toggle";
 import { Navigation } from "../mobile-navigation/navigation";
-import { useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { actions } from "../../store"
 
 const sidebar = {
@@ -34,6 +34,8 @@ export default function MainLayout(props) {
     const containerRef = useRef(null);
     const { height } = useDimensions(containerRef);
     let history = useHistory()
+    const selectedLanguage = useSelector(state => state.language.language)
+    console.log(selectedLanguage)
     const dispatch = useDispatch()
     return (
         <div className="w-screen min-h-screen overflow-x-hidden bg-primary">
@@ -71,7 +73,7 @@ export default function MainLayout(props) {
                         </div>
                         
                         <div className="flex items-center">
-                            <select onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))} 
+                            <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))} 
                                 className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black mr-4">
                                 <option value="english" key="english">English</option>
                                 <option value="sinhala" key="sinhala">සිංහල</option>
