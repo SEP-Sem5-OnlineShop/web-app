@@ -20,7 +20,7 @@ export const Navigation = () => {
                               Login | Register</button>
       <motion.ul className="mt-8" variants={variants}>
         {itemIds.map(i => (
-          <MenuItem menuName={i.name} link={i.link} key={i} />
+          <MenuItem menuName={i.name} link={i.link} key={i.name} />
         ))}
       </motion.ul>
     </div>
