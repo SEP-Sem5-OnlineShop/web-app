@@ -14,6 +14,7 @@ const languageSlice = createSlice({
     reducers: {
         setLanguage(state, action) {
             state.language = action.payload
+            window.localStorage.setItem("language", state.language)
             switch (state.language) {
                 case "english":
                     state.languageFile = english
