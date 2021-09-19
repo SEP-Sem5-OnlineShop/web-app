@@ -1,5 +1,5 @@
 import userSlice from "./index"
-import {authApi, setAuthToken} from "../../api/index"
+import {authApi} from "../../api/index"
 
 /**
  * Thunk action
@@ -15,7 +15,7 @@ export function localSignIn(username, password) {
             if (status === 200) {
                 dispatch(userSlice.actions.setUserData(data.data))
                 dispatch(userSlice.actions.setAuthToken(data.accessToken))
-                setAuthToken(data.accessToken)
+                dispatch(userSlice.actions.setRole(data.role))
             }
             return status
         }

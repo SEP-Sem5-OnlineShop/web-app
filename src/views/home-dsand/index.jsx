@@ -23,8 +23,8 @@ export default function HomeDsand() {
 
                 <div className="w-11/12 mb-10 mt-20">
                     <span className="text-xl lg:text-3xl font-medium">Today's Deals</span>
-                    <div className="mt-4 lg:mt-8 w-full">
-                        <SwiperSliderContainer>
+                    <div className="mt-4 lg:mt-8 w-full relative z-0">
+                        <SwiperSliderContainer className="relative z-0">
                             <SwiperSlide>
                                 <HomeItem
                                     image={pizza}

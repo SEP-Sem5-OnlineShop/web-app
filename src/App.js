@@ -1,6 +1,6 @@
 import MainRouter from "./router";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./store/index";
 
 // Import Swiper styles
 import 'swiper/swiper-bundle.css'
