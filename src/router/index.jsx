@@ -1,3 +1,5 @@
+import React, {useEffect} from "react"
+import { useDispatch } from "react-redux"
 import {
     BrowserRouter as Router,
     Switch,
@@ -6,9 +8,20 @@ import {
 import HomeDsand from "../views/home-dsand";
 import AppRouter from "./app";
 import AuthRouter from "./auth";
-import MainLayout from "../layout/main-layout";
+import MainLayout from "../layout/home-layout";
+import InnerPageLayout from "../layout/inner-page-layout"
+import {actions} from "../store"
 
 export default function MainRouter() {
+
+    const dispatch = useDispatch()
+  
+    useEffect(() => {
+        // Set language when page refreshing
+        const selectedLanguage = window.localStorage.getItem("language")
+        dispatch(actions.language.setLanguage(selectedLanguage))
+    }, [])
+  
     return (
         <Router>
             <Switch>
@@ -16,9 +29,9 @@ export default function MainRouter() {
                     <AuthRouter />
                 </Route>
                 <Route path="/app">
-                    <MainLayout>
+                    <InnerPageLayout>
                         <AppRouter />
-                    </MainLayout>
+                    </InnerPageLayout>
                 </Route>
                 <Route path="/">
                     <MainLayout>
