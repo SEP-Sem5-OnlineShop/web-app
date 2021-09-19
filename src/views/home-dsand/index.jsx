@@ -1,5 +1,6 @@
 import React from "react"
 import HomeItem from "./home-item";
+import { useSelector } from "react-redux"
 
 import pizza from "../../assets/img/pizza.jpg"
 import bread from "../../assets/img/bread.jpg"
@@ -13,6 +14,7 @@ import {SwiperSlide} from "swiper/react";
 
 
 export default function HomeDsand() {
+    const dashboardStrings = useSelector(state => state.language.languageFile.dashboard)
 
     return (
         <React.Fragment>
@@ -22,7 +24,7 @@ export default function HomeDsand() {
                 </div>
 
                 <div className="w-11/12 mb-10 mt-20">
-                    <span className="text-xl lg:text-3xl font-medium">Today's Deals</span>
+                    <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.todaysDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full relative z-0">
                         <SwiperSliderContainer className="relative z-0">
                             <SwiperSlide>
@@ -100,7 +102,7 @@ export default function HomeDsand() {
                 </div>
 
                 <div className="w-11/12">
-                    <span className="text-xl lg:text-3xl font-medium">Hot Deals</span>
+                    <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.hotDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full">
                         <SwiperSliderContainer>
                             <SwiperSlide>
