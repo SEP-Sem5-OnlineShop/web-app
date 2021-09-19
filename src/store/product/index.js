@@ -1,14 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-export const initialState = {
-    loading: false,
-    error: false,
-    products: [],
-  }
-
 const productListSlice = createSlice({
     name: "products",
-    initialState,
+    initialState: {
+        loading: false,
+        error: false,
+        products: [],
+    },
     reducers: {
         PRODUCT_LIST_REQUEST: state => {
         state.loading = true
