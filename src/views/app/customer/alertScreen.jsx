@@ -1,28 +1,104 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
+import Axios from 'axios';
 import AlertComponent from '../../../components/customer/alertComponent';
-import { deleteAlert, listAlerts } from '../../../actions/alertActions';
 import LoadingBox from "../../../components/LoadingBox";
 import MessageBox from "../../../components/MessageBox";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 
 const AlertScreen = () => {
     const customer_id = "01";
     
     const history = useHistory();
-    const dispatch = useDispatch();
-    const alertList = useSelector(state => state.alertList);
-    const { loading, error, alerts } = alertList;
+    const [alerts, setAlerts] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [error1, setError1] = useState(null);
+    
     useEffect(() => {
-        if (customer_id) {
-            dispatch(listAlerts(customer_id));
+        async function listAlerts(customer_id){
+          try {
+            // const { data } = await Axios.get(`/products/${vendor_id}`);
+            const data = [
+                {
+                  alert_id: 1,
+                  vendor_id: 1,
+                  vendor_name: "Yummy Backers",
+                  product_id: '1',
+                  product_name: 'Burger with some',
+                  image: '/img/item1.png',
+                  price: 100,
+                },
+                {
+                  alert_id: 2,
+                  vendor_id: 1,
+                  vendor_name: "Yummy Backers",
+                  product_id: '2',
+                  product_name: 'Burger with some',
+                  image: '/img/item1.png',
+                  price: 100,
+                },
+                {
+                  alert_id: 3,
+                  vendor_id: 1,
+                  vendor_name: "Yummy Backers",
+                  product_id: '3',
+                  product_name: 'Burger with some',
+                  image: '/img/item1.png',
+                  price: 100,
+                },
+                {
+                  alert_id: 4,
+                  vendor_id: 2,
+                  vendor_name: "Asta Backers",
+                  product_id: '4',
+                  product_name: 'Burger with some',
+                  image: '/img/item1.png',
+                  price: 100,
+                },
+                {
+                  alert_id: 5,
+                  vendor_id: 2,
+                  vendor_name: "Asta Backers",
+                  product_id: '5',
+                  product_name: 'Burger with some',
+                  image: '/img/item1.png',
+                  price: 100,
+                },
+            ];
+              
+            setAlerts(data);
+            setLoading(false);
+            setError(null);
+          } catch (error) {
+            setLoading(false);
+            console.log(error);
+            setError(error);
+          };
         };
-      }, [dispatch, customer_id]);
+        listAlerts(customer_id);
+    }, [customer_id]);
 
     const handleRemove = (id) => {
-        dispatch(deleteAlert(id)).then(() => {history.go(0);});
+        async function deleteAlert(alertId){
+            try {
+                const { data } = await Axios.delete(`/alerts/${alertId}`);
+            } catch (error) {
+                console.log(error);
+                setError1(error);
+            };
+        };
+        deleteAlert(id).then(() => {history.go(0);});
     };
+    
+    // const history = useHistory();
+    // const dispatch = useDispatch();
+    // const alertList = useSelector(state => state.alertList);
+    // const { loading, error, alerts } = alertList;
+    // useEffect(() => {
+    //     if (customer_id) {
+    //         dispatch(listAlerts(customer_id));
+    //     };
+    //   }, [dispatch, customer_id]);
 
     return (
         <div>
