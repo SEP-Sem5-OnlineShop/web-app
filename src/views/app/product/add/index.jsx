@@ -1,15 +1,18 @@
 import React from "react";
-import { EditorState, convertToRaw } from 'draft-js';
+import { Redirect } from "react-router-dom"
+import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import { FilePond, File, registerPlugin } from 'react-filepond'
+import { FilePond, registerPlugin } from 'react-filepond'
 import 'filepond/dist/filepond.min.css'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 
+import { useSelector } from "react-redux"
+
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 import './style.css'
 
 import CardTemplate from "../../../../components/card/template";
@@ -18,6 +21,10 @@ import InputWithValidation from "../../../../components/input-with-validation";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function AddProduct () {
+
+    const role = useSelector(state => state.user.role)
+    const userData = useSelector(state => state.user.userData)
+    console.log(role, userData)
 
     const [editorState, setEditorState] = React.useState(
         () => EditorState.createEmpty(),
@@ -52,6 +59,7 @@ export default function AddProduct () {
 
     return (
         <React.Fragment>
+            {role === "vendor" ?
             <div className="flex justify-center">
                 <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8">
                     <div className="w-full text-3xl font-medium">Add New product</div>
@@ -110,7 +118,8 @@ export default function AddProduct () {
                         </form>
                     </CardTemplate>
                 </div>
-            </div>
+            </div> 
+            : <div>Spin</div>}
         </React.Fragment>
     )
 }

@@ -1,6 +1,7 @@
 import Axios  from 'axios'
 import auth from './auth/index'
 import vendor from './general/vendor'
+import store, {actions} from "../store/index"
 
 /*
  * Setup axios  
@@ -8,7 +9,7 @@ import vendor from './general/vendor'
 // const BASE_URL = 'https://ontheway-backend-auth-api.herokuapp.com/api'
 const BASE_URL = 'http://localhost:8000/api'
 Axios.defaults.baseURL = BASE_URL
-Axios.defaults.withCredentials = false
+Axios.defaults.withCredentials = true
 
 const axiosApiInstance = Axios.create()
 
@@ -21,19 +22,24 @@ Axios.interceptors.response.use(async response => {
     },
     async function (error) {
         const originalRequest = error.config;
-        console.log(originalRequest)
-        if(error.response.status === 401) {
-            const {status, data} = await auth.token()
-            if(status === 401) {
-                // Force logout and login again
-            }
-            else {
-                setAuthToken(data.accessToken)
-                originalRequest.headers.Authorization = `Bearer ${data.accessToken}`
-                originalRequest._retry = true;
-                return axiosApiInstance(originalRequest)
-            }
+        console.log()
+        if(error.response.status === 401 && error.response.data.message === "Token Expired!") {
+            // Force logout and login again
+            store.dispatch(actions.user.setUserData({}))
+            store.dispatch(actions.user.setAuthToken(""))
+            store.dispatch(actions.user.setRole("guest"))
+            window.localStorage.removeItem("userData")
+            window.localStorage.removeItem("token")
+            window.localStorage.setItem("role", "guest")
         }
+        else if(error.response.status === 401 && error.response.data.message === "Session is invalid!") {
+            const {status, data} = await auth.token()
+            setAuthToken(data.accessToken)
+            originalRequest.headers.Authorization = `Bearer ${data.accessToken}`
+            originalRequest._retry = true;
+            return axiosApiInstance(originalRequest)
+        }
+        else return error
     }
 )
 

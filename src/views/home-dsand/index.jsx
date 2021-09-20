@@ -10,7 +10,7 @@ import vegetables from "../../assets/img/vegetables.jpg"
 
 import IconPanel from "./icon-panel"
 import SwiperSliderContainer from "./swiper-slider-container";
-import {SwiperSlide} from "swiper/react";
+import { SwiperSlide } from "swiper/react";
 
 
 export default function HomeDsand() {
@@ -19,11 +19,12 @@ export default function HomeDsand() {
     return (
         <React.Fragment>
             <div className="flex flex-col items-center">
-                <div className="h-32 mt-4 hidden lg:block" >
+
+                <div className="h-32 mt-8 hidden lg:block" >
                     <IconPanel />
                 </div>
 
-                <div className="w-11/12 mb-10 mt-20">
+                <div className="w-11/12 mb-10 mt-8">
                     <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.todaysDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full relative z-0">
                         <SwiperSliderContainer className="relative z-0">
