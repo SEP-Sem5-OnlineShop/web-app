@@ -34,9 +34,10 @@ const VendorScreen = () => {
         setVendor(data);
         setLoading(false);
         setError(null);
-      } catch (error) {
+      } catch (err) {
         setLoading(false);
-        setError(error);
+        console.log(err);
+        setError(err);
       };
     };
 
@@ -102,9 +103,10 @@ const VendorScreen = () => {
         setProducts(data);
         setLoading1(false);
         setError1(null);
-      } catch (error) {
+      } catch (err) {
         setLoading1(false);
-        setError1(error);
+        console.log(err);
+        setError1(err);
       };
     };
 
