@@ -19,7 +19,6 @@ import CustomerProfileScreen from "../views/app/customer/CustomerProfileScreen";
 import CustomerNotificationScreen from "../views/app/customer/CustomerNotificationScreen";
 
 import History from '../views/app/history'
-import AlertScreen from "../views/app/alertScreen";
 import AddProduct from '../views/app/product/add/index'
 import Profile from '../views/app/profile/index'
 

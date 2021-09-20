@@ -1,5 +1,5 @@
 // import { useHistory } from 'react-router-dom';
-import ProductComponent from '../../components/productComponent';
+import ProductComponent from './productComponent';
 import { Link, useParams } from 'react-router-dom';
 import RatingComponent from '../../components/ratingComponent';
 
