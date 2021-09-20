@@ -1,6 +1,9 @@
 import React from "react"
 import logo from "../../assets/svg/logo/logo-264A75.svg";
+import LoginRegister from "../home-layout/login-register"
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux"
+import { actions } from "../../store"
 
 const sidebar = {
     open: (height = 1000) => ({
@@ -24,22 +27,32 @@ const sidebar = {
 
 export default function InnerPageLayout(props) {
     let history = useHistory()
+    const dispatch = useDispatch()
+    const selectedLanguage = useSelector(state => state.language.language)
+    const token = useSelector(state => state.user.token)
     return (
         <React.Fragment>
             <div className="w-screen min-h-screen overflow-x-hidden">
                 <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
                     {/* <div className="bg-food-style opacity-40 w-full h-full absolute top-0 left-0 z-0" /> */}
                     <div className="h-20 bg-white w-full fixed flex px-10 top-0 left-0 justify-between items-center z-10">
-                        <img className="cursor-pointer" style={{height: 80}} onClick={() => history.push("/")} src={logo} alt="logo" />
+                        <div className="h-full flex items-center">
+                            <img className="cursor-pointer" style={{height: 80}} onClick={() => history.push("/")} src={logo} alt="logo" />
+                        </div>    
 
                         <div className="flex items-center">
-                            <ul className="flex mr-10">
-                                <li className="mx-4 cursor-pointer" onClick={() => history.push("/app/register/vendor")}>Vendor Registration</li>
-                                <li className="mx-4 cursor-pointer" onClick={() => history.push("/app/product/add")}>Add Product</li>
-                                <li className="mx-4 cursor-pointer" onClick={() => history.push("/app/alert")}>Alerts</li>
-                            </ul>
-                            <button onClick={() => history.push("/auth/login")} className="rounded-lg px-4 py-2 bg-textLight text-white">
+                            <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))} 
+                                className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
+                                <option value="english" key="english">English</option>
+                                <option value="sinhala" key="sinhala">සිංහල</option>
+                                <option value="tamil" key="tamil">தமிழ்</option>
+                            </select>
+                            {
+                                token ?
+                                <LoginRegister className="mr-4" /> :
+                                <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                 Login | Register</button>
+                            }
                         </div>
                     </div>
 
