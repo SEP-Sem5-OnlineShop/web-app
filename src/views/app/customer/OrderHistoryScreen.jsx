@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import OrderComponent from '../../../components/customer/OrderComponent';
 // import { listOrders } from '../../../actions/alertActions';
-import LoadingBox from "../../../components/LoadingBox";
-import MessageBox from "../../../components/MessageBox";
+import LoadingBox from "../../../components/customer/LoadingBox";
+import MessageBox from "../../../components/customer/MessageBox";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 

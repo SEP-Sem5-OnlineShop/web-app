@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import RatingComponent from '../ratingComponent';
+import RatingComponent from '../customer/ratingComponent';
 
 export default function OrderComponent({ order, handleReview }) {
     const customer_id = 1;

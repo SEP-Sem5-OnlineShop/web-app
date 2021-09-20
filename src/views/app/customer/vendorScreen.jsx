@@ -3,9 +3,9 @@ import Axios from 'axios';
 import ProductComponent from '../../../components/customer/productComponent';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import RatingComponent from '../../../components/ratingComponent';
-import LoadingBox from '../../../components/LoadingBox';
-import MessageBox from '../../../components/MessageBox';
+import RatingComponent from '../../../components/customer/ratingComponent';
+import LoadingBox from '../../../components/customer/LoadingBox';
+import MessageBox from '../../../components/customer/MessageBox';
 
 
 const VendorScreen = () => {
