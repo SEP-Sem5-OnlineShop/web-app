@@ -8,6 +8,7 @@ import { thunks } from "../../store"
 export default function Example() {
     const userData = useSelector(state => state.user.userData)
     const dispatch = useDispatch()
+    console.log(userData)
 
   return (
     <div className="text-right">

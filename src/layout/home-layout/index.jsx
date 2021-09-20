@@ -8,6 +8,7 @@ import { MenuToggle } from "../mobile-navigation/menu-toggle";
 import { Navigation } from "../mobile-navigation/navigation";
 import { useSelector, useDispatch } from "react-redux"
 import { actions } from "../../store"
+import {authApi} from "../../api"
 import LoginRegister from "./login-register"
 
 const sidebar = {
@@ -37,6 +38,7 @@ export default function MainLayout(props) {
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
     const token = useSelector(state => state.user.token)
+    console.log(token)
     const dispatch = useDispatch()
     return (
         <div className="w-screen min-h-screen overflow-x-hidden bg-primary">
@@ -74,6 +76,7 @@ export default function MainLayout(props) {
                         </div>
                         
                         <div className="flex items-center">
+                            <div onClick={async () => await authApi.test()}>Test</div>
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))} 
                                 className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
                                 <option value="english" key="english">English</option>
@@ -81,7 +84,7 @@ export default function MainLayout(props) {
                                 <option value="tamil" key="tamil">தமிழ்</option>
                             </select>
                             {
-                                token ?
+                                token!=="" || token!=="null" || token!==null ?
                                 <LoginRegister className="mr-4" /> :
                                 <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                 Login | Register</button>

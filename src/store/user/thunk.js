@@ -31,9 +31,9 @@ export function signOUt() {
             const {status, data} = await authApi.logout()
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
-            dispatch(userSlice.actions.setRole(""))
+            dispatch(userSlice.actions.setRole("guest"))
             window.localStorage.removeItem("userData")
-            window.localStorage.removeItem("token")
+            window.localStorage.setUserData("token", "")
             window.localStorage.setItem("role", "guest")
         }
         catch (error) {

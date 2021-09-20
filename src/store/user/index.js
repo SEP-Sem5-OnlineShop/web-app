@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {axios} from "../../api/index"
 
 const initialState = {
     userData: {},
@@ -17,6 +18,9 @@ const userSlice = createSlice({
         setAuthToken(state, action) {
             state.token = action.payload
             window.localStorage.setItem("token", state.token)
+            if(state.token !== "" || state.token !== "null")
+            {console.log("test")
+            axios.defaults.headers.common = {'Authorization': `Bearer ${state.token}`}}
         },
         setRole(state, action) {
             state.role = action.payload
