@@ -11,11 +11,11 @@ import {
 export const listProducts = (vendor_id) => async (dispatch) => {
   dispatch({ type: PRODUCT_LIST_REQUEST,});
   try {
-    // const { data } = await Axios.get(`/api/products/${vendor_id}`);
+    // const { data } = await Axios.get(`/products/${vendor_id}`);
     const products = [
-      {
-        product_id: '1',
+      { _id:'1',
         product_name: 'Burger with some',
+        seller: '613a23c0dd295c38362b2cbe',
         image: '/img/item1.png',
         price: 100,
         stock: 10,
@@ -24,8 +24,9 @@ export const listProducts = (vendor_id) => async (dispatch) => {
         numReviews: 10,
       },
       {
-        product_id: '2',
+        _id:'2',
         product_name: 'Burger with some',
+        seller: '613a23c0dd295c38362b2cbe',
         image: '/img/item1.png',
         price: 100,
         stock: 10,
@@ -34,8 +35,9 @@ export const listProducts = (vendor_id) => async (dispatch) => {
         numReviews: 10,
       },
       {
-        product_id: '3',
+        _id:'3',
         product_name: 'Burger with some',
+        seller: '613a23c0dd295c38362b2cbe',
         image: '/img/item1.png',
         price: 100,
         stock: 10,
@@ -44,8 +46,9 @@ export const listProducts = (vendor_id) => async (dispatch) => {
         numReviews: 10,
       },
       {
-        product_id: '4',
+        _id:'4',
         product_name: 'Burger with some',
+        seller: '613a23c0dd295c38362b2cbe',
         image: '/img/item1.png',
         price: 100,
         stock: 10,
@@ -54,8 +57,9 @@ export const listProducts = (vendor_id) => async (dispatch) => {
         numReviews: 10,
       },
       {
-        product_id: '5',
+        _id:'5',
         product_name: 'Burger with some',
+        seller: '613a23c0dd295c38362b2cbe',
         image: '/img/item1.png',
         price: 100,
         stock: 10,
@@ -74,7 +78,7 @@ export const listProducts = (vendor_id) => async (dispatch) => {
 export const detailsProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
-    const { data } = await Axios.get(`/api/products/${productId}`);
+    const { data } = await Axios.get(`/products/${productId}`);
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

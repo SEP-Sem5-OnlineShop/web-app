@@ -11,7 +11,7 @@ import {
 export const listAlerts = (customer_id) => async (dispatch) => {
   dispatch({ type: ALERT_LIST_REQUEST,});
   try {
-    // const { data } = await Axios.get(`/api/alerts/${customer_id}`);
+    // const { data } = await Axios.get(`/alerts/${customer_id}`);
     const alerts = [
       {
         alert_id: 1,
@@ -73,7 +73,7 @@ export const deleteAlert = (alertId) => async (dispatch, getState) => {
   //   userSignin: { userInfo },
   // } = getState();
   try {
-    // const { data } = Axios.delete(`/api/alerts/${alertId}`, {
+    // const { data } = Axios.delete(`/alerts/${alertId}`, {
     //   headers: { Authorization: `Bearer ${userInfo.token}` },
     // });
     dispatch({ type: ALERT_DELETE_SUCCESS });

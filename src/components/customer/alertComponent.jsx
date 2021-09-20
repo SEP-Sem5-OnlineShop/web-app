@@ -33,7 +33,7 @@ const AlertComponent = ({ alert, handleRemove }) => {
                 </div> */}
             </div>
             <div className="mr-1 my:4 sm:mx-4 flex flex-col items-end justify-center">
-                <button className="rounded-xl shadow w-10 h-10 sm:w-12 sm:h-12 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(alert.alert_id)}>
+                <button className="rounded-xl shadow w-10 h-10 sm:w-12 sm:h-12 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(alert._id)}>
                     <span className="text-3xl sm:text-4xl text-danger">x</span>
                 </button>
                 {/* <div className="text-base sm:text-xl text-secondary flex justify-center">{ alert.price*count }</div> */}
