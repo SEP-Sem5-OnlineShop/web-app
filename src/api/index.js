@@ -34,6 +34,7 @@ Axios.interceptors.response.use(async response => {
                 return axiosApiInstance(originalRequest)
             }
         }
+        else return error
     }
 )
 

@@ -10,6 +10,9 @@ const auth = {
     register: async function (formData) {
         return await axios.post("/register", formData)
     },
+    logout: async function () {
+        return await axios.get("/logout")
+    },
     test: async function () {
         return await axios.get("/test")
     },

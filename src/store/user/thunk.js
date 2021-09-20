@@ -15,7 +15,7 @@ export function localSignIn(username, password) {
             if (status === 200) {
                 dispatch(userSlice.actions.setUserData(data.data))
                 dispatch(userSlice.actions.setAuthToken(data.accessToken))
-                dispatch(userSlice.actions.setRole(data.role))
+                dispatch(userSlice.actions.setRole(data.data.role))
             }
             return status
         }
@@ -24,3 +24,20 @@ export function localSignIn(username, password) {
         }
     };
 }
+
+export function signOUt() {
+    return async (dispatch) => {
+        try {
+            const {status, data} = await authApi.logout()
+            dispatch(userSlice.actions.setUserData({}))
+            dispatch(userSlice.actions.setAuthToken(""))
+            dispatch(userSlice.actions.setRole(""))
+            window.localStorage.removeItem("userData")
+            window.localStorage.removeItem("token")
+            window.localStorage.setItem("role", "guest")
+        }
+        catch (error) {
+
+        }
+    }
+} 

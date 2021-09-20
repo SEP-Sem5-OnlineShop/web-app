@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit"
-import {localSignIn} from "./user/thunk";
+import {localSignIn, signOUt} from "./user/thunk";
 import user from "./user"
 import language from "./language"
 
@@ -19,6 +19,7 @@ export const actions = {
 
 export const thunks = {
     user: {
-        localSignIn
+        localSignIn,
+        signOUt
     }
 }

@@ -8,6 +8,7 @@ import { MenuToggle } from "../mobile-navigation/menu-toggle";
 import { Navigation } from "../mobile-navigation/navigation";
 import { useSelector, useDispatch } from "react-redux"
 import { actions } from "../../store"
+import LoginRegister from "./login-register"
 
 const sidebar = {
     open: (height = 1000) => ({
@@ -35,7 +36,7 @@ export default function MainLayout(props) {
     const { height } = useDimensions(containerRef);
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
-    console.log(selectedLanguage)
+    const token = useSelector(state => state.user.token)
     const dispatch = useDispatch()
     return (
         <div className="w-screen min-h-screen overflow-x-hidden bg-primary">
@@ -53,19 +54,19 @@ export default function MainLayout(props) {
                     }
                 </AnimatePresence>
                 <div className="opacity-40 w-full h-full absolute top-0 left-0 z-0"/>
-                            <motion.nav
-                                initial={false}
-                                animate={isOpen ? "open" : "closed"}
-                                custom={height}
-                                ref={containerRef}
-                                className={`fixed top-0 left-0 bottom-0 ${isOpen ? "z-30": "h-28 z-20"}`}
-                                style={{width: 300}}
-                            >
-                                <motion.div className="bg-white h-screen" style={{width: 300}} variants={sidebar} >
-                                    <MenuToggle toggle={() => toggleOpen()} />
-                                    <Navigation />
-                                </motion.div>
-                            </motion.nav>
+                <motion.nav
+                    initial={false}
+                    animate={isOpen ? "open" : "closed"}
+                    custom={height}
+                    ref={containerRef}
+                    className={`fixed top-0 left-0 bottom-0 ${isOpen ? "z-30": "h-0 z-20"}`}
+                    style={{width: isOpen ? 300 : 0}}
+                >
+                    <motion.div className="bg-white h-screen" style={{width: 300}} variants={sidebar} >
+                        <MenuToggle toggle={() => toggleOpen()} />
+                        <Navigation />
+                    </motion.div>
+                </motion.nav>
                 <div className="bg-primary w-full h-28 fixed top-0 left-0 z-10">
                     <div className="bg-food-style h-full w-full flex px-10 justify-between items-center">
                         <div className="h-full flex items-center">
@@ -74,13 +75,17 @@ export default function MainLayout(props) {
                         
                         <div className="flex items-center">
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))} 
-                                className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black mr-4">
+                                className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
                                 <option value="english" key="english">English</option>
                                 <option value="sinhala" key="sinhala">සිංහල</option>
                                 <option value="tamil" key="tamil">தமிழ்</option>
                             </select>
-                            <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
+                            {
+                                token ?
+                                <LoginRegister className="mr-4" /> :
+                                <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                 Login | Register</button>
+                            }
                         </div>
                     </div>
                 </div>
