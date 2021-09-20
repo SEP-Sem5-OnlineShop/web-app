@@ -30,7 +30,10 @@ import RemovePopup from '../views/app/removePopup'
 import Toggle from '../views/app/toggleButton'
 // import productList from '../views/app/ProductsList'
 import Pizza from '../assets/img/pizza.jpg'
-
+import SingleProduct from '../views/app/product/single/singleProduct'
+import AddProduct from '../views/app/product/add/index'
+import Profile from '../views/app/profile/index'
+import VendorRegistration from '../views/app/vendor/register/index'
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -82,7 +85,17 @@ export default function AppRouter() {
             </Route>
             <Route path={`${match.path}/VendorRequestList`}>
                 <VendorRequestList />
+
             </Route>
+
+            <Route path={`${match.path}/VendorComponent`}>
+                <VendorComponent />
+
+            </Route>
+
+
+
+
 
             <Route path={`${match.path}/rejectPopup`}>
                 <RejectPopup />
@@ -90,16 +103,21 @@ export default function AppRouter() {
             <Route path={`${match.path}/RemovePopup`}>
                 <RemovePopup />
             </Route>
-            <Route path={`${match.path}/toggleButton`}>
-                <Toggle />
+            <Route path={`${match.path}/Product`}>
+                <Product />
             </Route>
-           <Route path={`${match.path}/paymentPopup`}>
-                <PaymentPopup />
+
+
+            <Route path={`${match.path}/VendorProductList`}>
+                <VendorProductList />
             </Route>
-            <Route path={`${match.path}/thankPopup`}>
-                <ThankPopup />
+
+            <Route path={`${match.path}/vendor_:id/product_:id`}>
+                <SingleProduct name='Pizza' img={Pizza} description='ingredients: flour, vegetables, cheese, ketchup, mayoneese' />
             </Route>
-            
+
+
+
         </Switch>
     )
 }

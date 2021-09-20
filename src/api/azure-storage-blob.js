@@ -1,13 +1,13 @@
 import { BlobServiceClient, ContainerClient} from '@azure/storage-blob'
-import dotenv from 'dotenv'
+import { v4 as uuidv4 } from 'uuid'
 
-dotenv.config()
-
-const SASS_TOKEN = process.env.BLOB_STORAGE_ACCESS_TOKEN || "sp=r&st=2021-09-09T09:00:17Z&se=2021-09-09T17:00:17Z&spr=https&sv=2020-08-04&sr=c&sig=NTX8B4G30vc09BR1znGqTUzWiqR1jtIx%2BGveGHOPlYU%3D"
-const containerName = `imagecontainer`;
-const STORAGE_ACCOUNT_NAME = process.env.BLOB_STORAGE_ACCOUNT_NAME || "ontheway";
+const SASS_TOKEN = process.env.REACT_APP_BLOB_STORAGE_ACCESS_TOKEN || ""
+const STORAGE_ACCOUNT_NAME = process.env.REACT_APP_BLOB_STORAGE_ACCOUNT_NAME || ""
+const CONTAINER_NAME = process.env.REACT_APP_CONTAINER_NAME || ""
 
 export const uploadFileToBlob = async (file) => {
+    console.log(SASS_TOKEN)
+  
     if (!file) return [];
   
     // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
@@ -16,22 +16,30 @@ export const uploadFileToBlob = async (file) => {
     );
   
     // get Container - full public read access
-    const containerClient = blobService.getContainerClient(containerName);
-    await containerClient.createIfNotExists({
-      access: 'container',
-    });
+    const containerClient = blobService.getContainerClient(CONTAINER_NAME);
+    // console.log(containerClient)
+    // try {
+    //   await containerClient.createIfNotExists({
+    //     access: 'blob',
+    //   });
+    // }
+    // catch(e) {
+    //   console.log('Container already exists!')
+    // }
   
     // upload file
     await createBlobInContainer(containerClient, file);
   
     // get list of blobs in container
-    return getBlobsInContainer(containerClient);
+    // return getBlobsInContainer(containerClient);
 };
 
 const createBlobInContainer = async (containerClient, file) => {
   
     // create blobClient for container
-    const blobClient = containerClient.getBlockBlobClient(file.name);
+    const fileName = `${uuidv4()}.${file.type.split("/")[1]}`
+    // console.log(fileName, file)
+    const blobClient = containerClient.getBlockBlobClient(fileName);
   
     // set mimetype as determined from browser with file upload control
     const options = { blobHTTPHeaders: { blobContentType: file.type } };
@@ -42,6 +50,7 @@ const createBlobInContainer = async (containerClient, file) => {
 
 // return list of blobs in container to display
 const getBlobsInContainer = async (containerClient) => {
+
     const returnedBlobUrls = [];
   
     // get list of blobs in container
@@ -49,9 +58,8 @@ const getBlobsInContainer = async (containerClient) => {
     for await (const blob of containerClient.listBlobsFlat()) {
       // if image is public, just construct URL
       returnedBlobUrls.push(
-        `https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${containerName}/${blob.name}`
+        `https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${CONTAINER_NAME}/${blob.name}`
       );
     }
-  
     return returnedBlobUrls;
 }

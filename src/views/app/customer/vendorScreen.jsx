@@ -12,24 +12,84 @@ import { detailsVendor } from '../../../actions/vendorActions';
 
 const VendorScreen = () => {
     const { id: vendor_id } = useParams();
+    const vendor = 
+    {
+      vendor_id: "1",
+      vendor_name: "Yummy Backers",
+      vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
+      rating: '4.0',
+      ratingCount: 50,
+    };    
+    const products = [
+        {
+          product_id: '1',
+          product_name: 'Burger with some',
+          image: '/img/item1.png',
+          price: 100,
+          stock: 10,
+          status: 'available',
+          rating: 4.5,
+          numReviews: 10,
+        },
+        {
+          product_id: '2',
+          product_name: 'Burger with some',
+          image: '/img/item1.png',
+          price: 100,
+          stock: 10,
+          status: 'available',
+          rating: 4.5,
+          numReviews: 10,
+        },
+        {
+          product_id: '3',
+          product_name: 'Burger with some',
+          image: '/img/item1.png',
+          price: 100,
+          stock: 10,
+          status: 'available',
+          rating: 4.5,
+          numReviews: 10,
+        },
+        {
+          product_id: '4',
+          product_name: 'Burger with some',
+          image: '/img/item1.png',
+          price: 100,
+          stock: 10,
+          status: 'available',
+          rating: 4.5,
+          numReviews: 10,
+        },
+        {
+          product_id: '5',
+          product_name: 'Burger with some',
+          image: '/img/item1.png',
+          price: 100,
+          stock: 10,
+          status: 'available',
+          rating: 4.5,
+          numReviews: 10,
+        },
+      ];
 
-    const dispatch = useDispatch();
-    const vendorDetails = useSelector(state => state.vendorDetails);
-    const { loading, error, vendor } = vendorDetails;
-    const productList = useSelector(state => state.productList);
-    const { loading1, error1, products } = productList;
-    useEffect(() => {
-        if (vendor_id) {
-            dispatch(detailsVendor(vendor_id));
-        };
-        if (loading & !error) {
-            dispatch(listProducts(vendor_id));
-        }
-      }, [dispatch, vendor_id, loading, error]);
+    // const dispatch = useDispatch();
+    // const vendorDetails = useSelector(state => state.vendorDetails);
+    // const { loading, error, vendor } = vendorDetails;
+    // const productList = useSelector(state => state.productList);
+    // const { loading1, error1, products } = productList;
+    // useEffect(() => {
+    //     if (vendor_id) {
+    //         dispatch(detailsVendor(vendor_id));
+    //     };
+    //     if (loading & !error) {
+    //         dispatch(listProducts(vendor_id));
+    //     }
+    //   }, [dispatch, vendor_id, loading, error]);
 
     return (
         <div>
-        {(loading | loading1) ? (
+        {/* {(loading | loading1) ? (
             <LoadingBox></LoadingBox>
         ) : (error | error1) ? (
             <MessageBox variant="danger">{error}{error1}</MessageBox>
@@ -62,7 +122,6 @@ const VendorScreen = () => {
 
                 </div>
             </div>
-        )}
         </div>
     );
 }

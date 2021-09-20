@@ -22,6 +22,7 @@ module.exports = {
       cardColor: '#f5ede4',
       buttonColor: '#cbc2bc',
       white: '#fff',
+      black: '#000',
       danger: colors.red[600],
       warn: colors.amber[400],
       success: colors.emerald[600],

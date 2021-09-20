@@ -1,19 +1,20 @@
 import {configureStore} from "@reduxjs/toolkit"
 import {localSignIn} from "./user/thunk";
 import user from "./user"
-import productList from './product/index';
+import language from "./language"
 
 const store = configureStore({
     reducer: {
         user: user.reducer,
-        productList: productList.reducer,
+        language: language.reducer,
     }
 })
 
 export default store
 
 export const actions = {
-    user: user.actions
+    user: user.actions,
+    language: language.actions,
 }
 
 export const thunks = {
