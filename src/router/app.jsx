@@ -45,7 +45,8 @@ export default function AppRouter() {
     return (
         <Switch>
             {
-                isLogged != "null" ?
+                // isLogged != "null" ?
+                true ?
                     <>
                         <Route path={`${match.path}/history`}>
                             <History />
