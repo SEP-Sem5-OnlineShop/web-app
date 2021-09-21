@@ -1,105 +1,124 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
+import Axios from 'axios';
 import OrderComponent from '../../../components/customer/OrderComponent';
-// import { listOrders } from '../../../actions/alertActions';
-import LoadingBox from "../../../components/LoadingBox";
-import MessageBox from "../../../components/MessageBox";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import LoadingBox from "../../../components/customer/LoadingBox";
+import MessageBox from "../../../components/customer/MessageBox";
 
 const OrderHistoryScreen = () => {
     const customer_id = "01";
-    const loading = false;
-    const error = false;
 
-    const orders = [
-        {
-            _id:1,
-            customer_id:1,
-            vendor_id:1,
-            image:"/img/vendor.jpg",
-            date: '2021/09/12',
-            totalItems:7,
-            totalCost:700,
-            products:[
-                {
-                    product_id: '1',
-                    product_name: 'Burger with some',
-                    vendor_id: '613a23c0dd295c38362b2cbe',
-                    image: '/img/item1.png',
-                    price: 100,
-                    amount: 3,
-                    rated: 4,
-                    review: 'good',
-                },
-                {
-                    product_id: '2',
-                    product_name: 'Burger with some',
-                    vendor_id: '613a23c0dd295c38362b2cbe',
-                    image: '/img/item1.png',
-                    price: 100,
-                    amount: 4,
-                    rated: null,
-                    review: null,
-                }
-            ]
-        },
-        {
-            _id:2,
-            customer_id:1,
-            vendor_id:1,
-            image:"/img/vendor.jpg",
-            date: '2021/09/13',
-            totalItems:4,
-            totalCost:400,
-            products:[
-                {
-                    product_id: '1',
-                    product_name: 'Burger with some',
-                    vendor_id: '613a23c0dd295c38362b2cbe',
-                    image: '/img/item1.png',
-                    price: 100,
-                    amount: 1,
-                    rated: 5,
-                    review: 'good',
-                },
-                {
-                    product_id: '2',
-                    product_name: 'Burger with some',
-                    vendor_id: '613a23c0dd295c38362b2cbe',
-                    image: '/img/item1.png',
-                    price: 100,
-                    amount: 2,
-                    rated: 3,
-                    review: 'good',
-                },
-                {
-                    product_id: '3',
-                    product_name: 'Burger with some',
-                    vendor_id: '613a23c0dd295c38362b2cbe',
-                    image: '/img/item1.png',
-                    price: 100,
-                    amount: 1,
-                    rated: 4,
-                    review: 'good',
-                }
-            ]
-        }
-    ]
+    const history = useHistory();
+    const [orders, setOrders] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [error1, setError1] = useState(null);
     
-    // const history = useHistory();
-    // const dispatch = useDispatch();
-    // const orderList = useSelector(state => state.orderList);
-    // const { loading, error, orders } = orderList;
-    // useEffect(() => {
-    //     if (customer_id) {
-    //         dispatch(listOrders(customer_id));
-    //     };
-    //   }, [dispatch, customer_id]);
+    useEffect(() => {
+        async function listOrders(customer_id){
+            try {
+                // const { data } = await Axios.get(`/orders/${customer_id}`);
+                const data = [
+                    {
+                        _id:1,
+                        customer_id:1,
+                        vendor_id:1,
+                        image:"/img/vendor.jpg",
+                        date: '2021/09/12',
+                        totalItems:7,
+                        totalCost:700,
+                        products:[
+                            {
+                                product_id: '1',
+                                product_name: 'Burger with some',
+                                vendor_id: '613a23c0dd295c38362b2cbe',
+                                image: '/img/item1.png',
+                                price: 100,
+                                amount: 3,
+                                rated: 4,
+                                review: 'good',
+                            },
+                            {
+                                product_id: '2',
+                                product_name: 'Burger with some',
+                                vendor_id: '613a23c0dd295c38362b2cbe',
+                                image: '/img/item1.png',
+                                price: 100,
+                                amount: 4,
+                                rated: null,
+                                review: null,
+                            }
+                        ]
+                    },
+                    {
+                        _id:2,
+                        customer_id:1,
+                        vendor_id:1,
+                        image:"/img/vendor.jpg",
+                        date: '2021/09/13',
+                        totalItems:4,
+                        totalCost:400,
+                        products:[
+                            {
+                                product_id: '1',
+                                product_name: 'Burger with some',
+                                vendor_id: '613a23c0dd295c38362b2cbe',
+                                image: '/img/item1.png',
+                                price: 100,
+                                amount: 1,
+                                rated: 5,
+                                review: 'good',
+                            },
+                            {
+                                product_id: '2',
+                                product_name: 'Burger with some',
+                                vendor_id: '613a23c0dd295c38362b2cbe',
+                                image: '/img/item1.png',
+                                price: 100,
+                                amount: 2,
+                                rated: 3,
+                                review: 'good',
+                            },
+                            {
+                                product_id: '3',
+                                product_name: 'Burger with some',
+                                vendor_id: '613a23c0dd295c38362b2cbe',
+                                image: '/img/item1.png',
+                                price: 100,
+                                amount: 1,
+                                rated: 4,
+                                review: 'good',
+                            }
+                        ]
+                    }
+                ]
+                
+                setOrders(data);
+                setLoading(false);
+                setError(null);
+            } catch (err) {
+                setLoading(false);
+                console.log(err);
+                setError(err);
+            };
+        };
+        if (customer_id) {
+            listOrders(customer_id);
+        };
+    }, [customer_id]);
 
-    const handleReview = (id) => {
-        // dispatch();
+    const handleReview = (order_id,product_id) => {
+        async function addReview(order_id,product_id){
+          try {
+            const { data } = await Axios.post(`/orders/${order_id}/${product_id}`);
+          } catch (err) {
+            setError1(err);
+            console.log(error1);
+          };
+        };
+        addReview(order_id,product_id).then(() => {history.go(0);});
     };
+
     return (
         <div>
         {loading ? (

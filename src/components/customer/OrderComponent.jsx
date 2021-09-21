@@ -1,16 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import RatingComponent from '../ratingComponent';
+import RatingComponent from '../customer/ratingComponent';
 
 export default function OrderComponent({ order, handleReview }) {
-    const customer_id = 1;
     const [showModal, setShowModal] = React.useState(false);
+    const [reviewProduct, setReviewProduct] = React.useState('');
     // const [isAlert, setIsAlert] = useState(false);
     const vendor_name = "Yummy Bakers"
 
-    const addReview = (product_id) => {
-        //
-    };
+    const handleSubmit = () => {
+      setShowModal(false);
+      handleReview(order.order_id,reviewProduct);
+      setShowModal(false);
+  };
 
     return (
         <>
@@ -40,7 +42,7 @@ export default function OrderComponent({ order, handleReview }) {
                                     <RatingComponent rating={product.rated} size={24} />
                                 ) : (
                                     <div>
-                                        <button className="sm:mx-1 rounded-xl shadow w-24 h-12 sm:w-28 sm:h-14 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400 " onClick={() => setShowModal(true)}>
+                                        <button className="sm:mx-1 rounded-xl shadow w-24 h-12 sm:w-28 sm:h-14 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400 " onClick={() => setShowModal(true) && setReviewProduct(product.product_id)}>
                                             <span className="">Add Review</span>
                                         </button>
                                     </div>
@@ -56,7 +58,7 @@ export default function OrderComponent({ order, handleReview }) {
         {showModal ? (
         <>
           <div
-            className="justify-center items-center bg-white bg-opacity-50 flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+            className="justify-center items-center bg-black bg-opacity-50 flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
             <div className="relative w-auto my-6 mx-auto sm:min-w-1/2">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -81,7 +83,7 @@ export default function OrderComponent({ order, handleReview }) {
                   <button className="bg-accent text-danger font-bold uppercase text-sm px-5 py-2 rounded shadow-sm hover:shadow-lg outline-none focus:outline-none mr-4 mb-1 ease-linear transition-all duration-150" type="button" onClick={() => setShowModal(false)}>
                     Close
                   </button>
-                  <button className="bg-success text-white font-bold uppercase text-sm px-6 py-2 rounded shadow-sm hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={() => setShowModal(false)}>
+                  <button className="bg-success text-white font-bold uppercase text-sm px-6 py-2 rounded shadow-sm hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={() => handleSubmit()}>
                     Save
                   </button>
                 </div>
