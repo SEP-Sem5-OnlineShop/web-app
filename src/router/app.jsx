@@ -50,9 +50,6 @@ export default function AppRouter() {
                         <Route path={`${match.path}/history`}>
                             <History />
                         </Route>
-                        <Route path={`${match.path}/alert`}>
-                            <AlertScreen />
-                        </Route>
                         <Route path={`${match.path}/profile`}>
                             <Profile />
                         </Route>
