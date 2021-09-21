@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 import RatingComponent from '../../../components/customer/ratingComponent';
 import ReviewComponent from '../../../components/customer/reviewComponent';
+import LoadingBox from '../../../components/customer/loadingBox';
+import MessageBox from '../../../components/customer/messageBox';
 
 const ProductScreen = () => {
     const { id: vendor_id } = useParams();
@@ -22,8 +24,9 @@ const ProductScreen = () => {
             const data = {
                 _id:'1',
                 product_name: 'Burger with some',
-                seller: '613a23c0dd295c38362b2cbe',
+                vendor_id: '613a23c0dd295c38362b2cbe',
                 image: '/img/item1.png',
+                description: 'ingredients: flour, vegetables, cheese, ketchup, mayoneese   description description description description description description description description description description description description description description description description description',
                 price: 100,
                 stock: 10,
                 status: 'available',
@@ -31,15 +34,15 @@ const ProductScreen = () => {
                 numReviews: 2,
                 reviews: [
                     {
-                        comment: 'good product good product good product good product good product good product good product',
                         rating: 4,
+                        comment: 'good product good product good product good product good product good product good product',
                         customer: '613a23c0dd295c38362b2cbe',
                         customer_name: 'Asta',
                         image: '/img/vendor.jpg',
                     },
                     {
-                        comment: 'good product good product good product good product good product good product good product good product good product good product good product good product good product',
                         rating: 5,
+                        comment: 'good product good product good product good product good product good product good product good product good product good product good product good product good product',
                         customer: '613a23c0dd295c38362b2cbe',
                         customer_name: 'Yuno',
                         image: '/img/vendor.jpg',
@@ -61,6 +64,12 @@ const ProductScreen = () => {
   }, [vendor_id, product_id, loading, error]);
 
     return (
+        <>
+        {(loading ) ? (
+            <LoadingBox></LoadingBox>
+        ) : (error) ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-16">
             <div className="relative">
                 <div  className="w-full h-full bg-center bg-cover rounded-xl" style={{ minHeight: '50vh', backgroundImage: `url(${product.image})` }}>
@@ -81,9 +90,7 @@ const ProductScreen = () => {
                     {product.rating} ({product.numReviews}+)
                 </div>
                 <div className="mt-4 sm:mt-8">
-                    <span className="text-secondary">
-                        description description description description description description description description description description description description description description description description description description description description description description description description description description description description description.
-                    </span>
+                    <span className="text-secondary">{product.description}</span>
                 </div>
             </div>
             <div>
@@ -97,6 +104,8 @@ const ProductScreen = () => {
                 </div>
             </div>
         </div>
+        )}
+        </>
     )
 };
  
