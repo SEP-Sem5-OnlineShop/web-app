@@ -14,6 +14,7 @@ import { actions } from "../store"
 import VendorScreen from "../views/app/customer/vendorScreen";
 import AlertScreen from "../views/app/customer/alertScreen";
 import ProductScreen from "../views/app/customer/productScreen";
+import ProductScreen1 from "../views/app/customer/productScreen1";
 import OrderHistoryScreen from "../views/app/customer/OrderHistoryScreen";
 import CustomerProfileScreen from "../views/app/customer/CustomerProfileScreen";
 import CustomerNotificationScreen from "../views/app/customer/CustomerNotificationScreen";
@@ -62,6 +63,9 @@ export default function AppRouter() {
                         </Route>
                         <Route path={`${match.path}/vendor_:id/product_:pid`} exact>
                             <ProductScreen />
+                        </Route>
+                        <Route path={`${match.path}/vendor_:id/product`} exact>
+                            <ProductScreen1 />
                         </Route>
                         <Route path={`${match.path}/alert`}>
                             <AlertScreen />
