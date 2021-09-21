@@ -1,11 +1,11 @@
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import ProductComponent from '../../../components/customer/productComponent';
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import RatingComponent from '../../../components/customer/ratingComponent';
-import LoadingBox from '../../../components/customer/LoadingBox';
-import MessageBox from '../../../components/customer/MessageBox';
+import LoadingBox from '../../../components/customer/loadingBox';
+import MessageBox from '../../../components/customer/messageBox';
 
 
 const VendorScreen = () => {

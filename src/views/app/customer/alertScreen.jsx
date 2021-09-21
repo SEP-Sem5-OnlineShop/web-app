@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import AlertComponent from '../../../components/customer/alertComponent';
-import LoadingBox from "../../../components/customer/LoadingBox";
-import MessageBox from "../../../components/customer/MessageBox";
+import LoadingBox from "../../../components/customer/loadingBox";
+import MessageBox from "../../../components/customer/messageBox";
 
 const AlertScreen = () => {
   const customer_id = "01";

@@ -1,10 +1,10 @@
-import React from 'react'
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import RatingComponent from '../customer/ratingComponent';
+import RatingComponent from './ratingComponent';
 
 export default function OrderComponent({ order, handleReview }) {
-    const [showModal, setShowModal] = React.useState(false);
-    const [reviewProduct, setReviewProduct] = React.useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [reviewProduct, setReviewProduct] = useState('');
     // const [isAlert, setIsAlert] = useState(false);
     const vendor_name = "Yummy Bakers"
 

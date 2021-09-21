@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 import RatingComponent from '../../../components/customer/ratingComponent';
-import Review from '../../../components/review'
+import ReviewComponent from '../../../components/customer/reviewComponent';
 
 const ProductScreen = () => {
     const { id: vendor_id } = useParams();
@@ -31,17 +31,17 @@ const ProductScreen = () => {
                 numReviews: 2,
                 reviews: [
                     {
-                        comment: 'good product fasdlfjlsa skdflasdlf jasdflkajdf lafjklasj',
+                        comment: 'good product good product good product good product good product good product good product',
                         rating: 4,
                         customer: '613a23c0dd295c38362b2cbe',
-                        customer_name: 'asta',
+                        customer_name: 'Asta',
                         image: '/img/vendor.jpg',
                     },
                     {
-                        comment: 'good product fasdlfjlsa skdflasdlf jasdflkajdf lafjklasj',
+                        comment: 'good product good product good product good product good product good product good product good product good product good product good product good product good product',
                         rating: 5,
                         customer: '613a23c0dd295c38362b2cbe',
-                        customer_name: 'asta',
+                        customer_name: 'Yuno',
                         image: '/img/vendor.jpg',
                     }
                 ]
@@ -89,8 +89,11 @@ const ProductScreen = () => {
             <div>
                 <div className="text-xl text-textLight font-medium">Reviews</div>
                 <div className="mt-4">
-                    <div className=""><Review /></div>
-                    <div className="mt-8"><Review /></div>
+                    {product.reviews && <>
+                        {product.reviews.map((review) => (
+                            <ReviewComponent review={review} />
+                        ))}
+                    </>}
                 </div>
             </div>
         </div>
