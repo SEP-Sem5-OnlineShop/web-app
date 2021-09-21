@@ -1,20 +1,21 @@
-import React, {useEffect, useState} from "react";
-import {motion} from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import InputWithValidation from "../../../../components/input-with-validation";
 import SelectWithValidation from "../../../../components/select-with-validation";
-import { uploadFileToBlob } from "../../../../api/azure-storage-blob";
+import { uploadFileToBlob, deleteBlobFile } from "../../../../api/azure-storage-blob";
 
+// registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 export default function Step3(props) {
 
+    const comProps = {
+        formik: props.formik || {},
+        setActiveTab: props.setActiveTab || (() => { })
+    }
+
     const [array, setArray] = useState(["1"])
-    // all blobs in container
-    const [blobList, setBlobList] = useState([]);
 
     // current file to upload into container
     const [fileSelected, setFileSelected] = useState(null);
-
-    // UI/form management
-    const [uploading, setUploading] = useState(false);
     const [inputKey, setInputKey] = useState(Math.random().toString(36));
 
     const onFileChange = (event) => {
@@ -23,34 +24,19 @@ export default function Step3(props) {
     };
 
     const onFileUpload = async () => {
-        // prepare UI
-        setUploading(true);
-
-        // *** UPLOAD TO AZURE STORAGE ***
-        let blobsInContainer = ''
+        let fileName;
         try {
-            blobsInContainer = await uploadFileToBlob(fileSelected);
+            fileName = await uploadFileToBlob(fileSelected);
+            comProps.formik.setFieldValue("imageUrl", fileName)
         }
         catch (e) {
             console.log(e)
         }
-
-        // prepare UI for results
-        setBlobList(blobsInContainer);
-
-        // reset state/form
-        setFileSelected(null);
-        setUploading(false);
-        setInputKey(Math.random().toString(36));
     };
 
-    const comProps = {
-        formik: props.formik || {},
-        setActiveTab: props.setActiveTab || (() => {})
-    }
     useEffect(() => {
         let array = []
-        for (let i = 1; i<parseInt(comProps.formik.values.vehicles)+1; i++) {
+        for (let i = 1; i < parseInt(comProps.formik.values.vehicles) + 1; i++) {
             array.push(i)
         }
         setArray(array)
@@ -66,19 +52,19 @@ export default function Step3(props) {
                         id="vehicles"
                         name="vehicles"
                         label="Number of Vehicles"
-                        items={["1","2","3","4","5"]}
+                        items={["1", "2", "3", "4", "5"]}
                         className="mb-4"
                     />
                     <motion.div layout>
                         {
-                            array.map((item,index) => {
+                            array.map((item, index) => {
                                 return <InputWithValidation
                                     key={item}
                                     formik={comProps.formik}
                                     id={`vehicleNo${item}`}
                                     name={`vehicleNo${item}`}
                                     label={`Vehicle #${item}`}
-                                    items={["1","2","3","4","5"]}
+                                    items={["1", "2", "3", "4", "5"]}
                                     className="mb-4"
                                 />
                             })
@@ -86,7 +72,10 @@ export default function Step3(props) {
                     </motion.div>
                     <div>
                         <input type="file" onChange={onFileChange} key={inputKey || ''} />
-                        <button type="submit" onClick={onFileUpload}>
+                        <button type="button" onClick={onFileUpload}>
+                            Upload!
+                        </button>
+                        <button type="button" onClick={() => deleteBlobFile()}>
                             Upload!
                         </button>
                     </div>

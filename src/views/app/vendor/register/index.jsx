@@ -23,7 +23,7 @@ export default function VendorRegistration() {
             address: '',
             vehicles: '1',
             vehicleNo1: '',
-
+            imageUrl: ''
         },
         validationSchema: Yup.object({
             name: Yup.string()
@@ -59,7 +59,6 @@ export default function VendorRegistration() {
             }
         },
     });
-
     const initialAnimation = {
         opacity: 0,
         x: '-100px',
