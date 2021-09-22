@@ -1,7 +1,7 @@
 // import { useHistory } from 'react-router-dom';
 import ProductComponent from './productComponent';
 import { Link, useParams } from 'react-router-dom';
-import RatingComponent from '../../components/ratingComponent';
+import RatingComponent from '../../components/customer/ratingComponent';
 
 
 const VendorScreen = () => {
