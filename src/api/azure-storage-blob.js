@@ -49,8 +49,7 @@ const createBlobInContainer = async (containerClient, file) => {
   };
 
   // upload file
-  await blobClient.uploadBrowserData(file, options);
-  return fileName
+  return [await blobClient.uploadBrowserData(file, options), fileName];
 }
 
 export const deleteBlobFile = async (fileName) => {
