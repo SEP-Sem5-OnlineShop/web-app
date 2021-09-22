@@ -1,6 +1,7 @@
 import Axios  from 'axios'
 import auth from './auth/index'
 import vendor from './general/vendor'
+import product from './app/product'
 import store, {actions} from "../store/index"
 
 /*
@@ -56,3 +57,4 @@ export const baseURL = BASE_URL;
 
 export const authApi = auth
 export const vendorApi = vendor
+export const productApi = product
