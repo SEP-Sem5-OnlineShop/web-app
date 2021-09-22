@@ -9,7 +9,7 @@ const OrderHistoryScreen = () => {
     const customer_id = "01";
 
     const history = useHistory();
-    const [orders, setOrders] = useState('');
+    const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [error1, setError1] = useState(null);
@@ -17,7 +17,7 @@ const OrderHistoryScreen = () => {
     useEffect(() => {
         async function listOrders(customer_id){
             try {
-                // const { data } = await Axios.get(`/orders/${customer_id}`);
+                // const { data } = await Axios.get(`app/customer/orders/${customer_id}`);
                 const data = [
                     {
                         _id:1,

@@ -12,7 +12,7 @@ const VendorScreen = () => {
   const { id: vendor_id } = useParams();
 
   const [vendor, setVendor] = useState('')
-  const [products, setProducts] = useState('');
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loading1, setLoading1] = useState(true);
@@ -22,7 +22,7 @@ const VendorScreen = () => {
     async function detailsVendor(vendor_id){
       setLoading(true);
       try {
-        // const { data } = await Axios.get(`/vendors/${vendor_id}`);
+        // const { data } = await Axios.get(`app/customer/vendors/${vendor_id}`);
         const data = {
           vendor_id: "1",
           vendor_name: "Yummy Backers",
@@ -43,7 +43,7 @@ const VendorScreen = () => {
 
     async function listProducts(vendor_id){
       try {
-        // const { data } = await Axios.get(`/products/${vendor_id}`);
+        // const { data } = await Axios.get(`app/customer/products/${vendor_id}`);
         const data = [
           { _id:'1',
             product_name: 'Burger with some',

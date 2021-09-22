@@ -20,7 +20,7 @@ const ProductScreen = () => {
     async function detailsProduct(product_id){
         setLoading(true);
         try {
-            // const { data } = await Axios.get(`/products/${product_id}`);
+            // const { data } = await Axios.get(`app/customer/product/${product_id}`);
             const data = {
                 _id:'1',
                 product_name: 'Burger with some',

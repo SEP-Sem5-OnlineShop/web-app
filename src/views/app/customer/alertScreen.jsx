@@ -9,7 +9,7 @@ const AlertScreen = () => {
   const customer_id = "01";
     
   const history = useHistory();
-  const [alerts, setAlerts] = useState('');
+  const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [error1, setError1] = useState(null);
@@ -17,7 +17,7 @@ const AlertScreen = () => {
   useEffect(() => {
     async function listAlerts(customer_id){
       try {
-        // const { data } = await Axios.get(`/products/${vendor_id}`);
+        // const { data } = await Axios.get(`app/customer/alerts/${customer_id}`);
         const data = [
           {
             alert_id: 1,
@@ -83,7 +83,7 @@ const AlertScreen = () => {
   const handleRemove = (id) => {
     async function deleteAlert(alertId){
       try {
-        const { data } = await Axios.delete(`/alerts/${alertId}`);
+        const { data } = await Axios.delete(`app/customer/alerts/${alertId}`);
       } catch (err) {
         setError1(err);
         console.log(error1);
