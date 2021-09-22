@@ -11,10 +11,9 @@ import AuthRouter from "./auth";
 import MainLayout from "../layout/home-layout";
 import InnerPageLayout from "../layout/inner-page-layout"
 import VendorRegistration from '../views/app/vendor/register/index'
-import SingleProduct from '../views/app/product/single/singleProduct'
-import VendorScreen from "../views/app/vendorScreen";
+import ProductScreen from "../views/app/customer/productScreen";
+import VendorScreen from "../views/app/customer/vendorScreen";
 import Page404 from "../views/404"
-import Pizza from '../assets/img/pizza.jpg'
 import { actions } from "../store"
 
 export default function MainRouter() {
@@ -34,7 +33,7 @@ export default function MainRouter() {
         dispatch(actions.user.setAuthToken(token))
         dispatch(actions.user.setRole(role))
 
-    }, [])
+    }, [dispatch])
 
     return (
         <Router>
@@ -61,9 +60,8 @@ export default function MainRouter() {
                 <Route path={`/vendor_:id`} exact>
                     <InnerPageLayout><VendorScreen /></InnerPageLayout>
                 </Route>
-                <Route path={`/vendor_:id/product_:id`}>
-                    <InnerPageLayout><SingleProduct name='Pizza' img={Pizza}
-                        description='ingredients: flour, vegetables, cheese, ketchup, mayoneese' /></InnerPageLayout>
+                <Route path={`/vendor_:id/product_:pid`} exact>
+                    <InnerPageLayout><ProductScreen /></InnerPageLayout>
                 </Route>
             </Switch>
         </Router>
