@@ -1,18 +1,18 @@
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import ProductComponent from '../../../components/customer/productComponent';
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import RatingComponent from '../../../components/ratingComponent';
-import LoadingBox from '../../../components/LoadingBox';
-import MessageBox from '../../../components/MessageBox';
+import RatingComponent from '../../../components/customer/ratingComponent';
+import LoadingBox from '../../../components/customer/loadingBox';
+import MessageBox from '../../../components/customer/messageBox';
 
 
 const VendorScreen = () => {
   const { id: vendor_id } = useParams();
 
   const [vendor, setVendor] = useState('')
-  const [products, setProducts] = useState('');
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loading1, setLoading1] = useState(true);
@@ -22,7 +22,7 @@ const VendorScreen = () => {
     async function detailsVendor(vendor_id){
       setLoading(true);
       try {
-        // const { data } = await Axios.get(`/vendors/${vendor_id}`);
+        // const { data } = await Axios.get(`app/customer/vendors/${vendor_id}`);
         const data = {
           vendor_id: "1",
           vendor_name: "Yummy Backers",
@@ -34,15 +34,16 @@ const VendorScreen = () => {
         setVendor(data);
         setLoading(false);
         setError(null);
-      } catch (error) {
+      } catch (err) {
         setLoading(false);
-        setError(error);
+        console.log(err);
+        setError(err);
       };
     };
 
     async function listProducts(vendor_id){
       try {
-        // const { data } = await Axios.get(`/products/${vendor_id}`);
+        // const { data } = await Axios.get(`app/customer/products/${vendor_id}`);
         const data = [
           { _id:'1',
             product_name: 'Burger with some',
@@ -102,9 +103,10 @@ const VendorScreen = () => {
         setProducts(data);
         setLoading1(false);
         setError1(null);
-      } catch (error) {
+      } catch (err) {
         setLoading1(false);
-        setError1(error);
+        console.log(err);
+        setError1(err);
       };
     };
 
@@ -141,8 +143,8 @@ const VendorScreen = () => {
               <div style={{ backgroundImage: `url(${vendor.image})` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full absolute top-0 left-0 z-0"/>
               <Link to={`/app/vendor_${vendor_id}`}>
               <div className="h-52 w-full flex px-10 items-end relative z-10">
-                  <span className="ml-8 my-6 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor.vendor_name}</span>
-                  <span className="ml-7 my-6 text-3xl sm:text-5xl text-white font-semibold relative z-10">{vendor.vendor_name}</span>
+                  {/* <span className="ml-8 my-6 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor.vendor_name}</span> */}
+                  <span style={{'-webkit-text-fill-color': 'white', '-webkit-text-stroke-width': '1px', '-webkit-text-stroke-color': '#000000', 'text-shadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-7 my-6 text-3xl sm:text-5xl text-white font-semibold relative z-10">{vendor.vendor_name}</span>
               </div>
               </Link>
 

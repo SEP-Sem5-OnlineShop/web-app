@@ -27,7 +27,7 @@ const ProductComponent = ({ product, vendor_id }) => {
             <div className="mx-4 my-2 flex flex-col justify-between items-start">
                 <Link className="text-base sm:text-xl text-secondary font-semibold" to={`vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
                 <span className="text-sm sm:text-lg text-secondary">Available: { product.stock }</span>
-                <span className="text-sm sm:text-lg text-secondary">${ product.price }</span>
+                <span className="text-sm sm:text-lg text-secondary">LKR { product.price }</span>
             </div>
             <div className="mr-1 my:4 sm:mx-4 flex flex-col justify-center items-end">
                 <button className="rounded-xl shadow w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(product._id)}>
