@@ -1,5 +1,6 @@
 import React from "react"
 import { useTable, useGlobalFilter } from 'react-table'
+import parse from 'html-react-parser'
 import {productApi} from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
 
@@ -17,6 +18,7 @@ export default function ProductList() {
                     'col4': item.price || "",
                     'col5': item.discount || "Not Set",
                     'col6': item.stock || "0",
+                    'col7': parse('<button>Click</button>')
                 })
             })
             setData(list)
@@ -52,6 +54,10 @@ export default function ProductList() {
                 Header: 'Today Stock',
                 accessor: 'col6',
             },
+            {
+                Header: 'Operations',
+                accessor: 'col7',
+            },
         ],
         []
     )
@@ -65,43 +71,48 @@ export default function ProductList() {
     } = useTable({ columns, data })
 
     return (
-        <CardTemplate>
-            <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-cardColor">
-                {headerGroups.map(headerGroup => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map(column => (
-                            <th
-                                {...column.getHeaderProps()}
-                                scope="col"
-                                className="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                                {column.render('Header')}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
-                </thead>
-                <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
-                {rows.map(row => {
-                    prepareRow(row)
-                    return (
-                        <tr {...row.getRowProps()}>
-                            {row.cells.map(cell => {
-                                return (
-                                    <td
-                                        {...cell.getCellProps()}
-                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
-                                    >
-                                        {cell.render('Cell')}
-                                    </td>
-                                )
-                            })}
+        <div className="flex justify-center">
+            <div className="w-full lg:w-2/3 flex flex-col items-center justify-center p-8">
+                <div className="w-full text-3xl font-medium">My Products</div><CardTemplate>
+                <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-cardColor">
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map(column => (
+                                <th
+                                    {...column.getHeaderProps()}
+                                    scope="col"
+                                    className="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    {column.render('Header')}
+                                </th>
+                            ))}
                         </tr>
-                    )
-                })}
-                </tbody>
-            </table>
-        </CardTemplate>
+                    ))}
+                    </thead>
+                    <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
+                    {rows.map(row => {
+                        prepareRow(row)
+                        return (
+                            <tr {...row.getRowProps()}>
+                                {row.cells.map(cell => {
+                                    return (
+                                        <td
+                                            {...cell.getCellProps()}
+                                            className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
+                                        >
+                                            {cell.render('Cell')}
+                                        </td>
+                                    )
+                                })}
+                            </tr>
+                        )
+                    })}
+                    </tbody>
+                </table>
+            </CardTemplate>
+            </div>
+        </div>
+
     )
 }
