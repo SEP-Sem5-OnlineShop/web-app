@@ -58,3 +58,5 @@ export const baseURL = BASE_URL;
 
 export const authApi = auth
 export const vendorApi = vendor
+export const productApi = product
+export const vendorRequestApi = vendorRequest
