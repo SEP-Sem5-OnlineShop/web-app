@@ -34,6 +34,7 @@ const ProductScreen = () => {
                 numReviews: 2,
                 reviews: [
                     {
+                        _id:1,
                         rating: 4,
                         comment: 'good product good product good product good product good product good product good product',
                         customer: '613a23c0dd295c38362b2cbe',
@@ -41,6 +42,7 @@ const ProductScreen = () => {
                         image: '/img/vendor.jpg',
                     },
                     {
+                        _id:2,
                         rating: 5,
                         comment: 'good product good product good product good product good product good product good product good product good product good product good product good product good product',
                         customer: '613a23c0dd295c38362b2cbe',
@@ -98,7 +100,7 @@ const ProductScreen = () => {
                 <div className="mt-4">
                     {product.reviews && <>
                         {product.reviews.map((review) => (
-                            <ReviewComponent review={review} />
+                            <ReviewComponent key={review._id} review={review} />
                         ))}
                     </>}
                 </div>
