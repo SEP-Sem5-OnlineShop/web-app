@@ -1,4 +1,5 @@
-import axios from "axios";
+import {axios} from "../index";
+import store from "../../store";
 
 const vendor = {
     create: async function (formData) {
@@ -8,9 +9,11 @@ const vendor = {
         return await axios.put(`/app/product/${id}`, formData)
     },
     get: async function (id) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
         return await axios.get(`/app/product/${id}`)
     },
     getList: async function () {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
         return await axios.get("/app/products")
     },
     delete: async function (id) {

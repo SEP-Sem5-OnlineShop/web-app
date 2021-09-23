@@ -16,6 +16,7 @@ export function localSignIn(username, password) {
                 dispatch(userSlice.actions.setUserData(data.data))
                 dispatch(userSlice.actions.setAuthToken(data.accessToken))
                 dispatch(userSlice.actions.setRole(data.data.role))
+                dispatch(userSlice.actions.setIsLogin("yes"))
             }
             return status
         }
@@ -32,6 +33,7 @@ export function signOUt() {
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
             dispatch(userSlice.actions.setRole("guest"))
+            dispatch(userSlice.actions.setIsLogin("no"))
             window.localStorage.removeItem("userData")
             window.localStorage.setUserData("token", "")
             window.localStorage.setItem("role", "guest")

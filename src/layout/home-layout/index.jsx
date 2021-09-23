@@ -13,7 +13,7 @@ export default function MainLayout(props) {
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
     const dashboardStrings = useSelector(state => state.language.languageFile.dashboard)
-    const token = useSelector(state => state.user.token)
+    const isLogin = useSelector(state => state.user.isLogin)
     const dispatch = useDispatch()
     return (
         <div className="w-screen min-h-screen overflow-x-hidden bg-primary">
@@ -50,7 +50,7 @@ export default function MainLayout(props) {
                                 <option value="tamil" key="tamil">தமிழ்</option>
                             </select>
                             {
-                                token ?
+                                isLogin === "yes" ?
                                     <LoginRegister className="mr-4" /> :
                                     <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                         Login | Register</button>

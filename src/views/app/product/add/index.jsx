@@ -23,7 +23,7 @@ import InputWithValidation from "../../../../components/input-with-validation";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
-export default function AddProduct () {
+export default function AddProduct ({edit}) {
 
     let {id} = useParams()
     const role = useSelector(state => state.user.role)
@@ -32,7 +32,8 @@ export default function AddProduct () {
     const [editorState, setEditorState] = React.useState(
         () => EditorState.createEmpty(),
     );
-    const [files, setFiles] = React.useState([])
+    const [mainImage, setMainImage] = React.useState([])
+    const [mainThumbnailImage, setThumbnailImage] = React.useState([])
 
     const formik = useFormik({
         initialValues: {
@@ -49,10 +50,8 @@ export default function AddProduct () {
                 .required('Required'),
             price: Yup.string()
                 .required('Required'),
-            discount: Yup.string()
-                .required('Required'),
-            category: Yup.string()
-                .required('Required'),
+            discount: Yup.string(),
+            category: Yup.string(),
             description: Yup.string()
                 .required('Required'),
         }),
@@ -70,14 +69,22 @@ export default function AddProduct () {
         },
     });
 
-    useEffect(() => {
-        if(id) {
+    useEffect(async () => {
+        if(edit) {
             const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>';
-            const contentBlock = htmlToDraft(html);
-            if (contentBlock) {
-                const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-                const editorState = EditorState.createWithContent(contentState);
-                setEditorState(editorState)
+            try {
+                const {data, status} = await productApi.get(id)
+                if(data.data) {
+                    const contentBlock = htmlToDraft(data.data.description);
+                    if (contentBlock) {
+                        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                        const editorState = EditorState.createWithContent(contentState);
+                        setEditorState(editorState)
+                    }
+                }
+            }
+            catch (e) {
+
             }
         }
     },[])
@@ -135,16 +142,26 @@ export default function AddProduct () {
                                 placeholder="Add your product description here..."
                                 onEditorStateChange={setEditorState}
                             />
-                            {/*<label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Images</label>*/}
-                            {/*<FilePond*/}
-                            {/*    files={files}*/}
-                            {/*    onupdatefiles={setFiles}*/}
-                            {/*    allowMultiple={true}*/}
-                            {/*    maxFiles={3}*/}
-                            {/*    server="/api"*/}
-                            {/*    name="files"*/}
-                            {/*    labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'*/}
-                            {/*/>*/}
+                            <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
+                            <FilePond
+                               files={mainImage}
+                               onupdatefiles={setMainImage}
+                               allowMultiple={true}
+                               maxFiles={1}
+                               server="/api"
+                               name="files"
+                               labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                            />
+                            <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
+                            <FilePond
+                               files={mainThumbnailImage}
+                               onupdatefiles={setThumbnailImage}
+                               allowMultiple={true}
+                               maxFiles={1}
+                               server="/api"
+                               name="files"
+                               labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                            />
                             <div className="flex justify-end">
                                 <button type="submit" className="p-2 text-white rounded bg-textLight">Submit</button>
                             </div>

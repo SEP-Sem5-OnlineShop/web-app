@@ -19,12 +19,18 @@ const axiosApiInstance = Axios.create()
 /**
  * If the access token will be expired then get new access token using the refresh token
  */
+
+Axios.interceptors.request.use( function (config) {
+    const state = store.getState()
+    setAuthToken(state.user.token)
+    return config
+});
+
 Axios.interceptors.response.use(async response => {
         return response
     },
     async function (error) {
         const originalRequest = error.config;
-        console.log()
         if(error.response.status === 401 && error.response.data.message === "Token Expired!") {
             // Force logout and login again
             store.dispatch(actions.user.setUserData({}))
@@ -46,7 +52,7 @@ Axios.interceptors.response.use(async response => {
 )
 
 export const setAuthToken = (token) => {
-    Axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+    Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
 export const fullURL = (path) => {

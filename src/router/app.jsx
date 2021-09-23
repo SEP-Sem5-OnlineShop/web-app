@@ -25,24 +25,7 @@ import ProductList from "../views/app/product/list";
 
 export default function AppRouter() {
     const match = useRouteMatch()
-
-    React.useEffect(() => {
-        // Set language when page refreshing
-        const selectedLanguage = window.localStorage.getItem("language")
-        dispatch(actions.language.setLanguage(selectedLanguage))
-
-        // Set user data, token and role when page refreshing
-        const userData = JSON.parse(window.localStorage.getItem("userData"))
-        const token = window.localStorage.getItem("token")
-        const role = window.localStorage.getItem("role")
-        dispatch(actions.user.setUserData(userData))
-        dispatch(actions.user.setAuthToken(token))
-        dispatch(actions.user.setRole(role))
-
-    }, [])
     const isLogged = useSelector(state => state.user.token)
-
-    const dispatch = useDispatch()
     return (
         <Switch>
             {
@@ -55,8 +38,14 @@ export default function AppRouter() {
                         <Route path={`${match.path}/profile`}>
                             <Profile />
                         </Route>
-                        <Route path={`${match.path}/product/add`}>
+                        <Route path={`${match.path}/product/:id`}>
+                            <AddProduct edit={true} />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/product`}>
                             <AddProduct />
+                        </Route>
+                        <Route path={`${match.path}/products`}>
+                            <ProductList />
                         </Route>
                         {/* <Route path={`${match.path}/vendor_:id`} exact>
                             <VendorScreen />

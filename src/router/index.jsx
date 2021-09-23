@@ -29,9 +29,11 @@ export default function MainRouter() {
         const userData = JSON.parse(window.localStorage.getItem("userData"))
         const token = window.localStorage.getItem("token")
         const role = window.localStorage.getItem("role")
+        const isLogin = window.localStorage.getItem("isLogin")
         dispatch(actions.user.setUserData(userData))
         dispatch(actions.user.setAuthToken(token))
         dispatch(actions.user.setRole(role))
+        dispatch(actions.user.setIsLogin(isLogin))
 
     }, [dispatch])
 

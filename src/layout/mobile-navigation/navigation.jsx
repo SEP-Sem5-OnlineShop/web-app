@@ -32,7 +32,8 @@ export const Navigation = () => {
 
 const itemIds = [
   {name: "Vendor Registration", link: "/register/vendor", accessLevel: "guest"}, 
-  {name: "Add Product", link: "/app/product/add", accessLevel: "vendor"}, 
+  {name: "Add Product", link: "/app/product", accessLevel: "vendor"},
+  {name: "Product List", link: "/app/products", accessLevel: "vendor"},
   {name: "Check Alerts", link: "/app/alert", accessLevel: "customer"},
   {name: "Check Order History", link: "/app/order_history", accessLevel: "customer"}
 ];
