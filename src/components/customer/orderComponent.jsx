@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RatingComponent from './ratingComponent';
-import SetRatingComponent from './setRatingComponent';
+import { FaStar } from "react-icons/fa";
 
 export default function OrderComponent({ order, handleReview }) {
     const [showModal, setShowModal] = useState(false);
@@ -19,9 +19,6 @@ export default function OrderComponent({ order, handleReview }) {
       } else {
         alert('Please enter review and rating');
       }
-      setShowModal(false);
-      handleReview(order.order_id,reviewProduct);
-      setShowModal(false);
   };
     return (
         <>
@@ -84,8 +81,18 @@ export default function OrderComponent({ order, handleReview }) {
                     </span>
                   </button>
                 </div>
-                <div className="relative p-6 flex-auto">
-                    <SetRatingComponent rating={3} size={24} />
+                <div className="relative px-6 pb-4 flex-auto">
+                    <div className="flex">
+                      {[...Array(5)].map((item, index) => {
+                        const givenRating = index + 1;
+                        return (
+                          <label>
+                            <input className="invisible" type="radio" value={givenRating} onClick={() => {setRating(givenRating);}}/>
+                            <FaStar color={ givenRating < rating || givenRating === rating ? "#ffc107" : "#e4e5e9" } size={25} />
+                          </label>
+                        );
+                      })}
+                    </div>
                     <input type="text" value={review} onChange={(e) => setReview(e.target.value)} className="bg-cardColor appearance-none border-2 border-text rounded w-full mt-4 py-2 px-4 text-text leading-tight focus:outline-none focus:bg-white focus:border-textLight"/>
                 </div>
                 <div className="flex items-center justify-end px-6 pb-4 rounded-b">

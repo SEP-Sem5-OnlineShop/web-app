@@ -111,14 +111,15 @@ const OrderHistoryScreen = () => {
         async function addReview(order_id,product_id,review){
             try {
               console.log(review);
-            // const { data } = await Axios.post(`/orders/${order_id}/${product_id}`,review);
+              await Axios.post(`/orders/${order_id}/${product_id}`,review);
+              alert('added new review and rating');
           } catch (err) {
             setError1(err);
             console.log(error1);
           };
         };
-        // addReview(order_id,product_id,review).then(() => {history.go(0);});
-        addReview(order_id,product_id,review);
+        addReview(order_id,product_id,review).then(() => {history.go(0);});
+        // addReview(order_id,product_id,review);
     };
 
     return (

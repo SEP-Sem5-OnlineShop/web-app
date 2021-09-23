@@ -11,10 +11,74 @@ import vegetables from "../../assets/img/vegetables.jpg"
 import IconPanel from "./icon-panel"
 import SwiperSliderContainer from "./swiper-slider-container";
 import { SwiperSlide } from "swiper/react";
+import { useEffect, useState } from "react";
 
 
 export default function HomeDsand() {
     const dashboardStrings = useSelector(state => state.language.languageFile.dashboard)
+    
+    const [vendors, setVendors] = useState([])
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+    async function listVendors(){
+        setLoading(true);
+        try {
+        // const { data } = await Axios.get(`app/customer/vendors/`);
+        const data = [
+            {
+                _id: "1",
+                vendor_name: "Yummy Backers",
+                vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
+                image:"/img/vendor.jpg",
+                rating: '5.0',
+                ratingCount: 2,
+            },
+            {
+                _id: "2",
+                vendor_name: "Yummy Backers",
+                vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
+                image:"/img/vendor.jpg",
+                rating: '4.0',
+                ratingCount: 5,
+            },
+            {
+                _id: "3",
+                vendor_name: "Yummy Backers",
+                vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
+                image:"/img/vendor.jpg",
+                rating: '3.0',
+                ratingCount: 6,
+            },
+            {
+                _id: "4",
+                vendor_name: "Yummy Backers",
+                vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
+                image:"/img/vendor.jpg",
+                rating: '4.0',
+                ratingCount: 10,
+            },
+            {
+                _id: "5",
+                vendor_name: "Yummy Backers",
+                vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
+                image:"/img/vendor.jpg",
+                rating: '5.0',
+                ratingCount: 3,
+            },
+        ];
+        setVendors(data);
+        setLoading(false);
+        setError(null);
+        } catch (err) {
+        setLoading(false);
+        console.log(err);
+        setError(err);
+        };
+    };
+    listVendors();
+    }, []);
 
     return (
         <React.Fragment>
@@ -28,157 +92,32 @@ export default function HomeDsand() {
                     <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.todaysDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full relative z-0">
                         <SwiperSliderContainer className="relative z-0">
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={pizza}
-                                    vendor='Pizza Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={bread}
-                                    vendor='Bread Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={cherry}
-                                    vendor='Fruit Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={vegetables}
-                                    vendor='Vegetable Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={plants}
-                                    vendor='Plants Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={bread}
-                                    vendor='Bread Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={cherry}
-                                    vendor='Fruit Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
+                            {vendors && <>
+                                {vendors.map((vendor) => (
+                                    <SwiperSlide key={vendor._id}>
+                                        <HomeItem vendor={vendor} />
+                                    </SwiperSlide>
+                                ))}
+                            </>}
                         </SwiperSliderContainer>
                     </div>
                 </div>
 
-                <div className="w-11/12">
+                <div className="w-11/12 mb-10">
                     <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.hotDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full">
                         <SwiperSliderContainer>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={pizza}
-                                    vendor='Pizza Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={bread}
-                                    vendor='Bread Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={cherry}
-                                    vendor='Fruit Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={vegetables}
-                                    vendor='Vegetable Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={plants}
-                                    vendor='Plants Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={bread}
-                                    vendor='Bread Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <HomeItem
-                                    image={cherry}
-                                    vendor='Fruit Master'
-                                    road='19 Araliya Road'
-                                    city='Moratuwa'
-                                    price='Rs 980/='
-                                    time='40 - 50 min'
-                                />
-                            </SwiperSlide>
+                            {vendors && <>
+                                {vendors.map((vendor) => (
+                                    <SwiperSlide key={vendor._id}>
+                                        <HomeItem vendor={vendor} />
+                                    </SwiperSlide>
+                                ))}
+                            </>}
                         </SwiperSliderContainer>
                     </div>
                 </div>
+
             </div>
         </React.Fragment>
     )
