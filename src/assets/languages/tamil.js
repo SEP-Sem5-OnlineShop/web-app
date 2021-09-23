@@ -16,6 +16,8 @@ const tamil = {
         available: "அளவு",
         currency: "ரூ",
         reviews: "மதிப்பீடு",
+        items: "பொருட்களை",
+        for: "க்கான",
     }
 }
 

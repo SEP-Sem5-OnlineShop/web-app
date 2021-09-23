@@ -16,6 +16,8 @@ const sinhala = {
         available: "ප්‍රමාණය",
         currency: "රු",
         reviews: "ඇගයීම",
+        items: "අයිතම",
+        for: "සඳහා",
     }
 }
 

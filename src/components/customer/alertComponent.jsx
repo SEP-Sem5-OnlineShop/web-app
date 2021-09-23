@@ -1,7 +1,9 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const AlertComponent = ({ alert, handleRemove }) => {
-
+    
+    const productStrings = useSelector(state => state.language.languageFile.productpage);
     // const [count, setCount] = useState(1);
 
     // const handleIncrease = (e) => {
@@ -21,7 +23,7 @@ const AlertComponent = ({ alert, handleRemove }) => {
             <div className="mx-2 my-2 flex flex-col justify-between items-start">
                 <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${alert.vendor_id}/product_${alert.product_id}`}>{ alert.product_name }</Link>
                 <Link className="text-sm sm:text-lg text-secondary" to={`/vendor_${alert.vendor_id}`}>{ alert.vendor_name }</Link>
-                <span className="text-sm sm:text-lg text-secondary">LKR { alert.price }</span>
+                <span className="text-sm sm:text-lg text-secondary">{productStrings.currency} { alert.price }</span>
                 {/* <div className="sm:mt-1 flex flex-row justify-between items-center">
                     <button className="rounded-xl shadow w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-105 hover:shadow-md transition ease-out duration-400" onClick={ handleDecrease }>
                         <span className="text-3xl sm:text-4xl text-text">-</span>

@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RatingComponent from './ratingComponent';
 import { FaStar } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
 export default function OrderComponent({ order, handleReview }) {
+  const productStrings = useSelector(state => state.language.languageFile.productpage)
     const [showModal, setShowModal] = useState(false);
     const [reviewProduct, setReviewProduct] = useState('');
     // const [isAlert, setIsAlert] = useState(false);
@@ -28,7 +30,7 @@ export default function OrderComponent({ order, handleReview }) {
             </Link>
             <div className="w-full mx-4 my-2 flex flex-col justify-start items-start">
                 <Link className="text-base sm:text-xl text-secondary font-semibold sm:mx-2" to={`/vendor_${order.vendor_id}`}>{ vendor_name }</Link>
-                <span className="text-sm sm:text-base text-secondary sm:mx-2">{order.totalItems} items for LKR {order.totalCost} • {order.date} at 08:10 PM •</span>
+                <span className="text-sm sm:text-base text-secondary sm:mx-2">{order.totalItems} {productStrings.items} {productStrings.for} {productStrings.currency} {order.totalCost} • {order.date} at 08:10 PM •</span>
                 <div className="w-full mt-4 grid grid-cols-1 gap-4 lg:gap-4">
                     {order.products && <>
                         {order.products.map((product) => (
@@ -39,8 +41,8 @@ export default function OrderComponent({ order, handleReview }) {
                                     </Link>
                                     <div className="mx-4 my-2 flex flex-col justify-between items-start">
                                         <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>{ product.product_name }</Link>
-                                        <span className="text-sm sm:text-lg text-secondary">Items: { product.amount }</span>
-                                        <span className="text-sm sm:text-lg text-secondary">LKR { product.price * product.amount }</span>
+                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.items}: { product.amount }</span>
+                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.currency} { product.price * product.amount }</span>
                                     </div>
                                 </div>
                                 <div className="sm:mr-4">

@@ -16,6 +16,8 @@ const english = {
         available: "Available",
         currency: "Rs",
         reviews: "Reviews",
+        items: "Items",
+        for: "for",
     }
 }
 
