@@ -11,9 +11,9 @@ import { useDispatch } from "react-redux"
 
 import { actions } from "../store"
 
-import VendorScreen from "../views/app/customer/vendorScreen";
+// import VendorScreen from "../views/app/customer/vendorScreen";
 import AlertScreen from "../views/app/customer/alertScreen";
-import ProductScreen from "../views/app/customer/productScreen";
+// import ProductScreen from "../views/app/customer/productScreen";
 import OrderHistoryScreen from "../views/app/customer/orderHistoryScreen";
 import CustomerProfileScreen from "../views/app/customer/customerProfileScreen";
 import CustomerNotificationScreen from "../views/app/customer/customerNotificationScreen";
@@ -45,8 +45,8 @@ export default function AppRouter() {
     return (
         <Switch>
             {
-                // isLogged != "null" ?
-                true ?
+                isLogged !== "null" ?
+                // true ?
                     <>
                         <Route path={`${match.path}/history`}>
                             <History />
@@ -57,12 +57,12 @@ export default function AppRouter() {
                         <Route path={`${match.path}/product/add`}>
                             <AddProduct />
                         </Route>
-                        <Route path={`${match.path}/vendor_:id`} exact>
+                        {/* <Route path={`${match.path}/vendor_:id`} exact>
                             <VendorScreen />
                         </Route>
                         <Route path={`${match.path}/vendor_:id/product_:pid`} exact>
                             <ProductScreen />
-                        </Route>
+                        </Route> */}
                         <Route path={`${match.path}/alert`}>
                             <AlertScreen />
                         </Route>
