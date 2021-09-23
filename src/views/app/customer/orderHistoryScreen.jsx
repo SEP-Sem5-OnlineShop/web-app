@@ -107,17 +107,18 @@ const OrderHistoryScreen = () => {
         };
     }, [customer_id]);
 
-    const handleReview = (order_id,product_id) => {
-        async function addReview(order_id,product_id){
-          try {
-            const { data } = await Axios.post(`/orders/${order_id}/${product_id}`);
-            console.log(data);
+    const handleReview = (order_id,product_id,review) => {
+        async function addReview(order_id,product_id,review){
+            try {
+              console.log(review);
+            // const { data } = await Axios.post(`/orders/${order_id}/${product_id}`,review);
           } catch (err) {
             setError1(err);
             console.log(error1);
           };
         };
-        addReview(order_id,product_id).then(() => {history.go(0);});
+        // addReview(order_id,product_id,review).then(() => {history.go(0);});
+        addReview(order_id,product_id,review);
     };
 
     return (

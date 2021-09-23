@@ -1,19 +1,28 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RatingComponent from './ratingComponent';
+import SetRatingComponent from './setRatingComponent';
 
 export default function OrderComponent({ order, handleReview }) {
     const [showModal, setShowModal] = useState(false);
     const [reviewProduct, setReviewProduct] = useState('');
     // const [isAlert, setIsAlert] = useState(false);
     const vendor_name = "Yummy Bakers"
+    const [rating, setRating] = useState(0);
+    const [review, setReview] = useState('');
+    const customer = '613ebc89c71d2e07e0ec5e93';
 
     const handleSubmit = () => {
+      if (review && rating) {
+        handleReview(order._id, reviewProduct, { rating, review, customer: customer })
+        setShowModal(false);
+      } else {
+        alert('Please enter review and rating');
+      }
       setShowModal(false);
       handleReview(order.order_id,reviewProduct);
       setShowModal(false);
   };
-
     return (
         <>
         <div className="flex justify-start rounded-2xl overflow-hidden shadow-md bg-white transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
@@ -76,8 +85,8 @@ export default function OrderComponent({ order, handleReview }) {
                   </button>
                 </div>
                 <div className="relative p-6 flex-auto">
-                    <RatingComponent rating={3} size={24} />
-                    <input type="text" placeholder="enter review" className="bg-cardColor appearance-none border-2 border-text rounded w-full mt-4 py-2 px-4 text-text leading-tight focus:outline-none focus:bg-white focus:border-textLight"/>
+                    <SetRatingComponent rating={3} size={24} />
+                    <input type="text" value={review} onChange={(e) => setReview(e.target.value)} className="bg-cardColor appearance-none border-2 border-text rounded w-full mt-4 py-2 px-4 text-text leading-tight focus:outline-none focus:bg-white focus:border-textLight"/>
                 </div>
                 <div className="flex items-center justify-end px-6 pb-4 rounded-b">
                   <button className="bg-accent text-danger font-bold uppercase text-sm px-5 py-2 rounded shadow-sm hover:shadow-lg outline-none focus:outline-none mr-4 mb-1 ease-linear transition-all duration-150" type="button" onClick={() => setShowModal(false)}>
