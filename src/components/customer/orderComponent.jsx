@@ -34,7 +34,7 @@ export default function OrderComponent({ order, handleReview }) {
                                     <div className="mx-4 my-2 flex flex-col justify-between items-start">
                                         <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>{ product.product_name }</Link>
                                         <span className="text-sm sm:text-lg text-secondary">Items: { product.amount }</span>
-                                        <span className="text-sm sm:text-lg text-secondary">lkr.{ product.price * product.amount }</span>
+                                        <span className="text-sm sm:text-lg text-secondary">LKR { product.price * product.amount }</span>
                                     </div>
                                 </div>
                                 <div className="sm:mr-4">
@@ -77,7 +77,7 @@ export default function OrderComponent({ order, handleReview }) {
                 </div>
                 <div className="relative p-6 flex-auto">
                     <RatingComponent rating={3} size={24} />
-                    <input type="text" placeholder="enter review" class="bg-cardColor appearance-none border-2 border-text rounded w-full mt-4 py-2 px-4 text-text leading-tight focus:outline-none focus:bg-white focus:border-textLight"/>
+                    <input type="text" placeholder="enter review" className="bg-cardColor appearance-none border-2 border-text rounded w-full mt-4 py-2 px-4 text-text leading-tight focus:outline-none focus:bg-white focus:border-textLight"/>
                 </div>
                 <div className="flex items-center justify-end px-6 pb-4 rounded-b">
                   <button className="bg-accent text-danger font-bold uppercase text-sm px-5 py-2 rounded shadow-sm hover:shadow-lg outline-none focus:outline-none mr-4 mb-1 ease-linear transition-all duration-150" type="button" onClick={() => setShowModal(false)}>

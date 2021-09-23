@@ -144,7 +144,7 @@ const VendorScreen = () => {
               <Link to={`/vendor_${vendor_id}`}>
               <div className="h-52 w-full flex px-10 items-end relative">
                   {/* <span className="ml-8 my-6 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor.vendor_name}</span> */}
-                  <span style={{'-webkit-text-fill-color': 'white', '-webkit-text-stroke-width': '1px', '-webkit-text-stroke-color': '#000000', 'text-shadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-7 my-6 text-3xl sm:text-5xl text-white font-semibold relative">{vendor.vendor_name}</span>
+                  <span style={{'WebkitTextFillColor': 'white', 'WebkitTextStrokeWidth': '1px', 'WebkitTextStrokeColor': '#000000', 'textShadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-7 my-6 text-3xl sm:text-5xl text-white font-semibold relative">{vendor.vendor_name}</span>
               </div>
               </Link>
 
