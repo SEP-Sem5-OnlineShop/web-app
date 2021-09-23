@@ -111,6 +111,7 @@ const OrderHistoryScreen = () => {
         async function addReview(order_id,product_id){
           try {
             const { data } = await Axios.post(`/orders/${order_id}/${product_id}`);
+            console.log(data);
           } catch (err) {
             setError1(err);
             console.log(error1);
