@@ -11,6 +11,11 @@ const tamil = {
             eggs: "முட்டைகள்",
             desserts: "இனிப்புகள்",
         }
+    },
+    productpage: {
+        available: "அளவு",
+        currency: "ரூ",
+        reviews: "மதிப்பீடு",
     }
 }
 

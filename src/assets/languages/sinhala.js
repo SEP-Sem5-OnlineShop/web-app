@@ -11,6 +11,11 @@ const sinhala = {
             eggs: "බිත්තර",
             desserts: "අතුරුපස",
         }
+    },
+    productpage: {
+        available: "ප්‍රමාණය",
+        currency: "රු",
+        reviews: "ඇගයීම",
     }
 }
 

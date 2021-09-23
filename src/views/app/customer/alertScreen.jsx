@@ -4,6 +4,7 @@ import Axios from 'axios';
 import AlertComponent from '../../../components/customer/alertComponent';
 import LoadingBox from "../../../components/customer/loadingBox";
 import MessageBox from "../../../components/customer/messageBox";
+import { useSelector } from "react-redux";
 
 const AlertScreen = () => {
   const customer_id = "01";
@@ -13,6 +14,11 @@ const AlertScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [error1, setError1] = useState(null);
+
+  // const isLogged = useSelector(state => state.user.token)
+  // if (!isLogged) {
+  //   history.push('/auth/login');
+  // }
   
   useEffect(() => {
     async function listAlerts(customer_id){

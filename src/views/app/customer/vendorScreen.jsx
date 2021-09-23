@@ -148,7 +148,7 @@ const VendorScreen = () => {
               </div>
               </Link>
 
-              <div className="w-full bg-white relative z-10" style={{minHeight: 'calc(100vh - 11rem)'}}>
+              <div className="w-full bg-white relative" style={{minHeight: 'calc(100vh - 11rem)'}}>
                   <div className="px-4 pt-2 sm:px-14 sm:pt-6">
                       <RatingComponent rating={vendor.rating} size={25} />
                       {vendor.rating} ({vendor.ratingCount}+)

@@ -5,10 +5,12 @@ import RatingComponent from '../../../components/customer/ratingComponent';
 import ReviewComponent from '../../../components/customer/reviewComponent';
 import LoadingBox from '../../../components/customer/loadingBox';
 import MessageBox from '../../../components/customer/messageBox';
+import { useSelector } from 'react-redux';
 
 const ProductScreen = () => {
     const { id: vendor_id } = useParams();
     const { pid: product_id } = useParams();
+    const productStrings = useSelector(state => state.language.languageFile.productpage)
 
     const [product, setProduct] = useState('');
     const [loading, setLoading] = useState(true);
@@ -96,7 +98,7 @@ const ProductScreen = () => {
                 </div>
             </div>
             <div>
-                <div className="text-xl text-textLight font-medium">Reviews</div>
+                <div className="text-xl text-textLight font-medium">{productStrings.reviews}</div>
                 <div className="mt-4">
                     {product.reviews && <>
                         {product.reviews.map((review) => (
