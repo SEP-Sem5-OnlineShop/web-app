@@ -1,5 +1,4 @@
 import { BlobServiceClient, ContainerClient } from '@azure/storage-blob'
-import { v4 as uuidv4 } from 'uuid'
 
 const SASS_TOKEN = process.env.REACT_APP_BLOB_STORAGE_ACCESS_TOKEN || ""
 const STORAGE_ACCOUNT_NAME = process.env.REACT_APP_BLOB_STORAGE_ACCOUNT_NAME || ""
@@ -36,9 +35,8 @@ export const uploadFileToBlob = async (file) => {
 const createBlobInContainer = async (containerClient, file) => {
 
   // create blobClient for container
-  const fileName = `${uuidv4()}.${file.type.split("/")[1]}`
   // console.log(fileName, file)
-  const blobClient = containerClient.getBlockBlobClient(fileName);
+  const blobClient = containerClient.getBlockBlobClient(file.name);
 
   // set mimetype as determined from browser with file upload control
   const options = {
@@ -49,7 +47,7 @@ const createBlobInContainer = async (containerClient, file) => {
   };
 
   // upload file
-  return [await blobClient.uploadBrowserData(file, options), fileName];
+  return await blobClient.uploadBrowserData(file, options);
 }
 
 export const deleteBlobFile = async (fileName) => {
@@ -64,7 +62,13 @@ export const deleteBlobFile = async (fileName) => {
 }
 
 // return list of blobs in container to display
-const getBlobsInContainer = async (containerClient) => {
+export const getBlobsInContainer = async () => {
+
+  // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
+  const blobService = new BlobServiceClient(azure_url);
+
+  // get Container - full public read access
+  const containerClient = blobService.getContainerClient(CONTAINER_NAME);
 
   const returnedBlobUrls = [];
 
@@ -77,4 +81,21 @@ const getBlobsInContainer = async (containerClient) => {
     );
   }
   return returnedBlobUrls;
+}
+
+export const getFileUrl = (fileName) => {
+  return `https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${CONTAINER_NAME}/${fileName}`
+}
+
+export const getFile = async (fileName) => {
+
+  // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
+  const blobService = new BlobServiceClient(azure_url);
+
+  // get Container - full public read access
+  const containerClient = blobService.getContainerClient(CONTAINER_NAME);
+  const blobClient = containerClient.getBlobClient(fileName)
+  const downloadBlockBlobResponse = await blobClient.download()
+  return downloadBlockBlobResponse
+  
 }
