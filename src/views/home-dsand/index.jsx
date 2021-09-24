@@ -28,7 +28,7 @@ export default function HomeDsand() {
         // const { data } = await Axios.get(`app/customer/vendors/`);
         const data = [
             {
-                _id: "1",
+                _id: "613eb365af0d5b2c142fa326",
                 vendor_name: "Yummy Backers",
                 vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
                 image:"/img/vendor.jpg",

@@ -76,7 +76,7 @@ const ProductComponent = ({ product, vendor_id }) => {
     return (
         <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-28 sm:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${vendor_id}/product_${product._id}`}>
-            <img src={ product.image } alt="" className="h-full w-20 sm:w-36 object-cover"/>
+            <img src={ product.imageUrl } alt="" className="h-full w-20 sm:w-36 object-cover"/>
             </Link>
             <div className="mx-4 my-2 flex flex-col justify-between items-start">
                 <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
