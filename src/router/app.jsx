@@ -22,6 +22,7 @@ import History from '../views/app/history'
 import AddProduct from '../views/app/product/add/index'
 import Profile from '../views/app/profile/index'
 import ProductList from "../views/app/product/list";
+import DailyStockLoad from "../views/app/product/daily-stock"
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -44,7 +45,10 @@ export default function AppRouter() {
                         <Route exact={true} path={`${match.path}/product`}>
                             <AddProduct />
                         </Route>
-                        <Route path={`${match.path}/products`}>
+                        <Route exact={true} path={`${match.path}/products/stock/daily`}>
+                            <DailyStockLoad />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/products`}>
                             <ProductList />
                         </Route>
                         {/* <Route path={`${match.path}/vendor_:id`} exact>
