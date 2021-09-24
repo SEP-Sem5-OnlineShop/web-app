@@ -5,10 +5,12 @@ import RatingComponent from '../../../components/customer/ratingComponent';
 import ReviewComponent from '../../../components/customer/reviewComponent';
 import LoadingBox from '../../../components/customer/loadingBox';
 import MessageBox from '../../../components/customer/messageBox';
+import { useSelector } from 'react-redux';
 
 const ProductScreen = () => {
     const { id: vendor_id } = useParams();
     const { pid: product_id } = useParams();
+    const productStrings = useSelector(state => state.language.languageFile.productpage)
 
     const [product, setProduct] = useState('');
     const [loading, setLoading] = useState(true);
@@ -23,10 +25,10 @@ const ProductScreen = () => {
             // const { data } = await Axios.get(`app/customer/product/${product_id}`);
             const data = {
                 _id:'1',
-                product_name: 'Burger with some',
+                product_name: 'Burger with Fries',
                 vendor_id: '613a23c0dd295c38362b2cbe',
                 image: '/img/item1.png',
-                description: 'ingredients: flour, vegetables, cheese, ketchup, mayoneese   description description description description description description description description description description description description description description description description description',
+                description: 'description description description ingredients: flour, vegetables, cheese, ketchup, mayoneese',
                 price: 100,
                 stock: 10,
                 status: 'available',
@@ -34,6 +36,7 @@ const ProductScreen = () => {
                 numReviews: 2,
                 reviews: [
                     {
+                        _id:1,
                         rating: 4,
                         comment: 'good product good product good product good product good product good product good product',
                         customer: '613a23c0dd295c38362b2cbe',
@@ -41,6 +44,7 @@ const ProductScreen = () => {
                         image: '/img/vendor.jpg',
                     },
                     {
+                        _id:2,
                         rating: 5,
                         comment: 'good product good product good product good product good product good product good product good product good product good product good product good product good product',
                         customer: '613a23c0dd295c38362b2cbe',
@@ -85,20 +89,26 @@ const ProductScreen = () => {
             </div>
             <div>
                 <span className="text-3xl sm:text-5xl font-bold text-textLight">{product.product_name}</span>
-                <div className="mt-4">
+                <div className="mt-4 flex">
                     <RatingComponent rating={product.rating} size={25} />
-                    {product.rating} ({product.numReviews}+)
+                    <span className="px-2">{product.rating} ({product.numReviews}+)</span>
+                </div>
+                <div className="mt-4">
+                    <span className="text-sm sm:text-lg text-secondary">{productStrings.available}: { product.stock }</span>
+                </div>
+                <div className="mt-4">
+                    <span className="text-sm sm:text-lg text-secondary">{productStrings.price}: {productStrings.currency} { product.price }</span>
                 </div>
                 <div className="mt-4 sm:mt-8">
                     <span className="text-secondary">{product.description}</span>
                 </div>
             </div>
             <div>
-                <div className="text-xl text-textLight font-medium">Reviews</div>
+                <div className="text-xl text-textLight font-medium">{productStrings.reviews}</div>
                 <div className="mt-4">
                     {product.reviews && <>
                         {product.reviews.map((review) => (
-                            <ReviewComponent review={review} />
+                            <ReviewComponent key={review._id} review={review} />
                         ))}
                     </>}
                 </div>

@@ -24,12 +24,12 @@ const VendorScreen = () => {
       try {
         // const { data } = await Axios.get(`app/customer/vendors/${vendor_id}`);
         const data = {
-          vendor_id: "1",
+          vendor_id: "613eb365af0d5b2c142fa326",
           vendor_name: "Yummy Backers",
           vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
           image:"/img/vendor.jpg",
           rating: '4.0',
-          ratingCount: 50,
+          ratingCount: 2,
         };
         setVendor(data);
         setLoading(false);
@@ -43,63 +43,63 @@ const VendorScreen = () => {
 
     async function listProducts(vendor_id){
       try {
-        // const { data } = await Axios.get(`app/customer/products/${vendor_id}`);
-        const data = [
-          { _id:'1',
-            product_name: 'Burger with some',
-            seller: '613a23c0dd295c38362b2cbe',
-            image: '/img/item1.png',
-            price: 100,
-            stock: 10,
-            status: 'available',
-            rating: 4.5,
-            numReviews: 10,
-          },
-          {
-            _id:'2',
-            product_name: 'Burger with some',
-            seller: '613a23c0dd295c38362b2cbe',
-            image: '/img/item1.png',
-            price: 100,
-            stock: 10,
-            status: 'available',
-            rating: 4.5,
-            numReviews: 10,
-          },
-          {
-            _id:'3',
-            product_name: 'Burger with some',
-            seller: '613a23c0dd295c38362b2cbe',
-            image: '/img/item1.png',
-            price: 100,
-            stock: 10,
-            status: 'available',
-            rating: 4.5,
-            numReviews: 10,
-          },
-          {
-            _id:'4',
-            product_name: 'Burger with some',
-            seller: '613a23c0dd295c38362b2cbe',
-            image: '/img/item1.png',
-            price: 100,
-            stock: 10,
-            status: 'available',
-            rating: 4.5,
-            numReviews: 10,
-          },
-          {
-            _id:'5',
-            product_name: 'Burger with some',
-            seller: '613a23c0dd295c38362b2cbe',
-            image: '/img/item1.png',
-            price: 100,
-            stock: 10,
-            status: 'available',
-            rating: 4.5,
-            numReviews: 10,
-          },
-        ];
+        const { data } = await Axios.get(`app/customer/products/${vendor_id}`);
+        // const data = [
+        //   { _id:'1',
+        //     product_name: 'Burger with Fries',
+        //     seller: '613a23c0dd295c38362b2cbe',
+        //     image: '/img/item1.png',
+        //     price: 100,
+        //     stock: 10,
+        //     status: 'available',
+        //     rating: 4.5,
+        //     numReviews: 2,
+        //   },
+        //   {
+        //     _id:'2',
+        //     product_name: 'Burger with Fries',
+        //     seller: '613a23c0dd295c38362b2cbe',
+        //     image: '/img/item1.png',
+        //     price: 100,
+        //     stock: 10,
+        //     status: 'available',
+        //     rating: 4.5,
+        //     numReviews: 2,
+        //   },
+        //   {
+        //     _id:'3',
+        //     product_name: 'Burger with Fries',
+        //     seller: '613a23c0dd295c38362b2cbe',
+        //     image: '/img/item1.png',
+        //     price: 100,
+        //     stock: 10,
+        //     status: 'available',
+        //     rating: 4.5,
+        //     numReviews: 2,
+        //   },
+        //   {
+        //     _id:'4',
+        //     product_name: 'Burger with Fries',
+        //     seller: '613a23c0dd295c38362b2cbe',
+        //     image: '/img/item1.png',
+        //     price: 100,
+        //     stock: 10,
+        //     status: 'available',
+        //     rating: 4.5,
+        //     numReviews: 2,
+        //   },
+        //   {
+        //     _id:'5',
+        //     product_name: 'Burger with Fries',
+        //     seller: '613a23c0dd295c38362b2cbe',
+        //     image: '/img/item1.png',
+        //     price: 100,
+        //     stock: 10,
+        //     status: 'available',
+        //     rating: 4.5,
+        //     numReviews: 2,
+        //   },
+        // ];
         setProducts(data);
         setLoading1(false);
         setError1(null);
@@ -148,7 +148,7 @@ const VendorScreen = () => {
               </div>
               </Link>
 
-              <div className="w-full bg-white relative z-10" style={{minHeight: 'calc(100vh - 11rem)'}}>
+              <div className="w-full bg-white relative" style={{minHeight: 'calc(100vh - 11rem)'}}>
                   <div className="px-4 pt-2 sm:px-14 sm:pt-6">
                       <RatingComponent rating={vendor.rating} size={25} />
                       {vendor.rating} ({vendor.ratingCount}+)
