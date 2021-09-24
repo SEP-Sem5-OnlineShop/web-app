@@ -1,7 +1,8 @@
-import React from "react";
-import { Redirect } from "react-router-dom"
-import { EditorState } from 'draft-js';
+import React, {useEffect} from "react";
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -9,6 +10,8 @@ import { FilePond, registerPlugin } from 'react-filepond'
 import 'filepond/dist/filepond.min.css'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import {useParams} from "react-router-dom"
+import {productApi} from "../../../../api";
 
 import { useSelector } from "react-redux"
 
@@ -20,16 +23,17 @@ import InputWithValidation from "../../../../components/input-with-validation";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
-export default function AddProduct () {
+export default function AddProduct ({edit}) {
 
+    let {id} = useParams()
     const role = useSelector(state => state.user.role)
     const userData = useSelector(state => state.user.userData)
-    console.log(role, userData)
 
     const [editorState, setEditorState] = React.useState(
         () => EditorState.createEmpty(),
     );
-    const [files, setFiles] = React.useState([])
+    const [mainImage, setMainImage] = React.useState([])
+    const [mainThumbnailImage, setThumbnailImage] = React.useState([])
 
     const formik = useFormik({
         initialValues: {
@@ -37,25 +41,58 @@ export default function AddProduct () {
             price: '',
             discount: '',
             category: '',
-            description: ''
+            description: '',
+            imageThumbnail: 'http://localhost:3000/app/product/add',
+            image: 'http://localhost:3000/app/product/add'
         },
         validationSchema: Yup.object({
             name: Yup.string()
                 .required('Required'),
             price: Yup.string()
                 .required('Required'),
-            discount: Yup.string()
-                .required('Required'),
-            category: Yup.string()
-                .required('Required'),
+            discount: Yup.string(),
+            category: Yup.string(),
             description: Yup.string()
                 .required('Required'),
         }),
         onSubmit: async values => {
-            // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+            try {
+                const {data, status} = await productApi.create(values)
+                if (status === 200) {
+                    console.log(data)
+                }
+            }
+            catch (e) {
+
+            }
             console.log(values)
         },
     });
+
+    useEffect(async () => {
+        if(edit) {
+            const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>';
+            try {
+                const {data, status} = await productApi.get(id)
+                if(data.data) {
+                    const contentBlock = htmlToDraft(data.data.description);
+                    if (contentBlock) {
+                        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                        const editorState = EditorState.createWithContent(contentState);
+                        setEditorState(editorState)
+                    }
+                }
+            }
+            catch (e) {
+
+            }
+        }
+    },[])
+
+    useEffect(() => {
+        // formik.setFieldValue("description", editorState)
+        formik.setFieldValue("description",(draftToHtml(convertToRaw(editorState.getCurrentContent()))))
+    },[editorState])
 
     return (
         <React.Fragment>
@@ -103,18 +140,31 @@ export default function AddProduct () {
                                 wrapperClassName="wrapperClassName"
                                 editorClassName="bg-white min-h-300 px-2 mb-4 rounded-md"
                                 placeholder="Add your product description here..."
-                                onEditorStateChange={setEditorState} 
+                                onEditorStateChange={setEditorState}
                             />
-                            <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Images</label>
+                            <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
                             <FilePond
-                                files={files}
-                                onupdatefiles={setFiles}
-                                allowMultiple={true}
-                                maxFiles={3}
-                                server="/api"
-                                name="files"
-                                labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                               files={mainImage}
+                               onupdatefiles={setMainImage}
+                               allowMultiple={true}
+                               maxFiles={1}
+                               server="/api"
+                               name="files"
+                               labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
                             />
+                            <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
+                            <FilePond
+                               files={mainThumbnailImage}
+                               onupdatefiles={setThumbnailImage}
+                               allowMultiple={true}
+                               maxFiles={1}
+                               server="/api"
+                               name="files"
+                               labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                            />
+                            <div className="flex justify-end">
+                                <button type="submit" className="p-2 text-white rounded bg-textLight">Submit</button>
+                            </div>
                         </form>
                     </CardTemplate>
                 </div>

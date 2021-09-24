@@ -1,4 +1,4 @@
-import axios from "axios";
+import {axios} from "../index";
 
 const vendorRequest = {
     create: async function (formData) {

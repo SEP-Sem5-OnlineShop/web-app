@@ -14,6 +14,7 @@ export default function InnerPageLayout(props) {
     let history = useHistory()
     const dispatch = useDispatch()
     const selectedLanguage = useSelector(state => state.language.language)
+    const isLogin = useSelector(state => state.user.isLogin)
     const token = useSelector(state => state.user.token)
     return (
         <React.Fragment>
@@ -46,7 +47,7 @@ export default function InnerPageLayout(props) {
                                 <option value="tamil" key="tamil">தமிழ்</option>
                             </select>
                             {
-                                token ?
+                                isLogin === "yes" ?
                                 <LoginRegister className="mr-4" /> :
                                 <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                 Login | Register</button>

@@ -1,13 +1,24 @@
 import { Menu, Transition } from '@headlessui/react'
 import { useSelector, useDispatch } from "react-redux"
 import { Fragment, useEffect, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import { thunks } from "../../store"
 
 export default function Example() {
-    const userData = useSelector(state => state.user.userData)
-    const dispatch = useDispatch()
-    console.log(userData)
+  const userData = useSelector(state => state.user.userData)
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const logout = async () => {
+    try {
+      await dispatch(thunks.user.signOUt())
+      history.push("/auth/login")
+    }
+    catch (e) {
+      console.log('Something went wrong!')
+    }
+  }
 
   return (
     <div className="text-right">
@@ -31,9 +42,8 @@ export default function Example() {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    className={`${
-                      active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
-                    } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                    className={`${active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
+                      } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                   >
                     My Profile
                   </button>
@@ -42,9 +52,8 @@ export default function Example() {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    className={`${
-                      active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
-                    } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                    className={`${active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
+                      } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                   >
                     Orders
                   </button>
@@ -53,10 +62,9 @@ export default function Example() {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    className={`${
-                      active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
-                    } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                    onClick={async ()=> await dispatch(thunks.user.signOUt())}
+                    className={`${active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
+                      } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                    onClick={async () => logout()}
                   >
                     Log Out
                   </button>

@@ -17,36 +17,24 @@ import AlertScreen from "../views/app/customer/alertScreen";
 import OrderHistoryScreen from "../views/app/customer/orderHistoryScreen";
 import CustomerProfileScreen from "../views/app/customer/customerProfileScreen";
 import CustomerNotificationScreen from "../views/app/customer/customerNotificationScreen";
-
 import History from '../views/app/history'
+
 import AddProduct from '../views/app/product/add/index'
 import Profile from '../views/app/profile/index'
+import ProductList from "../views/app/product/list";
+import DailyStockLoad from "../views/app/product/daily-stock"
+
+import AddDriver from '../views/app/vendor/driver/add'
+import DriversList from '../views/app/vendor/driver/list'
 
 export default function AppRouter() {
     const match = useRouteMatch()
-
-    React.useEffect(() => {
-        // Set language when page refreshing
-        const selectedLanguage = window.localStorage.getItem("language")
-        dispatch(actions.language.setLanguage(selectedLanguage))
-
-        // Set user data, token and role when page refreshing
-        const userData = JSON.parse(window.localStorage.getItem("userData"))
-        const token = window.localStorage.getItem("token")
-        const role = window.localStorage.getItem("role")
-        dispatch(actions.user.setUserData(userData))
-        dispatch(actions.user.setAuthToken(token))
-        dispatch(actions.user.setRole(role))
-
-    }, [])
     const isLogged = useSelector(state => state.user.token)
-
-    const dispatch = useDispatch()
     return (
         <Switch>
             {
                 isLogged !== "null" ?
-                // true ?
+                    // true ?
                     <>
                         <Route path={`${match.path}/history`}>
                             <History />
@@ -54,8 +42,27 @@ export default function AppRouter() {
                         <Route path={`${match.path}/profile`}>
                             <Profile />
                         </Route>
-                        <Route path={`${match.path}/product/add`}>
+                        <Route path={`${match.path}/product/:id`}>
+                            <AddProduct edit={true} />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/product`}>
                             <AddProduct />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/products/stock/daily`}>
+                            <DailyStockLoad />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/products`}>
+                            <ProductList />
+                        </Route>
+
+                        <Route exact={true} path={`${match.path}/driver`}>
+                            <AddDriver />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/drivers`}>
+                            <DriversList />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/driver/:id`}>
+                            <AddDriver />
                         </Route>
                         {/* <Route path={`${match.path}/vendor_:id`} exact>
                             <VendorScreen />

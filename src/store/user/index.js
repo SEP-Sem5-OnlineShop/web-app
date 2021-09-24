@@ -5,6 +5,7 @@ const initialState = {
     userData: {},
     token: "",
     role: "guest",
+    isLogin: "no"
 }
 
 const userSlice = createSlice({
@@ -26,6 +27,10 @@ const userSlice = createSlice({
             state.role = action.payload
             window.localStorage.setItem("role", state.role)
         },
+        setIsLogin(state, action) {
+            state.isLogin = action.payload
+            window.localStorage.setItem("isLogin", state.isLogin)
+        }
     }
 })
 
