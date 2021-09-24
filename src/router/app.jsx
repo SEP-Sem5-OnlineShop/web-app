@@ -17,12 +17,15 @@ import AlertScreen from "../views/app/customer/alertScreen";
 import OrderHistoryScreen from "../views/app/customer/orderHistoryScreen";
 import CustomerProfileScreen from "../views/app/customer/customerProfileScreen";
 import CustomerNotificationScreen from "../views/app/customer/customerNotificationScreen";
-
 import History from '../views/app/history'
+
 import AddProduct from '../views/app/product/add/index'
 import Profile from '../views/app/profile/index'
 import ProductList from "../views/app/product/list";
 import DailyStockLoad from "../views/app/product/daily-stock"
+
+import AddDriver from '../views/app/vendor/driver/add'
+import DriversList from '../views/app/vendor/driver/list'
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -31,7 +34,7 @@ export default function AppRouter() {
         <Switch>
             {
                 isLogged !== "null" ?
-                // true ?
+                    // true ?
                     <>
                         <Route path={`${match.path}/history`}>
                             <History />
@@ -50,6 +53,16 @@ export default function AppRouter() {
                         </Route>
                         <Route exact={true} path={`${match.path}/products`}>
                             <ProductList />
+                        </Route>
+
+                        <Route exact={true} path={`${match.path}/driver`}>
+                            <AddDriver />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/drivers`}>
+                            <DriversList />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/driver/:id`}>
+                            <AddDriver />
                         </Route>
                         {/* <Route path={`${match.path}/vendor_:id`} exact>
                             <VendorScreen />

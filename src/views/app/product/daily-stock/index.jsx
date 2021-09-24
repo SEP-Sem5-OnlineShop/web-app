@@ -3,41 +3,36 @@ import { useTable, useGlobalFilter } from 'react-table'
 import { productApi } from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
 import { Link } from "react-router-dom"
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export default function DailyStockLoad() {
     const [data, setData] = React.useState([])
-    const [testData, setTestData] = React.useState()
-    const [form, setForm] = useState({})
-    const DiscountField = (value, id) => {
-        return (
-            <input id={`discount_${id}`} name={`discount_${id}`} className="bg-cardColor rounded-sm p-2" />
-        )
-    }
-    const DailyStockField = (value, id) => {
-        return (
-            <input id={`stock_${id}`} name={`stock_${id}`} className="bg-cardColor rounded-sm p-2" />
-        )
-    }
-    const PriceField = (value,id) => {
-        return (
-            <input value={value} id={`stock_${id}`} name={`price_${id}`} className="bg-cardColor rounded-sm p-2" />
-        )
-    }
+    const [formikInitial, setFormikInitial] = useState([])
     React.useEffect(async () => {
         try {
             const { data, status } = await productApi.getList()
-            setTestData(data.data || [])
+
             const list = []
+            const testData = []
             data.data.forEach((item, index) => {
                 list.push({
                     'col1': index + 1,
                     'col2': item.product_name || "",
-                    'col3': PriceField(item.price || "",item._id),
-                    'col4': DiscountField(item.discount || "",item._id),
-                    'col5': DailyStockField("", item._id),
+                    'col3': [item.price || "", item._id],
+                    'col4': [item.discount || "", item._id],
+                    'col5': ["", item._id],
+                })
+                testData.push({
+                    [item._id]: {
+                        price: item.price || "0",
+                        discount: item.discount || "0",
+                        stock: item.stock || "0",
+                    }
                 })
             })
             setData(list)
+            setFormikInitial(testData)
         }
         catch (e) {
 
@@ -78,6 +73,26 @@ export default function DailyStockLoad() {
         prepareRow,
     } = useTable({ columns, data })
 
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            stockDetails: formikInitial,
+        },
+        // validationSchema: Yup.object({
+        //     stockDetails: Yup.array().of(
+        //         Yup.object().shape({
+        //             price: Yup.number(),
+        //             discount: Yup.number(),
+        //             stock: Yup.number()
+        //         })
+        //     )
+        // }),
+        onSubmit: values => {
+            console.log(values)
+        },
+    });
+
     return (
         <div className="flex justify-center">
             <div className="w-full flex flex-col items-center justify-center p-8">
@@ -90,49 +105,93 @@ export default function DailyStockLoad() {
                         <option>Vehicle 3</option>
                     </select>
                 </div>
-                <CardTemplate>
-                    <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-cardColor">
-                            {headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    {headerGroup.headers.map(column => (
-                                        <th
-                                            {...column.getHeaderProps()}
-                                            scope="col"
-                                            className="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider"
-                                        >
-                                            {column.render('Header')}
-                                        </th>
-                                    ))}
-                                </tr>
-                            ))}
-                        </thead>
-                        <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
-                            {rows.map(row => {
-                                prepareRow(row)
-                                return (
-                                    <tr {...row.getRowProps()}>
-                                        {row.cells.map(cell => {
-                                            return (
-                                                <td
-                                                    {...cell.getCellProps()}
-                                                    className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
-                                                >
-                                                    {cell.render('Cell')}
-                                                </td>
-                                            )
-                                        })}
+                <form onSubmit={formik.handleSubmit}>
+                    <CardTemplate>
+                        <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-cardColor">
+                                {headerGroups.map(headerGroup => (
+                                    <tr {...headerGroup.getHeaderGroupProps()}>
+                                        {headerGroup.headers.map(column => (
+                                            <th
+                                                {...column.getHeaderProps()}
+                                                scope="col"
+                                                className="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider"
+                                            >
+                                                {column.render('Header')}
+                                            </th>
+                                        ))}
                                     </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
-                </CardTemplate>
-                <div className="flex justify-end mt-4 w-full">
-                    <button className="py-2 px-4 text-white bg-textLight rounded-lg" type="button" onClick={() => {}}>
-                        Submit
+                                ))}
+                            </thead>
+                            <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
+                                {rows.map((row, rowIndex) => {
+                                    prepareRow(row)
+                                    return (
+                                        <tr {...row.getRowProps()}>
+                                            {row.cells.map((cell, index) => {
+                                                if (index === 2) return (
+                                                    <td
+                                                        {...cell.getCellProps()}
+                                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
+                                                    >
+                                                        {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
+                                                            <input
+                                                                value={formik.values.stockDetails[rowIndex][cell.value[1]]['price']}
+                                                                onChange={formik.handleChange}
+                                                                onBlur={formik.handleBlur}
+                                                                id={`stockDetails.${rowIndex}.${cell.value[1]}.price`} name={`stockDetails.${rowIndex}.${cell.value[1]}.price`}
+                                                                className="bg-cardColor rounded-sm p-2" /> : ""}
+                                                    </td>
+                                                )
+                                                if (index === 3) return (
+                                                    <td
+                                                        {...cell.getCellProps()}
+                                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
+                                                    >
+                                                        {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
+                                                            <input
+                                                                value={formik.values.stockDetails[rowIndex][cell.value[1]]['discount']}
+                                                                onChange={formik.handleChange}
+                                                                onBlur={formik.handleBlur}
+                                                                id={`stockDetails.${rowIndex}.${cell.value[1]}.discount`} name={`stockDetails.${rowIndex}.${cell.value[1]}.discount`}
+                                                                className="bg-cardColor rounded-sm p-2" /> : ""}
+                                                    </td>
+                                                )
+                                                if (index === 4) return (
+                                                    <td
+                                                        {...cell.getCellProps()}
+                                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
+                                                    >
+                                                        {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
+                                                            <input
+                                                                value={formik.values.stockDetails[rowIndex][cell.value[1]]['stock']}
+                                                                onChange={formik.handleChange}
+                                                                onBlur={formik.handleBlur}
+                                                                id={`stockDetails.${rowIndex}.${cell.value[1]}.stock`} name={`stockDetails.${rowIndex}.${cell.value[1]}.stock`}
+                                                                className="bg-cardColor rounded-sm p-2" /> : ""}
+                                                    </td>
+                                                )
+                                                return (
+                                                    <td
+                                                        {...cell.getCellProps()}
+                                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
+                                                    >
+                                                        {cell.render('Cell')}
+                                                    </td>
+                                                )
+                                            })}
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </CardTemplate>
+                    <div className="flex justify-end mt-4 w-full">
+                        <button className="py-2 px-4 text-white bg-textLight rounded-lg" type="submit">
+                            Submit
                     </button>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
 
