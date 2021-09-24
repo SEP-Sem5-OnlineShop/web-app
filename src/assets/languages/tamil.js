@@ -18,6 +18,7 @@ const tamil = {
         reviews: "மதிப்பீடு",
         items: "பொருட்களை",
         for: "க்கான",
+        price: "விலை",
     }
 }
 

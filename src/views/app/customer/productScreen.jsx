@@ -25,10 +25,10 @@ const ProductScreen = () => {
             // const { data } = await Axios.get(`app/customer/product/${product_id}`);
             const data = {
                 _id:'1',
-                product_name: 'Burger with some',
+                product_name: 'Burger with Fries',
                 vendor_id: '613a23c0dd295c38362b2cbe',
                 image: '/img/item1.png',
-                description: 'ingredients: flour, vegetables, cheese, ketchup, mayoneese   description description description description description description description description description description description description description description description description description',
+                description: 'description description description ingredients: flour, vegetables, cheese, ketchup, mayoneese',
                 price: 100,
                 stock: 10,
                 status: 'available',
@@ -89,9 +89,15 @@ const ProductScreen = () => {
             </div>
             <div>
                 <span className="text-3xl sm:text-5xl font-bold text-textLight">{product.product_name}</span>
-                <div className="mt-4">
+                <div className="mt-4 flex">
                     <RatingComponent rating={product.rating} size={25} />
-                    {product.rating} ({product.numReviews}+)
+                    <span className="px-2">{product.rating} ({product.numReviews}+)</span>
+                </div>
+                <div className="mt-4">
+                    <span className="text-sm sm:text-lg text-secondary">{productStrings.available}: { product.stock }</span>
+                </div>
+                <div className="mt-4">
+                    <span className="text-sm sm:text-lg text-secondary">{productStrings.price}: {productStrings.currency} { product.price }</span>
                 </div>
                 <div className="mt-4 sm:mt-8">
                     <span className="text-secondary">{product.description}</span>

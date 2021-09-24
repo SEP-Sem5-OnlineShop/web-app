@@ -18,6 +18,7 @@ const sinhala = {
         reviews: "ඇගයීම",
         items: "අයිතම",
         for: "සඳහා",
+        price: "මිල",
     }
 }
 

@@ -32,7 +32,7 @@ export default function HomeDsand() {
                 vendor_name: "Yummy Backers",
                 vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
                 image:"/img/vendor.jpg",
-                rating: '5.0',
+                rating: '4.0',
                 ratingCount: 2,
             },
             {
@@ -41,15 +41,15 @@ export default function HomeDsand() {
                 vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
                 image:"/img/vendor.jpg",
                 rating: '4.0',
-                ratingCount: 5,
+                ratingCount: 2,
             },
             {
                 _id: "3",
                 vendor_name: "Yummy Backers",
                 vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
                 image:"/img/vendor.jpg",
-                rating: '3.0',
-                ratingCount: 6,
+                rating: '4.0',
+                ratingCount: 2,
             },
             {
                 _id: "4",
@@ -57,15 +57,15 @@ export default function HomeDsand() {
                 vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
                 image:"/img/vendor.jpg",
                 rating: '4.0',
-                ratingCount: 10,
+                ratingCount: 2,
             },
             {
                 _id: "5",
                 vendor_name: "Yummy Backers",
                 vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
                 image:"/img/vendor.jpg",
-                rating: '5.0',
-                ratingCount: 3,
+                rating: '4.0',
+                ratingCount: 2,
             },
         ];
         setVendors(data);

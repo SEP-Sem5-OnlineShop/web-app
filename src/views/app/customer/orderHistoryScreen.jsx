@@ -30,7 +30,7 @@ const OrderHistoryScreen = () => {
                         products:[
                             {
                                 product_id: '1',
-                                product_name: 'Burger with some',
+                                product_name: 'Burger with Fries',
                                 vendor_id: '613a23c0dd295c38362b2cbe',
                                 image: '/img/item1.png',
                                 price: 100,
@@ -40,7 +40,7 @@ const OrderHistoryScreen = () => {
                             },
                             {
                                 product_id: '2',
-                                product_name: 'Burger with some',
+                                product_name: 'Burger with Fries',
                                 vendor_id: '613a23c0dd295c38362b2cbe',
                                 image: '/img/item1.png',
                                 price: 100,
@@ -61,7 +61,7 @@ const OrderHistoryScreen = () => {
                         products:[
                             {
                                 product_id: '1',
-                                product_name: 'Burger with some',
+                                product_name: 'Burger with Fries',
                                 vendor_id: '613a23c0dd295c38362b2cbe',
                                 image: '/img/item1.png',
                                 price: 100,
@@ -71,7 +71,7 @@ const OrderHistoryScreen = () => {
                             },
                             {
                                 product_id: '2',
-                                product_name: 'Burger with some',
+                                product_name: 'Burger with Fries',
                                 vendor_id: '613a23c0dd295c38362b2cbe',
                                 image: '/img/item1.png',
                                 price: 100,
@@ -81,7 +81,7 @@ const OrderHistoryScreen = () => {
                             },
                             {
                                 product_id: '3',
-                                product_name: 'Burger with some',
+                                product_name: 'Burger with Fries',
                                 vendor_id: '613a23c0dd295c38362b2cbe',
                                 image: '/img/item1.png',
                                 price: 100,

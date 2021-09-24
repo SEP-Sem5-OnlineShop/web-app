@@ -18,6 +18,7 @@ const english = {
         reviews: "Reviews",
         items: "Items",
         for: "for",
+        price: "Price",
     }
 }
 
