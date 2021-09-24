@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { thunks } from "../../store"
+import { Link } from 'react-router-dom'
 
 export default function Example() {
   const userData = useSelector(state => state.user.userData)
@@ -55,7 +56,9 @@ export default function Example() {
                     className={`${active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                   >
+                    <Link to={`/app/order_history`}>
                     Orders
+                    </Link>
                   </button>
                 )}
               </Menu.Item>

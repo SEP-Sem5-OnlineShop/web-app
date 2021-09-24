@@ -4,6 +4,7 @@ import Axios from 'axios';
 import AlertComponent from '../../../components/customer/alertComponent';
 import LoadingBox from "../../../components/customer/loadingBox";
 import MessageBox from "../../../components/customer/messageBox";
+import { useSelector } from "react-redux";
 
 const AlertScreen = () => {
   const customer_id = "01";
@@ -13,6 +14,11 @@ const AlertScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [error1, setError1] = useState(null);
+
+  // const isLogged = useSelector(state => state.user.token)
+  // if (!isLogged) {
+  //   history.push('/auth/login');
+  // }
   
   useEffect(() => {
     async function listAlerts(customer_id){
@@ -24,7 +30,7 @@ const AlertScreen = () => {
             vendor_id: 1,
             vendor_name: "Yummy Backers",
             product_id: '1',
-            product_name: 'Burger with some',
+            product_name: 'Burger with Fries',
             image: '/img/item1.png',
             price: 100,
           },
@@ -33,7 +39,7 @@ const AlertScreen = () => {
             vendor_id: 1,
             vendor_name: "Yummy Backers",
             product_id: '2',
-            product_name: 'Burger with some',
+            product_name: 'Burger with Fries',
             image: '/img/item1.png',
             price: 100,
           },
@@ -42,7 +48,7 @@ const AlertScreen = () => {
             vendor_id: 1,
             vendor_name: "Yummy Backers",
             product_id: '3',
-            product_name: 'Burger with some',
+            product_name: 'Burger with Fries',
             image: '/img/item1.png',
             price: 100,
           },
@@ -51,7 +57,7 @@ const AlertScreen = () => {
             vendor_id: 2,
             vendor_name: "Asta Backers",
             product_id: '4',
-            product_name: 'Burger with some',
+            product_name: 'Burger with Fries',
             image: '/img/item1.png',
             price: 100,
           },
@@ -60,7 +66,7 @@ const AlertScreen = () => {
             vendor_id: 2,
             vendor_name: "Asta Backers",
             product_id: '5',
-            product_name: 'Burger with some',
+            product_name: 'Burger with Fries',
             image: '/img/item1.png',
             price: 100,
           },

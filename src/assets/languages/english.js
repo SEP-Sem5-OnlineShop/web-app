@@ -11,6 +11,14 @@ const english = {
             eggs: "Eggs",
             desserts: "Dessert",
         }
+    },
+    productpage: {
+        available: "Available",
+        currency: "Rs",
+        reviews: "Reviews",
+        items: "Items",
+        for: "for",
+        price: "Price",
     }
 }
 
