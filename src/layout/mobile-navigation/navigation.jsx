@@ -18,8 +18,9 @@ export const Navigation = () => {
   const role = useSelector(state => state.user.role)
   return (
     <div className="p-8">
+      {(role !== "customer") &&
       <button onClick={() => history.push("/auth/login")} className="rounded-lg px-2 py-2 bg-textLight text-white w-full">
-                              Login | Register</button>
+                              Login | Register</button>}
       <motion.ul className="mt-8" variants={variants}>
         {itemIds.map(i => (
           i.accessLevel === role &&
