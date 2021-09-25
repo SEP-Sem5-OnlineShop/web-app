@@ -4,6 +4,7 @@ import vendor from './general/vendor'
 import product from './app/product'
 import vendorRequest from "./general/vendorRequest";
 import store, {actions} from "../store/index"
+import customer from './general/customer';
 
 /*
  * Setup axios  
@@ -66,3 +67,4 @@ export const authApi = auth
 export const vendorApi = vendor
 export const productApi = product
 export const vendorRequestApi = vendorRequest
+export const customerApi = customer

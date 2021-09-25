@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
-import Axios from 'axios';
+import {axios} from "../../api/index";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const ProductComponent = ({ product, vendor_id }) => {
-    // const useData = useSelector(state => state.user.useData);
-    // const customer_id = useData._id;
-    const customer_id = 1;
+    const userData = useSelector(state => state.user.useData);
+    const [customer_id, setCustomer_id] = useState('613ebc89c71d2e07e0ec5e93');
+    if (userData) {
+        setCustomer_id(userData._id);
+    }
     // if (!isLogged) {
     //   history.push('/auth/login');
     // }
@@ -24,10 +26,16 @@ const ProductComponent = ({ product, vendor_id }) => {
     useEffect(() => {
         async function detailsAlert(customer_id, product_id){
             try {
-                const { data } = await Axios.get(`app/customer/${customer_id}/alerts/${product_id}`);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+                const { data } = await axios.get(`app/customer/${customer_id}/alerts/${product_id}`);
                 // const data = false;
-                
-                setIsAlert(data.isAlert || false);
+                console.log('333333333');
+                console.log(data);
+                if (data._id){
+                    setIsAlert(true);
+                } else {
+                    setIsAlert(false);
+                }
                 setLoading(false);
                 setEr(null);
             } catch (err) {
@@ -44,7 +52,7 @@ const ProductComponent = ({ product, vendor_id }) => {
     const handleRemove = (product_id) => {
         async function addAlert(customer_id,product_id){
             try {
-                await Axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
+                await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
                 // alert('added alert');
           } catch (err) {
             setError(err);
@@ -53,7 +61,7 @@ const ProductComponent = ({ product, vendor_id }) => {
         };
         async function removeAlert(customer_id,product_id){
             try {
-                await Axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
+                await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
                 // alert('removed alert');
           } catch (err) {
             setError1(err);
