@@ -40,6 +40,9 @@ const itemIds = [
   {name: "Add A Driver", link: "/app/driver", accessLevel: "vendor"},
   {name: "Drivers List", link: "/app/drivers", accessLevel: "vendor"},
 
+  {name: "Select Route", link: "/app/select-route", accessLevel: "driver"},
+  {name: "Start New Bill", link: "/app/cart", accessLevel: "driver"},
+
   {name: "Check Alerts", link: "/app/alert", accessLevel: "customer"},
   {name: "Check Order History", link: "/app/order_history", accessLevel: "customer"}
 ];

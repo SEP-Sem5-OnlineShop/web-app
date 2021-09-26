@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {
     BrowserRouter as Router,
     Switch,
@@ -36,7 +36,7 @@ export default function MainRouter() {
         dispatch(actions.user.setIsLogin(isLogin))
 
     }, [dispatch])
-
+    const role = useSelector(state => state.user.role)
     return (
         <Router>
             <Switch>
@@ -49,25 +49,27 @@ export default function MainRouter() {
                     <AuthRouter />
                 </Route>
                 <Route path="/app">
-                    <InnerPageLayout>
-                        <AppRouter />
-                    </InnerPageLayout>
+                    <AppRouter />
                 </Route>
-                <Route path="/404">
-                    <InnerPageLayout><Page404 /></InnerPageLayout>
-                </Route>
-                <Route path={"/register/vendor/:token"}>
-                    <InnerPageLayout><VendorRegistration /></InnerPageLayout>
-                </Route>
-                <Route exact={true} path={`/register/vendor`}>
-                    <InnerPageLayout><VendorRegistration /></InnerPageLayout>
-                </Route>
-                <Route path={`/vendor_:id`} exact>
-                    <InnerPageLayout><VendorScreen /></InnerPageLayout>
-                </Route>
-                <Route path={`/vendor_:id/product_:pid`} exact>
-                    <InnerPageLayout><ProductScreen /></InnerPageLayout>
-                </Route>
+                <InnerPageLayout>
+                    <Switch>
+                        <Route path="/404">
+                            <Page404 />
+                        </Route>
+                        <Route path={"/register/vendor/:token"}>
+                            <VendorRegistration />
+                        </Route>
+                        <Route exact={true} path={`/register/vendor`}>
+                            <VendorRegistration />
+                        </Route>
+                        <Route path={`/vendor_:id`} exact>
+                            <VendorScreen />
+                        </Route>
+                        <Route path={`/vendor_:id/product_:pid`} exact>
+                            <ProductScreen />
+                        </Route>
+                    </Switch>
+                </InnerPageLayout>
             </Switch>
         </Router>
     )
