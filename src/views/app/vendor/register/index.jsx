@@ -18,6 +18,16 @@ export default function VendorRegistration() {
     const [submitButtonLoading, setSubmitButtonLoading] = useState(false)
     const [submitButtonLoading2, setSubmitButtonLoading2] = useState(false)
     const [state, setState] = useState("create")
+    const [images, setImages] = useState({
+        image1: null,
+        image2: null,
+        image3: null
+    })
+    const [documents, setDocuments] = useState({
+        document1: null,
+        document2: null,
+        document3: null
+    })
     const [initialState, setInitialState] = useState({
         fullName: '',
         telephone: '',

@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import InputWithValidation from "../../../../components/input-with-validation";
 import SelectWithValidation from "../../../../components/select-with-validation";
-import { uploadFileToBlob, deleteBlobFile } from "../../../../api/azure-storage-blob";
+import FileUploader from "../../../../components/file-uploader"
 
 export default function Step3(props) {
 
@@ -15,36 +15,8 @@ export default function Step3(props) {
 
     const [array, setArray] = useState(["1"])
     const [disableSubmitButton, setDisableSubmitButton] = useState(false)
-    const [uploadedImageName, setUploadedImageName] = useState({})
-
-    // current file to upload into container
-    const [fileSelected, setFileSelected] = useState({
-        documentUrl1: null,
-        documentUrl2: null,
-        documentUrl3: null
-    });
-    const [imageSelected, setImageSelected] = useState({
-        imageUrl1: null,
-        imageUrl2: null,
-        imageUrl3: null
-    });
-    const [inputKey, setInputKey] = useState(Math.random().toString(36));
-    const input = useRef(null)
-
-    const onFileUpload = async (fileSelected, formikRef) => {
-        let array;
-        try {
-            setDisableSubmitButton(true)
-            array = await uploadFileToBlob(fileSelected);
-            const fileName = array[1]
-            setUploadedImageName(fileName)
-            setDisableSubmitButton(false)
-            comProps.formik.setFieldValue(formikRef, fileName)
-        }
-        catch (e) {
-            console.log(e)
-        }
-    };
+    const [image, setImage] = useState(null)
+    const [document, setDocument] = useState(null)
 
     useEffect(() => {
         let array = []
@@ -78,7 +50,7 @@ export default function Step3(props) {
                                         name={`vehicles.${index}.brand`}
                                         label="Vehicle Brand"
                                         className="mb-2 mt-1"
-                                        labelStyles={{fontSize: 14}}
+                                        labelStyles={{ fontSize: 14 }}
                                         value={comProps.formik.values.vehicles[index] ? comProps.formik.values.vehicles[index].brand : ""}
                                     />
                                     <InputWithValidation
@@ -87,7 +59,7 @@ export default function Step3(props) {
                                         name={`vehicles.${index}.model`}
                                         label={`Vehicle Model`}
                                         className="mb-2"
-                                        labelStyles={{fontSize: 14}}
+                                        labelStyles={{ fontSize: 14 }}
                                         value={comProps.formik.values.vehicles[index] ? comProps.formik.values.vehicles[index].model : ""}
                                     />
                                     <InputWithValidation
@@ -97,52 +69,12 @@ export default function Step3(props) {
                                         value={comProps.formik.values.vehicles[index] ? comProps.formik.values.vehicles[index].plateNumber : ""}
                                         label={`Plate Number`}
                                         className="mb-2"
-                                        labelStyles={{fontSize: 14}}
+                                        labelStyles={{ fontSize: 14 }}
                                     />
-                                    <div className="mb-2">
-                                        <div><span className="text-sm">Add a side image of your vehicle</span></div>
-                                        <input ref={input} name={`vehicles.${index}.imageUrl`} type="file" onChange={
-                                            event => setImageSelected({...imageSelected, [`imageUrl${index}`]: event.target.files[0]})
-                                        } className="w-full"
-                                               key={inputKey || ''} />
-                                        <button type="button" onClick={() =>
-                                            onFileUpload(imageSelected[`imageUrl${index}`], `vehicles.${index}.imageUrl`)}>
-                                            Upload
-                                        </button>
-                                        {uploadedImageName && <button type="button" onClick={async () => {
-                                            setDisableSubmitButton(true)
-                                            await deleteBlobFile(uploadedImageName);
-                                            setUploadedImageName("")
-                                            comProps.formik.setFieldValue(`vehicles.${index}.imageUrl`, "")
-                                            setFileSelected(null)
-                                            input.current.value = null
-                                            setDisableSubmitButton(false)
-                                        }}>
-                                            Delete
-                                        </button>}
-                                    </div>
-                                    <div className="mb-2">
-                                        <div><span className="text-sm">Add relevant document of the vehicle</span></div>
-                                        <input ref={input} name={`vehicles.${index}.documentUrl`} type="file" onChange={
-                                            event => setFileSelected({...fileSelected, [`documentUrl${index}`]: event.target.files[0]})
-                                        } className="w-full"
-                                               key={inputKey || ''} />
-                                        <button type="button" onClick={() =>
-                                            onFileUpload(fileSelected[`documentUrl${index}`],`vehicles.${index}.documentUrl`)}>
-                                            Upload
-                                        </button>
-                                        {uploadedImageName && <button type="button" onClick={async () => {
-                                            setDisableSubmitButton(true)
-                                            await deleteBlobFile(uploadedImageName);
-                                            setUploadedImageName("")
-                                            comProps.formik.setFieldValue(`vehicles.${index}.documentUrl`, "")
-                                            setFileSelected(null)
-                                            input.current.value = null
-                                            setDisableSubmitButton(false)
-                                        }}>
-                                            Delete
-                                        </button>}
-                                    </div>
+                                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Image of clear view of the vehicle</label>
+                                    <FileUploader allowMultiple={false} files={image} setFiles={setImage} maxFiles={1} />
+                                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Vehicle license file here</label>
+                                    <FileUploader allowMultiple={false} files={document} setFiles={setDocument} maxFiles={1} />
                                 </div>)
                         }
                     </motion.div>
