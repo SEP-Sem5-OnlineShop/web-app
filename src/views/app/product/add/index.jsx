@@ -1,27 +1,27 @@
 import React, {useEffect} from "react";
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+
+// importing plugins
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import {useFormik} from "formik";
 import * as Yup from "yup";
-import { FilePond, registerPlugin } from 'react-filepond'
-import 'filepond/dist/filepond.min.css'
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import {useParams} from "react-router-dom"
-import {productApi} from "../../../../api";
 
+// importing hooks
+import {useParams} from "react-router-dom"
+import {useFormik} from "formik";
 import { useSelector } from "react-redux"
 
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
-import './style.css'
-
+// importing created components
 import CardTemplate from "../../../../components/card/template";
 import InputWithValidation from "../../../../components/input-with-validation";
+import FileUploader from "../../../../components/file-uploader"
 
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
+// importing api
+import {productApi} from "../../../../api";
+
+// importing css files
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 export default function AddProduct ({edit}) {
 
@@ -37,8 +37,8 @@ export default function AddProduct ({edit}) {
 
     const formik = useFormik({
         initialValues: {
-            name: '',
-            price: '',
+            name: 'asdf',
+            price: '45',
             discount: '',
             category: '',
             description: '',
@@ -57,7 +57,10 @@ export default function AddProduct ({edit}) {
         }),
         onSubmit: async values => {
             try {
-                const {data, status} = await productApi.create(values)
+                const {data, status} = await productApi.create({...values,
+                    image: mainImage[0].serverId,
+                    imageThumbnail: mainThumbnailImage[0].serverId
+                })
                 if (status === 200) {
                     console.log(data)
                 }
@@ -143,25 +146,9 @@ export default function AddProduct ({edit}) {
                                 onEditorStateChange={setEditorState}
                             />
                             <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
-                            <FilePond
-                               files={mainImage}
-                               onupdatefiles={setMainImage}
-                               allowMultiple={true}
-                               maxFiles={1}
-                               server="/api"
-                               name="files"
-                               labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-                            />
+                            <FileUploader allowMultiple={false} files={mainImage} setFiles={setMainImage} maxFiles={1} />
                             <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
-                            <FilePond
-                               files={mainThumbnailImage}
-                               onupdatefiles={setThumbnailImage}
-                               allowMultiple={true}
-                               maxFiles={1}
-                               server="/api"
-                               name="files"
-                               labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-                            />
+                            <FileUploader allowMultiple={false} files={mainThumbnailImage} setFiles={setThumbnailImage} maxFiles={1} />
                             <div className="flex justify-end">
                                 <button type="submit" className="p-2 text-white rounded bg-textLight">Submit</button>
                             </div>
