@@ -21,15 +21,21 @@ import { uploadFileToBlob, deleteBlobFile, getFile } from "../../api/azure-stora
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileRename);
 
 // Our app
-export default function FileUpload({files, setFiles, maxFiles, allowMultiple}) {
+export default function FileUpload(props) {
 
+    const comProps = {
+        files: props.files || [],
+        setFiles: props.setFiles || (() => {}),
+        maxFiles: props.maxFiles || 1,
+        allowMultiple: props.allowMultiple || true,
+    }
     return (
         <div className="App">
             <FilePond
-                files={files}
-                onupdatefiles={setFiles}
-                allowMultiple={allowMultiple}
-                maxFiles={maxFiles}
+                files={comProps.files}
+                onupdatefiles={comProps.setFiles}
+                allowMultiple={comProps.allowMultiple}
+                maxFiles={comProps.maxFiles}
                 fileRenameFunction={(file) => {
                     const fileName = uuidv4()
                     return `${fileName}${file.extension}`;
