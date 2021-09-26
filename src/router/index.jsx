@@ -56,7 +56,10 @@ export default function MainRouter() {
                 <Route path="/404">
                     <InnerPageLayout><Page404 /></InnerPageLayout>
                 </Route>
-                <Route path={`/register/vendor`}>
+                <Route path={"/register/vendor/:token"}>
+                    <InnerPageLayout><VendorRegistration /></InnerPageLayout>
+                </Route>
+                <Route exact={true} path={`/register/vendor`}>
                     <InnerPageLayout><VendorRegistration /></InnerPageLayout>
                 </Route>
                 <Route path={`/vendor_:id`} exact>
