@@ -16,7 +16,7 @@ const ProductComponent = ({ product, vendor_id }) => {
     // }
     const productStrings = useSelector(state => state.language.languageFile.productpage)
     const history = useHistory();
-    const [isAlert, setIsAlert] = useState(false);
+    const [alert, setAlert] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [er, setEr] = useState(null);
@@ -29,12 +29,12 @@ const ProductComponent = ({ product, vendor_id }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.get(`app/customer/${customer_id}/alerts/${product_id}`);
                 // const data = false;
-                console.log('333333333');
+                console.log('alert details');
                 console.log(data);
                 if (data._id){
-                    setIsAlert(true);
+                    setAlert(true);
                 } else {
-                    setIsAlert(false);
+                    setAlert(false);
                 }
                 setLoading(false);
                 setEr(null);
@@ -52,29 +52,33 @@ const ProductComponent = ({ product, vendor_id }) => {
     const handleRemove = (product_id) => {
         async function addAlert(customer_id,product_id){
             try {
-                await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+                const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
+                console.log('new alert');
+                console.log(data);
                 // alert('added alert');
-          } catch (err) {
-            setError(err);
-            console.log(error);
-          };
+            } catch (err) {
+                setError(err);
+                console.log(error);
+            };
         };
         async function removeAlert(customer_id,product_id){
             try {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
                 // alert('removed alert');
-          } catch (err) {
-            setError1(err);
-            console.log(error1);
-          };
+            } catch (err) {
+                setError1(err);
+                console.log(error1);
+            };
         };
-        if (isAlert) {
+        if (alert) {
             removeAlert(customer_id,product_id);
-            setIsAlert(false)
+            setAlert(false)
         } else {
             if (customer_id) {
                 addAlert(customer_id,product_id);
-                setIsAlert(true)
+                setAlert(true)
             } else {
                 history.push('/auth/login');
             }
@@ -93,7 +97,7 @@ const ProductComponent = ({ product, vendor_id }) => {
             </div>
             <div className="mr-1 my:4 sm:mx-4 flex flex-col justify-center items-end">
                 <button className="rounded-xl shadow w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(product._id)}>
-                    <FaBell color={isAlert ? "#ffc107" : "#e4e5e9" } size={24} />
+                    <FaBell color={alert ? "#ffc107" : "#e4e5e9" } size={24} />
                 </button>
             </div>
         </div>

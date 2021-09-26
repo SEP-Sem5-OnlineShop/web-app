@@ -24,7 +24,7 @@ const VendorScreen = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(`app/customer/vendors/${vendor_id}`);
-        console.log('111111111111');
+        console.log('vendor screen vendor details');
         console.log(data);
         setVendor(data);
         setLoading(false);
@@ -42,7 +42,7 @@ const VendorScreen = () => {
     async function listProducts(vendor_id){
       try {
         const { data } = await axios.get(`app/customer/products/${vendor_id}`);
-        console.log('2222222222');
+        console.log('vendor screen vendor product list');
         console.log(data);
         setProducts(data);
         setLoading1(false);
@@ -83,17 +83,17 @@ const VendorScreen = () => {
 
                   <div className="px-2 py-4 sm:px-12 sm:py-8">
                       <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
-{(loading1 ) ? (
-  <LoadingBox></LoadingBox>
-) : (error1) ? (
-  <MessageBox variant="danger">{error}</MessageBox>
-) : (
-  <>
-    {products.map((product) => (
-        <ProductComponent product={product} vendor_id={vendor_id} key={product._id} />
-    ))}
-    </>
-)}
+                        {(loading1 ) ? (
+                          <LoadingBox></LoadingBox>
+                        ) : (error1) ? (
+                          <MessageBox variant="danger">{error}</MessageBox>
+                        ) : (
+                          <>
+                            {products.map((product) => (
+                                <ProductComponent product={product} vendor_id={vendor_id} key={product._id} />
+                            ))}
+                            </>
+                        )}
                       </div>
                   </div>
 
