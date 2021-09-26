@@ -15,8 +15,8 @@ const SellingCart = () => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.post(`app/customer/sellingcart`,{order});
                 console.log('new order id');
+                console.log(data);
                 setOrderId(data);
-                console.log(orderId);
                 // alert('added alert');
             } catch (error) {
                 console.log(error);

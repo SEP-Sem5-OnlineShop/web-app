@@ -7,8 +7,7 @@ import { useSelector } from "react-redux";
 
 const ProductComponent = ({ product, vendor_id, customer_id }) => {
     
-    console.log(customer_id);
-    // 613eba8b94acbe3710fed690
+    // customer_id 613eba8b94acbe3710fed690
     
     const productStrings = useSelector(state => state.language.languageFile.productpage)
     const history = useHistory();

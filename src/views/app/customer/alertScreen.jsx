@@ -9,20 +9,23 @@ import { useSelector } from "react-redux";
 const AlertScreen = () => {
   const history = useHistory();
 
-  // const isLogged = useSelector(state => state.user.token)
+  // const isLogged = useSelector(state => state.user.isLogin)
   // if (!isLogged) {
   //   history.push('/auth/login');
   // }
-  // const userData = useSelector(state => state.user.userData);
-  const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
-  // if (userData) {
-  //     setCustomer_id(userData._id);
-  // }
+  // const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
+  const userData = useSelector(state => state.user.userData);
+  let customer_id = '';
+  if (userData){
+      customer_id = userData._id;
+  }
+  console.log(customer_id)
     
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [error1, setError1] = useState(null);
+  const [deleted, setDeleted] = useState(false);
 
   
   useEffect(() => {
@@ -43,7 +46,7 @@ const AlertScreen = () => {
     if (customer_id) {
       listAlerts(customer_id);
     };
-  }, [customer_id]);
+  }, [customer_id, deleted]);
 
   const handleRemove = (customer_id,product_id) => {
     async function deleteAlert(customer_id,product_id){
@@ -52,24 +55,20 @@ const AlertScreen = () => {
         const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
         console.log('alert removed');
         console.log(data);
+        if (deleted){
+          setDeleted(false);
+        } else {
+          setDeleted(true)
+        }
         // alert('removed alert');
       } catch (err) {
         setError1(err);
         console.log(error1);
       };
     };
-    deleteAlert(customer_id,product_id).then(() => {history.go(0);});
+    // deleteAlert(customer_id,product_id).then(() => {history.go(0);});
+    deleteAlert(customer_id,product_id);
   };
-    
-  // const history = useHistory();
-  // const dispatch = useDispatch();
-  // const alertList = useSelector(state => state.alertList);
-  // const { loading, error, alerts } = alertList;
-  // useEffect(() => {
-  //     if (customer_id) {
-  //         dispatch(listAlerts(customer_id));
-  //     };
-  //   }, [dispatch, customer_id]);
 
   return (
       <div>
