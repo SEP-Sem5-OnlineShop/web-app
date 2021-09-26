@@ -30,9 +30,9 @@ export default function VendorRegistration() {
         numberOfVehicles: '1',
         vehicles: [
             {
-                plateNumber: 'asdfas',
-                brand: 'adsfas',
-                model: 'adsfdasf',
+                plateNumber: '',
+                brand: '',
+                model: '',
                 imageUrl: '',
                 documentUrl: ''
             },
@@ -144,7 +144,7 @@ export default function VendorRegistration() {
                 const { data, status } = await vendorRequestApi.getRequest({ token: token })
                 if (status === 200) {
                     if (data.data) {
-                        setInitialState({...initialState,...data.data,email1: data.data.email})
+                        setInitialState({ ...initialState, ...data.data, email1: data.data.email })
                         // Object.keys(data.data).forEach(item => {
                         //     formik.setFieldValue(`${item}`, data.data[item])
                         //     formik.setFieldValue('email1', data.data['email'])
@@ -168,10 +168,6 @@ export default function VendorRegistration() {
             }
         }
     }, [])
-
-    useEffect(() => {
-        
-    }, [formik.values.numberOfVehicles])
 
     const initialAnimation = {
         opacity: 0,

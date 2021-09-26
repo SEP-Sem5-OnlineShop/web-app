@@ -13,6 +13,7 @@ export default function Step3(props) {
         setSubmitButtonLoading: props.setSubmitButtonLoading || (() => { }),
     }
 
+    const [array, setArray] = useState(["1"])
     const [disableSubmitButton, setDisableSubmitButton] = useState(false)
     const [uploadedImageName, setUploadedImageName] = useState({})
 
@@ -45,6 +46,14 @@ export default function Step3(props) {
         }
     };
 
+    useEffect(() => {
+        let array = []
+        for (let i = 1; i < parseInt(comProps.formik.values.numberOfVehicles) + 1; i++) {
+            array.push(i)
+        }
+        setArray(array)
+    }, [comProps.formik.values.numberOfVehicles])
+
     return (
         <React.Fragment>
             <div className="flex flex-col justify-between h-full">
@@ -60,7 +69,7 @@ export default function Step3(props) {
                     />
                     <motion.div layout>
                         {
-                            comProps.formik.values.vehicles.map((item, index) =>
+                            array.map((item, index) =>
                                 <div key={index}>
                                     <span className="font-medium mb">Vehicle #{index} Details</span>
                                     <InputWithValidation
@@ -70,6 +79,7 @@ export default function Step3(props) {
                                         label="Vehicle Brand"
                                         className="mb-2 mt-1"
                                         labelStyles={{fontSize: 14}}
+                                        value={comProps.formik.values.vehicles[index] ? comProps.formik.values.vehicles[index].brand : ""}
                                     />
                                     <InputWithValidation
                                         formik={comProps.formik}
@@ -78,11 +88,13 @@ export default function Step3(props) {
                                         label={`Vehicle Model`}
                                         className="mb-2"
                                         labelStyles={{fontSize: 14}}
+                                        value={comProps.formik.values.vehicles[index] ? comProps.formik.values.vehicles[index].model : ""}
                                     />
                                     <InputWithValidation
                                         formik={comProps.formik}
                                         id={`vehicles.${index}.plateNumber`}
                                         name={`vehicles.${index}.plateNumber`}
+                                        value={comProps.formik.values.vehicles[index] ? comProps.formik.values.vehicles[index].plateNumber : ""}
                                         label={`Plate Number`}
                                         className="mb-2"
                                         labelStyles={{fontSize: 14}}
