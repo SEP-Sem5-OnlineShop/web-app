@@ -12,11 +12,13 @@ import { useSelector } from 'react-redux';
 
 const VendorScreen = () => {
   const { id: vendor_id } = useParams();
-  // const userData = useSelector(state => state.user.userData);
-  const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
-  // if (userData) {
-  //     setCustomer_id(userData._id);
-  // }
+  // const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
+  const userData = useSelector(state => state.user.userData);
+  let customer_id = '';
+  if (userData){
+      customer_id = userData._id;
+  }
+  console.log(customer_id)
 
   const [vendor, setVendor] = useState({})
   const [products, setProducts] = useState([]);

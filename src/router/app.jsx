@@ -26,6 +26,8 @@ import DailyStockLoad from "../views/app/product/daily-stock"
 
 import AddDriver from '../views/app/vendor/driver/add'
 import DriversList from '../views/app/vendor/driver/list'
+import BuyingCart from "../views/app/customer/buyingCart";
+import SellingCart from "../views/app/tem/sellingCart";
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -81,6 +83,12 @@ export default function AppRouter() {
                         </Route>
                         <Route path={`${match.path}/customer_notification`}>
                             <CustomerNotificationScreen />
+                        </Route>
+                        <Route path={`${match.path}/buying_cart`}>
+                            <BuyingCart />
+                        </Route>
+                        <Route path={`${match.path}/selling_cart`}>
+                            <SellingCart />
                         </Route>
                     </> :
                     <Redirect to="/" />
