@@ -1,84 +1,43 @@
 import { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
-import Axios from 'axios';
+import {axios} from "../../../api/index";
 import AlertComponent from '../../../components/customer/alertComponent';
 import LoadingBox from "../../../components/customer/loadingBox";
 import MessageBox from "../../../components/customer/messageBox";
 import { useSelector } from "react-redux";
 
 const AlertScreen = () => {
-  const customer_id = "01";
-    
   const history = useHistory();
-  const [alerts, setAlerts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [error1, setError1] = useState(null);
 
   // const isLogged = useSelector(state => state.user.token)
   // if (!isLogged) {
   //   history.push('/auth/login');
   // }
+  // const userData = useSelector(state => state.user.userData);
+  const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
+  // if (userData) {
+  //     setCustomer_id(userData._id);
+  // }
+    
+  const [alerts, setAlerts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [error1, setError1] = useState(null);
+
   
   useEffect(() => {
     async function listAlerts(customer_id){
       try {
-        // const { data } = await Axios.get(`app/customer/alerts/${customer_id}`);
-        const data = [
-          {
-            alert_id: 1,
-            vendor_id: 1,
-            vendor_name: "Yummy Backers",
-            product_id: '1',
-            product_name: 'Burger with Fries',
-            image: '/img/item1.png',
-            price: 100,
-          },
-          {
-            alert_id: 2,
-            vendor_id: 1,
-            vendor_name: "Yummy Backers",
-            product_id: '2',
-            product_name: 'Burger with Fries',
-            image: '/img/item1.png',
-            price: 100,
-          },
-          {
-            alert_id: 3,
-            vendor_id: 1,
-            vendor_name: "Yummy Backers",
-            product_id: '3',
-            product_name: 'Burger with Fries',
-            image: '/img/item1.png',
-            price: 100,
-          },
-          {
-            alert_id: 4,
-            vendor_id: 2,
-            vendor_name: "Asta Backers",
-            product_id: '4',
-            product_name: 'Burger with Fries',
-            image: '/img/item1.png',
-            price: 100,
-          },
-          {
-            alert_id: 5,
-            vendor_id: 2,
-            vendor_name: "Asta Backers",
-            product_id: '5',
-            product_name: 'Burger with Fries',
-            image: '/img/item1.png',
-            price: 100,
-          },
-        ];
-          
+        axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+        const { data } = await axios.get(`app/customer/alerts/${customer_id}`);
+        console.log('alert screen customer alert list');
+        console.log(data);
         setAlerts(data);
         setLoading(false);
-        setError(null);
       } catch (err) {
-        setLoading(false);
         console.log(err);
         setError(err);
+        setLoading(false);
       };
     };
     if (customer_id) {
@@ -86,16 +45,20 @@ const AlertScreen = () => {
     };
   }, [customer_id]);
 
-  const handleRemove = (id) => {
-    async function deleteAlert(alertId){
+  const handleRemove = (customer_id,product_id) => {
+    async function deleteAlert(customer_id,product_id){
       try {
-        const { data } = await Axios.delete(`app/customer/alerts/${alertId}`);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+        const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
+        console.log('alert removed');
+        console.log(data);
+        // alert('removed alert');
       } catch (err) {
         setError1(err);
         console.log(error1);
       };
     };
-    deleteAlert(id).then(() => {history.go(0);});
+    deleteAlert(customer_id,product_id).then(() => {history.go(0);});
   };
     
   // const history = useHistory();

@@ -5,15 +5,11 @@ import {axios} from "../../api/index";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const ProductComponent = ({ product, vendor_id }) => {
-    const userData = useSelector(state => state.user.useData);
-    const [customer_id, setCustomer_id] = useState('613ebc89c71d2e07e0ec5e93');
-    if (userData) {
-        setCustomer_id(userData._id);
-    }
-    // if (!isLogged) {
-    //   history.push('/auth/login');
-    // }
+const ProductComponent = ({ product, vendor_id, customer_id }) => {
+    
+    console.log(customer_id);
+    // 613eba8b94acbe3710fed690
+    
     const productStrings = useSelector(state => state.language.languageFile.productpage)
     const history = useHistory();
     const [alert, setAlert] = useState(false);
@@ -65,7 +61,9 @@ const ProductComponent = ({ product, vendor_id }) => {
         async function removeAlert(customer_id,product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-                await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
+                const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
+                console.log('alert removed');
+                console.log(data);
                 // alert('removed alert');
             } catch (err) {
                 setError1(err);

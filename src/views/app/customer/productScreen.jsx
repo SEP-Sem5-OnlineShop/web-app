@@ -13,11 +13,11 @@ const ProductScreen = () => {
     const productStrings = useSelector(state => state.language.languageFile.productpage)
     const history = useHistory();
 
-    const userData = useSelector(state => state.user.useData);
-    const [customer_id, setCustomer_id] = useState('613ebc89c71d2e07e0ec5e93');
-    if (userData) {
-        setCustomer_id(userData._id);
-    }
+    // const userData = useSelector(state => state.user.userData);
+    const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
+    // if (userData) {
+    //     setCustomer_id(userData._id);
+    // }
 
     const [product, setProduct] = useState({});
     const [loading, setLoading] = useState(true);
@@ -79,7 +79,9 @@ const ProductScreen = () => {
         async function addAlert(customer_id,product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-                await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
+                const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
+                console.log('new alert');
+                console.log(data);
                 // alert('added alert');
             } catch (err) {
                 setError1(err);
@@ -89,7 +91,9 @@ const ProductScreen = () => {
         async function removeAlert(customer_id,product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-                await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
+                const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
+                console.log('alert removed');
+                console.log(data);
                 // alert('removed alert');
             } catch (err) {
                 setError2(err);

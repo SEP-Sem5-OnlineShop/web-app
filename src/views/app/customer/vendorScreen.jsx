@@ -7,10 +7,16 @@ import RatingComponent from '../../../components/customer/ratingComponent';
 import LoadingBox from '../../../components/customer/loadingBox';
 import MessageBox from '../../../components/customer/messageBox';
 import {axios} from "../../../api/index";
+import { useSelector } from 'react-redux';
 
 
 const VendorScreen = () => {
   const { id: vendor_id } = useParams();
+  // const userData = useSelector(state => state.user.userData);
+  const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
+  // if (userData) {
+  //     setCustomer_id(userData._id);
+  // }
 
   const [vendor, setVendor] = useState({})
   const [products, setProducts] = useState([]);
@@ -21,18 +27,16 @@ const VendorScreen = () => {
 
   useEffect(() => {
     async function detailsVendor(vendor_id){
-      setLoading(true);
       try {
         const { data } = await axios.get(`app/customer/vendors/${vendor_id}`);
         console.log('vendor screen vendor details');
         console.log(data);
         setVendor(data);
         setLoading(false);
-        setError(false);
-      } catch (err) {
-        setLoading(false);
+      } catch (error) {
+        console.log("vendor felch error");
         setError("vendor felch error");
-        // console.log(error);
+        setLoading(false);
       };
     };
     detailsVendor(vendor_id);
@@ -46,23 +50,22 @@ const VendorScreen = () => {
         console.log(data);
         setProducts(data);
         setLoading1(false);
-        setError1(null);
-      } catch (err) {
+      } catch (error) {
+        console.log("product felch error");
+        setError1("product felch error");
         setLoading1(false);
-        setError1('products felch error');
-        // console.log(error1);
       };
     };
-    if (loading & !error) {
+    if (loading && !error) {
       listProducts(vendor_id);
     };
   }, [error, loading, vendor_id]);
 
   return (
       <div>
-      {(loading ) ? (
+      {loading ? (
           <LoadingBox></LoadingBox>
-      ) : (error) ? (
+      ) : error ? (
           <MessageBox variant="danger">{error}</MessageBox>
       ) : (
           <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
@@ -90,7 +93,7 @@ const VendorScreen = () => {
                         ) : (
                           <>
                             {products.map((product) => (
-                                <ProductComponent product={product} vendor_id={vendor_id} key={product._id} />
+                                <ProductComponent product={product} vendor_id={vendor_id} customer_id={customer_id} key={product._id} />
                             ))}
                             </>
                         )}
