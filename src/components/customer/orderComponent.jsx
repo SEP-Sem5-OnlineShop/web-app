@@ -1,12 +1,10 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import RatingComponent from './ratingComponent';
 import { FaStar } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { axios } from '../../api';
-import LoadingBox from './loadingBox';
-import MessageBox from './messageBox';
 
 export default function OrderComponent({ order, customer_id, handleReview }) {
     const productStrings = useSelector(state => state.language.languageFile.productpage)
@@ -19,38 +17,9 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
     const [error, setError] = useState(null);
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
-    // const data = [
-    //     {
-    //         _id:1,================================
-    //         customer_id:1,========================
-    //         vendor_id:1,==========================
-    //         image:"/img/vendor.jpg",==============
-    //         date: '2021/09/12',===================
-    //         totalItems:7,=========================
-    //         totalCost:700,========================
-    //         products:[
-    //             {
-    //                 product_id: '1',=================
-    //                 product_name: 'Burger with Fries',
-    //                 image: '/img/item1.png',
-    //                 price: 100,========================
-    //                 amount: 3,=========================
-    //                 rated: 4,==========================
-    //                 review: 'good',====================
-    //             },
-    //             {
-    //                 product_id: '2',
-    //                 product_name: 'Burger with Fries',
-    //                 vendor_id: '613a23c0dd295c38362b2cbe',
-    //                 image: '/img/item1.png',
-    //                 price: 100,
-    //                 amount: 4,
-    //                 rated: null,
-    //                 review: null,
-    //             }
-    //         ]
-    //     },
-    // ]
+
+    const [width, height] = useWindowSize();
+    
     useEffect(() => {
       async function detailsVendor(vendor_id){
         try {
@@ -72,7 +41,7 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
 
     const handleSubmit = () => {
       if (review && rating) {
-        handleReview(order._id, reviewProduct, { rating, review, customer: customer_id })
+        handleReview(order._id, reviewProduct, { rating, review, customer_id })
         setShowModal(false);
       } else {
         alert('Please enter review and rating');
@@ -82,11 +51,11 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
         <>
         <div className="flex justify-start rounded-2xl overflow-hidden shadow-md bg-white transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${order.vendor_id}`}>
-            <img src={ vendor.imageUrl } alt="" className="my-2 h-20 w-20 sm:h-64 sm:w-72 rounded-2xl object-cover"/>
+            <img src={ vendor.imageUrl } alt="" className="my-2 h-16 w-16 sm:h-20 sm:w-20 md:h-64 md:w-72 rounded-2xl object-cover"/>
             </Link>
-            <div className="w-full mx-4 my-2 flex flex-col justify-start items-start">
-                <Link className="text-base sm:text-xl text-secondary font-semibold sm:mx-2" to={`/vendor_${order.vendor_id}`}>{vendor.vendor_name}</Link>
-                <span className="text-sm sm:text-base text-secondary sm:mx-2">{order.totalItems} {productStrings.items} {productStrings.for} {productStrings.currency} {order.totalCost} • {order.createdAt} at 08:10 PM •</span>
+            <div className="w-full mx-2 sm:mx-4 sm:my-2 flex flex-col justify-start items-start">
+                <Link className="text-xs xs:text-sm sm:text-lg text-secondary font-semibold sm:mx-2" to={`/vendor_${order.vendor_id}`}>{vendor.vendor_name}</Link>
+                <span className="text-xs sm:text-base text-secondary sm:mx-2">{order.totalItems} {productStrings.items} {productStrings.for} {productStrings.currency} {order.totalCost} • {new Date(order.createdAt).toUTCString()} •</span>
                 <div className="w-full mt-4 grid grid-cols-1 gap-4 lg:gap-4">
                     {order.products && <>
                         {order.products.map((product) => (
@@ -96,19 +65,19 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
                                         <img src={ product.image } alt="" className="h-full my-2 w-10 sm:w-20 object-cover"/>
                                     </Link> */}
                                     <ProductImage product_id={product.product_id} />
-                                    <div className="mx-4 my-2 flex flex-col justify-between items-start">
+                                    <div className="mx-1 sm:mx-4 my-2 flex flex-col justify-between items-start">
                                         {/* <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>{ product.product_name }</Link> */}
                                         <ProductName product_id={product.product_id} />
-                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.items}: { product.items }</span>
-                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.currency} { product.price * product.items }</span>
+                                        <span className="text-xs sm:text-base text-secondary">{productStrings.items}: { product.items }</span>
+                                        <span className="text-xs sm:text-base text-secondary">{productStrings.currency} { product.price * product.items }</span>
                                     </div>
                                 </div>
-                                <div className="sm:mr-4">
-                                {product.rated ? (
-                                    <RatingComponent rating={product.rated} size={24} />
+                                <div className="sm:mr-4" >
+                                {product.rating ? (
+                                    <RatingComponent rating={product.rating} size={width>768? 24: width>600?20: width>480?16:width>300?12:width>200?8:6} />
                                 ) : (
                                     <div>
-                                        <button className="sm:mx-1 rounded-xl shadow w-24 h-12 sm:w-28 sm:h-14 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400 " onClick={() => setShowModal(true) && setReviewProduct(product.product_id)}>
+                                        <button className="sm:mx-1 rounded-xl shadow w-24 h-12 sm:w-28 sm:h-14 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400 " onClick={() => {setShowModal(true); setReviewProduct(product.product_id)}}>
                                             <span className="">Add Review</span>
                                         </button>
                                     </div>
@@ -146,7 +115,7 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
                       {[...Array(5)].map((item, index) => {
                         const givenRating = index + 1;
                         return (
-                          <label>
+                          <label key={index}>
                             <input className="invisible" type="radio" value={givenRating} onClick={() => {setRating(givenRating);}}/>
                             <FaStar color={ givenRating < rating || givenRating === rating ? "#ffc107" : "#e4e5e9" } size={25} />
                           </label>
@@ -198,7 +167,7 @@ const ProductImage = ({product_id}) => {
 
   return (
     <Link to={`/vendor_${productDetails.seller}/product_${productDetails._id}`}>
-    <img src={ productDetails.imageUrl } alt="" className="h-full my-2 w-10 sm:w-20 object-cover"/>
+    <img src={ productDetails.imageUrl } alt="" className="my-2 w-8 h-full sm:w-16 md:w-20 object-cover"/>
   </Link>
   );
 }
@@ -228,6 +197,19 @@ const ProductName = ({product_id}) => {
   }, [product_id]);
 
   return (
-    <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${productDetails.seller}/product_${productDetails._id}`}>{ productDetails.product_name }</Link>
+    <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${productDetails.seller}/product_${productDetails._id}`}>{ productDetails.product_name }</Link>
   );
 }
+
+function useWindowSize() {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+};

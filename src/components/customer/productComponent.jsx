@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 import {axios} from "../../api/index";
@@ -17,6 +17,8 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     const [er, setEr] = useState(null);
     const [error, setError] = useState(null);
     const [error1, setError1] = useState(null);
+
+    const [width, height] = useWindowSize();
 
     useEffect(() => {
         async function detailsAlert(customer_id, product_id){
@@ -83,18 +85,18 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     };
 
     return (
-        <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-28 sm:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
+        <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-full xs:h-24 sm:h-28 md:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${vendor_id}/product_${product._id}`}>
-            <img src={ product.imageUrl } alt="" className="h-full w-20 sm:w-36 object-cover"/>
+            <img src={ product.imageUrl } alt="" className="h-full w-20 sm:w-28 md:w-36 object-cover"/>
             </Link>
-            <div className="mx-4 my-2 flex flex-col justify-between items-start">
-                <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
-                <span className="text-sm sm:text-lg text-secondary">{productStrings.available}: { product.stock }</span>
-                <span className="text-sm sm:text-lg text-secondary">{productStrings.currency} { product.price }</span>
+            <div className="mx-2 my-1 xs:mx-4 xs:my-2 flex flex-col justify-between items-start">
+                <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
+                <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.available}: { product.stock }</span>
+                <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.currency} { product.price }</span>
             </div>
             <div className="mr-1 my:4 sm:mx-4 flex flex-col justify-center items-end">
-                <button className="rounded-xl shadow w-8 h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(product._id)}>
-                    <FaBell color={alert ? "#ffc107" : "#e4e5e9" } size={24} />
+                <button className="rounded-xl shadow w-6 h-6 xs:w-8 xs:h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(product._id)}>
+                    <FaBell color={alert ? "#ffc107" : "#e4e5e9" } size={width>600?24:width>480?20:width>380?18:14} />
                 </button>
             </div>
         </div>
@@ -103,3 +105,16 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
 };
  
 export default ProductComponent;
+
+function useWindowSize() {
+    const [size, setSize] = useState([0, 0]);
+    useLayoutEffect(() => {
+      function updateSize() {
+        setSize([window.innerWidth, window.innerHeight]);
+      }
+      window.addEventListener('resize', updateSize);
+      updateSize();
+      return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+  };

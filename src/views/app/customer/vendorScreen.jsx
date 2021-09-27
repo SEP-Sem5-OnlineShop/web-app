@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 // import Axios from 'axios';
@@ -26,6 +26,9 @@ const VendorScreen = () => {
   const [error, setError] = useState(null);
   const [loading1, setLoading1] = useState(true);
   const [error1, setError1] = useState(null);
+
+  const [width, height] = useWindowSize();
+  console.log(width);
 
   useEffect(() => {
     async function detailsVendor(vendor_id){
@@ -71,19 +74,19 @@ const VendorScreen = () => {
           <MessageBox variant="danger">{error}</MessageBox>
       ) : (
           <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
-              <div style={{ backgroundImage: `url(${vendor.imageUrl})` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full absolute top-0 left-0 z-0"/>
+              <div style={{ backgroundImage: `url(${vendor.imageUrl})` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full object-center absolute top-0 left-0 z-0"/>
               <Link to={`/vendor_${vendor_id}`}>
-              <div className="h-52 w-full flex px-10 items-end relative">
+              <div className="h-24 xs:h-32 sm:h-40 md:h-52 w-full flex sm:px-10 items-end relative">
                   {/* <span className="ml-8 my-6 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor.vendor_name}</span> */}
-                  <span style={{'WebkitTextFillColor': 'white', 'WebkitTextStrokeWidth': '1px', 'WebkitTextStrokeColor': '#000000', 'textShadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-7 my-6 text-3xl sm:text-5xl text-white font-semibold relative">{vendor.vendor_name}</span>
+                  <span style={{'WebkitTextFillColor': 'white', 'WebkitTextStrokeWidth': '1px', 'WebkitTextStrokeColor': '#000000', 'textShadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-2 my-2 xs:ml-4 xs:my-4 sm:ml-6 sm:my-6 text-lg xss:text-xl xs:text-3xl sm:text-4xl md:text-5xl text-white font-semibold relative">{vendor.vendor_name}</span>
               </div>
               </Link>
 
               <div className="w-full bg-white relative" style={{minHeight: 'calc(100vh - 11rem)'}}>
                   <div className="px-4 pt-2 sm:px-14 sm:pt-6">
-                      <RatingComponent rating={vendor.rating} size={25} />
-                      {vendor.rating} ({vendor.ratingCount}+)
-                      <p className="mt-2">{vendor.vendor_description}</p>
+                      <RatingComponent rating={vendor.rating} size={width>600?25:width>480?22:width>400?18:16} />
+                      <span className="text-xs xs:text-sm sm:text-base">{vendor.rating} ({vendor.ratingCount}+)</span>
+                      <p className="mt-2 text-xs xs:text-sm sm:text-base">{vendor.vendor_description}</p>
                   </div>
 
                   <div className="px-2 py-4 sm:px-12 sm:py-8">
@@ -110,3 +113,16 @@ const VendorScreen = () => {
 }
 
 export default VendorScreen;
+
+function useWindowSize() {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+};

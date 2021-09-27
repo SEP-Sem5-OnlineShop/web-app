@@ -122,7 +122,7 @@ const ProductScreen = () => {
         ) : (error) ? (
             <MessageBox variant="danger">{error}</MessageBox>
         ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-16">
             <div className="relative">
                 <div  className="w-full h-full bg-center bg-cover rounded-xl" style={{ minHeight: '50vh', backgroundImage: `url(${product.imageUrl})` }}>
                 </div>
@@ -136,7 +136,7 @@ const ProductScreen = () => {
                 </div>
             </div>
             <div>
-                <span className="text-3xl sm:text-5xl font-bold text-textLight">{product.product_name}</span>
+                <span className="text-xl sm:text-2xl md:text-4xl font-bold text-textLight">{product.product_name}</span>
                 <div className="mt-4 flex">
                     <RatingComponent rating={product.rating} size={25} />
                     <span className="px-2">{product.rating} ({product.numReviews}+)</span>

@@ -25,6 +25,7 @@ const OrderHistoryScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [error1, setError1] = useState(null);
+    const [reviewed, setReviewed] = useState(false);
     
     useEffect(() => {
         async function listOrders(customer_id){
@@ -45,21 +46,31 @@ const OrderHistoryScreen = () => {
         if (customer_id) {
             listOrders(customer_id);
         };
-    }, [customer_id]);
+    }, [customer_id, reviewed]);
 
     const handleReview = (order_id,product_id,review) => {
         async function addReview(order_id,product_id,review){
             try {
+              console.log("review");
+              console.log(order_id);
+              console.log(product_id);
               console.log(review);
-              await axios.post(`/orders/${order_id}/${product_id}`,review);
+              axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+              const { data } = await axios.put(`app/customer/purchases/${order_id}/product/${product_id}`,review);
+              console.log(data);
+              if (reviewed){
+                setReviewed(false);
+              } else {
+                setReviewed(true)
+              }
               alert('added new review and rating');
           } catch (err) {
             setError1(err);
             console.log(error1);
           };
         };
-        addReview(order_id,product_id,review).then(() => {history.go(0);});
-        // addReview(order_id,product_id,review);
+        // addReview(order_id,product_id,review).then(() => {history.go(0);});
+        addReview(order_id,product_id,review);
     };
 
     return (
@@ -69,9 +80,9 @@ const OrderHistoryScreen = () => {
         ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
         ) : (
-            <div className="px-2 py-4 sm:px-12 sm:py-12">
-                <h1 className="text-3xl text-secondary flex flex-col">Order History</h1>
-                <div className="mt-4 sm:mt-8 sm:mx-6 grid grid-cols-1 gap-4 lg:gap-6">
+            <div className="sm:px-2 sm:py-2 md:px-12 md:py-12">
+                <h1 className="text-base sm:text-lg md:text-2xl text-secondary flex flex-col">Order History</h1>
+                <div className="mt-4 md:mt-8 md:mx-6 grid grid-cols-1 gap-4 lg:gap-6">
                     {orders && <>
                         {orders.map((order) => (
                             <OrderComponent order={order} customer_id={customer_id} handleReview={handleReview} key={order._id} />
