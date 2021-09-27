@@ -13,7 +13,7 @@ const SellingCart = () => {
         async function saveOrder(){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-                const { data } = await axios.post(`app/customer/sellingcart`,{order});
+                const { data } = await axios.post(`app/customer/purchase/`,{order});
                 console.log('new order id');
                 console.log(data);
                 setOrderId(data);

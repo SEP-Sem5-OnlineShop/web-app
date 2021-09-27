@@ -6,12 +6,12 @@ const BuyingCart = () => {
     const [scanResultWebCam, setScanResultWebCam] = useState('')
 
     const [order, setOrder] = useState({});
-
+    
     useEffect(() => {
         async function loadOrder(orderId){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-                const { data } = await axios.get(`app/customer/buyingcart/${orderId}`);
+                const { data } = await axios.get(`app/customer/purchase/${orderId}`);
                 console.log('new order details');
                 console.log(data);
                 setOrder(data);
