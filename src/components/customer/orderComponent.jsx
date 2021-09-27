@@ -3,46 +3,104 @@ import { Link } from 'react-router-dom';
 import RatingComponent from './ratingComponent';
 import { FaStar } from "react-icons/fa";
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { axios } from '../../api';
+import LoadingBox from './loadingBox';
+import MessageBox from './messageBox';
 
-export default function OrderComponent({ order, handleReview }) {
-  const productStrings = useSelector(state => state.language.languageFile.productpage)
+export default function OrderComponent({ order, customer_id, handleReview }) {
+    const productStrings = useSelector(state => state.language.languageFile.productpage)
     const [showModal, setShowModal] = useState(false);
     const [reviewProduct, setReviewProduct] = useState('');
     // const [isAlert, setIsAlert] = useState(false);
-    const vendor_name = "Yummy Bakers"
+
+    const [vendor, setVendor] = useState({})
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
-    const customer = '613ebc89c71d2e07e0ec5e93';
+    // const data = [
+    //     {
+    //         _id:1,================================
+    //         customer_id:1,========================
+    //         vendor_id:1,==========================
+    //         image:"/img/vendor.jpg",==============
+    //         date: '2021/09/12',===================
+    //         totalItems:7,=========================
+    //         totalCost:700,========================
+    //         products:[
+    //             {
+    //                 product_id: '1',=================
+    //                 product_name: 'Burger with Fries',
+    //                 image: '/img/item1.png',
+    //                 price: 100,========================
+    //                 amount: 3,=========================
+    //                 rated: 4,==========================
+    //                 review: 'good',====================
+    //             },
+    //             {
+    //                 product_id: '2',
+    //                 product_name: 'Burger with Fries',
+    //                 vendor_id: '613a23c0dd295c38362b2cbe',
+    //                 image: '/img/item1.png',
+    //                 price: 100,
+    //                 amount: 4,
+    //                 rated: null,
+    //                 review: null,
+    //             }
+    //         ]
+    //     },
+    // ]
+    useEffect(() => {
+      async function detailsVendor(vendor_id){
+        try {
+          const { data } = await axios.get(`app/customer/vendors/${vendor_id}`);
+          console.log('order history screen vendor details');
+          console.log(data);
+          setVendor(data);
+          setLoading(false);
+        } catch (error) {
+          console.log("vendor felch error");
+          setError("vendor felch error");
+          setLoading(false);
+        };
+      };
+      if(order.vendor_id){
+        detailsVendor(order.vendor_id);
+      }
+    }, [order.vendor_id]);
 
     const handleSubmit = () => {
       if (review && rating) {
-        handleReview(order._id, reviewProduct, { rating, review, customer: customer })
+        handleReview(order._id, reviewProduct, { rating, review, customer: customer_id })
         setShowModal(false);
       } else {
         alert('Please enter review and rating');
       }
-  };
+    };
     return (
         <>
         <div className="flex justify-start rounded-2xl overflow-hidden shadow-md bg-white transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${order.vendor_id}`}>
-            <img src={ order.image } alt="" className="my-2 h-20 w-20 sm:h-64 sm:w-72 rounded-2xl object-cover"/>
+            <img src={ vendor.imageUrl } alt="" className="my-2 h-20 w-20 sm:h-64 sm:w-72 rounded-2xl object-cover"/>
             </Link>
             <div className="w-full mx-4 my-2 flex flex-col justify-start items-start">
-                <Link className="text-base sm:text-xl text-secondary font-semibold sm:mx-2" to={`/vendor_${order.vendor_id}`}>{ vendor_name }</Link>
-                <span className="text-sm sm:text-base text-secondary sm:mx-2">{order.totalItems} {productStrings.items} {productStrings.for} {productStrings.currency} {order.totalCost} • {order.date} at 08:10 PM •</span>
+                <Link className="text-base sm:text-xl text-secondary font-semibold sm:mx-2" to={`/vendor_${order.vendor_id}`}>{vendor.vendor_name}</Link>
+                <span className="text-sm sm:text-base text-secondary sm:mx-2">{order.totalItems} {productStrings.items} {productStrings.for} {productStrings.currency} {order.totalCost} • {order.createdAt} at 08:10 PM •</span>
                 <div className="w-full mt-4 grid grid-cols-1 gap-4 lg:gap-4">
                     {order.products && <>
                         {order.products.map((product) => (
                             <div className="flex justify-between items-center sm:mx-6 shadow-sm overflow-hidden transform hover:shadow-md transition ease-out duration-400" key={product.product_id}>
                                 <div className="flex">
-                                    <Link to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>
+                                    {/* <Link to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>
                                         <img src={ product.image } alt="" className="h-full my-2 w-10 sm:w-20 object-cover"/>
-                                    </Link>
+                                    </Link> */}
+                                    <ProductImage product_id={product.product_id} />
                                     <div className="mx-4 my-2 flex flex-col justify-between items-start">
-                                        <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>{ product.product_name }</Link>
-                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.items}: { product.amount }</span>
-                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.currency} { product.price * product.amount }</span>
+                                        {/* <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>{ product.product_name }</Link> */}
+                                        <ProductName product_id={product.product_id} />
+                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.items}: { product.items }</span>
+                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.currency} { product.price * product.items }</span>
                                     </div>
                                 </div>
                                 <div className="sm:mr-4">
@@ -112,4 +170,64 @@ export default function OrderComponent({ order, handleReview }) {
         ) : null}
         </>
     )
+}
+
+const ProductImage = ({product_id}) => {
+  const [productDetails, setProductDetails] = useState({})
+  const [loading3, setLoading3] = useState(true);
+  const [error3, setError3] = useState(null);
+  useEffect(() => {
+      async function detailsProduct(product_id){
+        try {
+            const { data } = (await axios.get(`app/customer/product/${product_id}`)).data;
+            console.log('order history screen product details');
+            console.log(data);
+            setProductDetails(data);
+            setLoading3(false);
+            setError3(null);
+        } catch (err) {
+            setLoading3(false);
+            console.log(err);
+            setError3(err);
+        };
+    };
+    if (product_id) {
+        detailsProduct(product_id);
+    };
+  }, [product_id]);
+
+  return (
+    <Link to={`/vendor_${productDetails.seller}/product_${productDetails._id}`}>
+    <img src={ productDetails.imageUrl } alt="" className="h-full my-2 w-10 sm:w-20 object-cover"/>
+  </Link>
+  );
+}
+
+const ProductName = ({product_id}) => {
+  const [productDetails, setProductDetails] = useState({})
+  const [loading3, setLoading3] = useState(true);
+  const [error3, setError3] = useState(null);
+  useEffect(() => {
+      async function detailsProduct(product_id){
+        try {
+            const { data } = (await axios.get(`app/customer/product/${product_id}`)).data;
+            console.log('order history screen product details');
+            console.log(data);
+            setProductDetails(data);
+            setLoading3(false);
+            setError3(null);
+        } catch (err) {
+            setLoading3(false);
+            console.log(err);
+            setError3(err);
+        };
+    };
+    if (product_id) {
+        detailsProduct(product_id);
+    };
+  }, [product_id]);
+
+  return (
+    <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${productDetails.seller}/product_${productDetails._id}`}>{ productDetails.product_name }</Link>
+  );
 }

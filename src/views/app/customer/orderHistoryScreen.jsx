@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
-import Axios from 'axios';
+import {axios} from "../../../api/index";
 import OrderComponent from '../../../components/customer/orderComponent';
 import LoadingBox from "../../../components/customer/loadingBox";
 import MessageBox from "../../../components/customer/messageBox";
+import { useSelector } from "react-redux";
 
 const OrderHistoryScreen = () => {
-    const customer_id = "01";
-
     const history = useHistory();
+
+    // const isLogged = useSelector(state => state.user.isLogin)
+    // if (!isLogged) {
+    //   history.push('/auth/login');
+    // }
+    // const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
+    const userData = useSelector(state => state.user.userData);
+    let customer_id = '';
+    if (userData){
+        customer_id = userData._id;
+    }
+    console.log(customer_id);
+
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -17,82 +29,10 @@ const OrderHistoryScreen = () => {
     useEffect(() => {
         async function listOrders(customer_id){
             try {
-                // const { data } = await Axios.get(`app/customer/orders/${customer_id}`);
-                const data = [
-                    {
-                        _id:1,
-                        customer_id:1,
-                        vendor_id:1,
-                        image:"/img/vendor.jpg",
-                        date: '2021/09/12',
-                        totalItems:7,
-                        totalCost:700,
-                        products:[
-                            {
-                                product_id: '1',
-                                product_name: 'Burger with Fries',
-                                vendor_id: '613a23c0dd295c38362b2cbe',
-                                image: '/img/item1.png',
-                                price: 100,
-                                amount: 3,
-                                rated: 4,
-                                review: 'good',
-                            },
-                            {
-                                product_id: '2',
-                                product_name: 'Burger with Fries',
-                                vendor_id: '613a23c0dd295c38362b2cbe',
-                                image: '/img/item1.png',
-                                price: 100,
-                                amount: 4,
-                                rated: null,
-                                review: null,
-                            }
-                        ]
-                    },
-                    {
-                        _id:2,
-                        customer_id:1,
-                        vendor_id:1,
-                        image:"/img/vendor.jpg",
-                        date: '2021/09/13',
-                        totalItems:4,
-                        totalCost:400,
-                        products:[
-                            {
-                                product_id: '1',
-                                product_name: 'Burger with Fries',
-                                vendor_id: '613a23c0dd295c38362b2cbe',
-                                image: '/img/item1.png',
-                                price: 100,
-                                amount: 1,
-                                rated: 5,
-                                review: 'good',
-                            },
-                            {
-                                product_id: '2',
-                                product_name: 'Burger with Fries',
-                                vendor_id: '613a23c0dd295c38362b2cbe',
-                                image: '/img/item1.png',
-                                price: 100,
-                                amount: 2,
-                                rated: 3,
-                                review: 'good',
-                            },
-                            {
-                                product_id: '3',
-                                product_name: 'Burger with Fries',
-                                vendor_id: '613a23c0dd295c38362b2cbe',
-                                image: '/img/item1.png',
-                                price: 100,
-                                amount: 1,
-                                rated: 4,
-                                review: 'good',
-                            }
-                        ]
-                    }
-                ]
-                
+                axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+                const { data } = await axios.get(`app/customer/purchases/${customer_id}`);
+                console.log('order history screen customer order list');
+                console.log(data);
                 setOrders(data);
                 setLoading(false);
                 setError(null);
@@ -111,7 +51,7 @@ const OrderHistoryScreen = () => {
         async function addReview(order_id,product_id,review){
             try {
               console.log(review);
-              await Axios.post(`/orders/${order_id}/${product_id}`,review);
+              await axios.post(`/orders/${order_id}/${product_id}`,review);
               alert('added new review and rating');
           } catch (err) {
             setError1(err);
@@ -134,7 +74,7 @@ const OrderHistoryScreen = () => {
                 <div className="mt-4 sm:mt-8 sm:mx-6 grid grid-cols-1 gap-4 lg:gap-6">
                     {orders && <>
                         {orders.map((order) => (
-                            <OrderComponent order={order} handleReview={handleReview} key={order._id} />
+                            <OrderComponent order={order} customer_id={customer_id} handleReview={handleReview} key={order._id} />
                         ))}
                     </>}
                 </div>
