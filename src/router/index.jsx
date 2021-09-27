@@ -15,6 +15,8 @@ import ProductScreen from "../views/app/customer/productScreen";
 import VendorScreen from "../views/app/customer/vendorScreen";
 import Page404 from "../views/404"
 import { actions } from "../store"
+import DashboardLayout from "../layout/dashboard-layour";
+import Dashboard from "../views/app/driver/dashboard";
 
 export default function MainRouter() {
 
@@ -41,9 +43,15 @@ export default function MainRouter() {
         <Router>
             <Switch>
                 <Route exact path="/">
-                    <MainLayout>
-                        <HomeDsand />
-                    </MainLayout>
+                    {
+                        role === "guest" || role === "customer" ?
+                        <MainLayout>
+                            <HomeDsand/>
+                        </MainLayout> :
+                        <DashboardLayout>
+                            <Dashboard />
+                        </DashboardLayout>
+                    }
                 </Route>
                 <Route path="/auth">
                     <AuthRouter />

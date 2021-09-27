@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { MenuItem } from "./menu-item";
 import { useSelector } from "react-redux"
 
+import logo from "../../assets/svg/logo/logo-264A75.svg";
+
 const variants = {
   open: {
     transition: { staggerChildren: 0.07, delayChildren: 0.2 }
@@ -13,18 +15,24 @@ const variants = {
   }
 };
 
-export const Navigation = () => {
+export const Navigation = (props) => {
   const history = useHistory()
   const role = useSelector(state => state.user.role)
   return (
     <div className="p-8">
-      {(role !== "customer") &&
-      <button onClick={() => history.push("/auth/login")} className="rounded-lg px-2 py-2 bg-textLight text-white w-full">
+      {props.freeze ?
+          <div className="h-full flex items-center p-2 bg-white rounded-xl">
+            <img className="cursor-pointer ml-8 lg:ml-0" style={{height: 80}} onClick={() => history.push("/")} src={logo} alt="logo" />
+          </div>
+          :
+          <button onClick={() => history.push("/auth/login")}
+                  className={`rounded-lg px-2 py-2 ${props.freeze ? "bg-white bg-textLight":
+          "bg-textLight text-white"} w-full`}>
                               Login | Register</button>}
       <motion.ul className="mt-8" variants={variants}>
         {itemIds.map(i => (
           i.accessLevel === role &&
-          <MenuItem menuName={i.name} link={i.link} key={i.name} />
+          <MenuItem freeze={props.freeze} menuName={i.name} link={i.link} key={i.name} />
         ))}
       </motion.ul>
     </div>

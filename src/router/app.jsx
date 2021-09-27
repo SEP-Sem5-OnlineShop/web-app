@@ -29,79 +29,85 @@ import DriversList from '../views/app/vendor/driver/list'
 import InnerPageLayout from "../layout/inner-page-layout";
 import SelectRoute from "../views/app/driver/select-route";
 import Cart from "../views/app/driver/cart";
+import DashboardLayout from "../layout/dashboard-layour";
 
 export default function AppRouter() {
     const match = useRouteMatch()
     const role = useSelector(state => state.user.role)
     return (
-        <InnerPageLayout>
-            <Switch>
-                {
-                        role === "driver" ?
-                        <>
-                            <Route path={`${match.path}/select-route`}>
-                                <SelectRoute />
-                            </Route>
-                            <Route path={`${match.path}/cart`}>
-                                <Cart />
-                            </Route>
-                        </> :
-                        role === "vendor" ?
-                        <>
-                            <Route path={`${match.path}/product/:id`}>
-                                <AddProduct edit={true} />
-                            </Route>
-                            <Route exact={true} path={`${match.path}/product`}>
-                                <AddProduct />
-                            </Route>
-                            <Route exact={true} path={`${match.path}/products/stock/daily`}>
-                                <DailyStockLoad />
-                            </Route>
-                            <Route exact={true} path={`${match.path}/products`}>
-                                <ProductList />
-                            </Route>
-
-                            <Route exact={true} path={`${match.path}/driver`}>
-                                <AddDriver />
-                            </Route>
-                            <Route exact={true} path={`${match.path}/drivers`}>
-                                <DriversList />
-                            </Route>
-                            <Route exact={true} path={`${match.path}/driver/:id`}>
-                                <AddDriver />
-                            </Route>
-                        </> :
-                        role === "customer" ?
-                        <>
-                            <Route path={`${match.path}/history`}>
-                                <History />
-                            </Route>
-                            <Route path={`${match.path}/profile`}>
-                                <Profile />
-                            </Route>
-
-                            {/* <Route path={`${match.path}/vendor_:id`} exact>
-                            <VendorScreen />
+        <React.Fragment>{
+            role === "driver" ?
+            <>
+                <DashboardLayout>
+                    <Switch>
+                        <Route path={`${match.path}/select-route`}>
+                            <SelectRoute />
                         </Route>
-                        <Route path={`${match.path}/vendor_:id/product_:pid`} exact>
-                            <ProductScreen />
-                        </Route> */}
-                            <Route path={`${match.path}/alert`}>
-                                <AlertScreen />
-                            </Route>
-                            <Route path={`${match.path}/order_history`}>
-                                <OrderHistoryScreen />
-                            </Route>
-                            <Route path={`${match.path}/customer_profile`}>
-                                <CustomerProfileScreen />
-                            </Route>
-                            <Route path={`${match.path}/customer_notification`}>
-                                <CustomerNotificationScreen />
-                            </Route>
-                        </> :
-                        <Redirect to="/404" />
-                }
-            </Switch>
-        </InnerPageLayout>
+                        <Route path={`${match.path}/cart`}>
+                            <Cart />
+                        </Route>
+                    </Switch>
+                </DashboardLayout>
+            </> :
+            role === "vendor" ?
+            <DashboardLayout>
+                <Route path={`${match.path}/product/:id`}>
+                    <AddProduct edit={true} />
+                </Route>
+                <Route exact={true} path={`${match.path}/product`}>
+                    <AddProduct />
+                </Route>
+                <Route exact={true} path={`${match.path}/products/stock/daily`}>
+                    <DailyStockLoad />
+                </Route>
+                <Route exact={true} path={`${match.path}/products`}>
+                    <ProductList />
+                </Route>
+
+                <Route exact={true} path={`${match.path}/driver`}>
+                    <AddDriver />
+                </Route>
+                <Route exact={true} path={`${match.path}/drivers`}>
+                    <DriversList />
+                </Route>
+                <Route exact={true} path={`${match.path}/driver/:id`}>
+                    <AddDriver />
+                </Route>
+            </DashboardLayout> :
+            role === "customer" ?
+            <>
+            <InnerPageLayout>
+                <Switch>
+                    <Route path={`${match.path}/history`}>
+                        <History />
+                    </Route>
+                    <Route path={`${match.path}/profile`}>
+                        <Profile />
+                    </Route>
+
+                    {/* <Route path={`${match.path}/vendor_:id`} exact>
+                    <VendorScreen />
+                </Route>
+                <Route path={`${match.path}/vendor_:id/product_:pid`} exact>
+                    <ProductScreen />
+                </Route> */}
+                    <Route path={`${match.path}/alert`}>
+                        <AlertScreen />
+                    </Route>
+                    <Route path={`${match.path}/order_history`}>
+                        <OrderHistoryScreen />
+                    </Route>
+                    <Route path={`${match.path}/customer_profile`}>
+                        <CustomerProfileScreen />
+                    </Route>
+                    <Route path={`${match.path}/customer_notification`}>
+                        <CustomerNotificationScreen />
+                    </Route>
+                </Switch>
+            </InnerPageLayout>
+            </> :
+            <Redirect to="/404" />
+        }
+        </React.Fragment>
     )
 }
