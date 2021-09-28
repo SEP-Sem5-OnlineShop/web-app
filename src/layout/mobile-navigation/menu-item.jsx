@@ -19,7 +19,7 @@ const variants = {
   }
 };
 
-export const MenuItem = ({ menuName, link }) => {
+export const MenuItem = ({ menuName, link, freeze }) => {
   const history = useHistory()
   const location = useLocation()
   return (
@@ -31,7 +31,8 @@ export const MenuItem = ({ menuName, link }) => {
       onClick={() => history.push(link)}
     >
       <div className="icon-placeholder" />
-      <div className={location.pathname === link ? "text-textLight transform scale-105 font-medium" : ""} >{menuName}</div>
+      <div className={location.pathname === link ? `${freeze ? "text-white" : "text-textLight"} 
+      transform scale-105 font-medium` : !freeze ? "text-secondary" : "text-white"} >{menuName}</div>
     </motion.li>
   );
 };

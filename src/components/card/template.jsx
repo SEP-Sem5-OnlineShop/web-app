@@ -7,7 +7,7 @@ export default function CardTemplate(props) {
     }
     return (
         <motion.div layout className={`w-full bg-cardColor rounded-xl shadow-sm mt-12 
-        p-6 ${comProps.className}`}>
+        p-6 ${comProps.className}`} style={{overflowX: "auto"}}>
             {props.children}
         </motion.div>
     )

@@ -31,7 +31,11 @@ const LoginForm = (props, ref) => {
         onSubmit: async values => {
             setLoading(true)
             try {
-                await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+                const {data, status} = await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+                console.log(status)
+                if(status === 200 && data && data.message === "Success") {
+                    history.push('/')
+                }
             }
             catch(e) {
                 console.log("error")

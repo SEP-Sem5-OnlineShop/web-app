@@ -77,7 +77,7 @@ export default function DriverList() {
 
     return (
         <div className="flex justify-center">
-            <div className="w-full flex flex-col items-center justify-center p-8">
+            <div className="w-full flex flex-col items-center justify-center p-0 lg:p-8">
                 <div className="w-full text-3xl font-medium">My Drivers</div>
                 <CardTemplate>
                     <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
