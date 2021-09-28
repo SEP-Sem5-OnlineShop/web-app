@@ -99,7 +99,7 @@ export default function DashboardLayout(props) {
                         </div>
                     </div>
 
-                    <div className="bg-white relative p-8"
+                    <div className="w-full bg-white relative p-8"
                         style={childStyle}>
                         {props.children}
                     </div>
