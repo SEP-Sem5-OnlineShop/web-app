@@ -26,6 +26,7 @@ export default function InputWithValidation (props) {
         readOnly: props.readOnly || false,
         disabled: props.disabled || false,
         labelStyles: props.labelStyles || {},
+        value: props.value || ""
     }
 
     return (
@@ -47,7 +48,7 @@ export default function InputWithValidation (props) {
                     type={compProps.type}
                     onChange={compProps.formik.handleChange}
                     onBlur={compProps.formik.handleBlur}
-                    value={compProps.formik.values[compProps.name]}
+                    value={compProps.formik.values[compProps.name] || compProps.value}
                     readOnly={compProps.readOnly}
                     disabled={compProps.disabled}
                     className={

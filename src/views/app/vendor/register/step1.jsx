@@ -28,6 +28,14 @@ export default function Step1(props) {
                         label="Telephone Number"
                         type="text"
                         className="mb-4"
+                    />
+                    <InputWithValidation
+                        formik={comProps.formik}
+                        id="email1"
+                        name="email1"
+                        label="Email Address"
+                        type="text"
+                        className="mb-4"
                         disabled={true}
                     />
                     <InputWithValidation
