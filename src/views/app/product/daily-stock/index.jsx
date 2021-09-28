@@ -2,13 +2,14 @@ import React, { useState } from "react"
 import { useTable, useGlobalFilter } from 'react-table'
 import { productApi } from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
-import { Link } from "react-router-dom"
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { stockApi } from '../../../../api/index'
+import { useSelector } from "react-redux"
 
 export default function DailyStockLoad() {
     const [data, setData] = React.useState([])
     const [formikInitial, setFormikInitial] = useState([])
+    const vendorId = useSelector(state => state.user.userData._id)
     React.useEffect(async () => {
         try {
             const { data, status } = await productApi.getList()
@@ -79,23 +80,30 @@ export default function DailyStockLoad() {
         initialValues: {
             stockDetails: formikInitial,
         },
-        // validationSchema: Yup.object({
-        //     stockDetails: Yup.array().of(
-        //         Yup.object().shape({
-        //             price: Yup.number(),
-        //             discount: Yup.number(),
-        //             stock: Yup.number()
-        //         })
-        //     )
-        // }),
-        onSubmit: values => {
-            console.log(values)
+        onSubmit: async values => {
+            try {
+                const stock = []
+                values.stockDetails.forEach(item => {
+                    const productId = Object.keys(item)[0]
+                    if(parseInt(item[productId].stock))
+                    stock.push({
+                        ...item[productId], productId: productId
+                    })
+                })
+                const { data, status } = await stockApi.update({vendorId: vendorId, vehicleId: "Vehicle 1", dailyStock: stock})
+                if (status === 200 && data && data.message === 'Success') {
+                    console.log(data.data)
+                }
+            }
+            catch (e) {
+
+            }
         },
     });
 
     return (
         <div className="flex justify-center">
-            <div className="w-full flex flex-col items-center justify-center p-8">
+            <div className="w-full flex flex-col items-center justify-center p-0 lg:p-8">
                 <div className="w-full text-3xl font-medium">Load Daily Stock to Mobile Shops</div>
                 <div className="mt-4 flex flex-col items-start w-full">
                     <label className="font-medium">Select the mobile shop for loading stock</label>
@@ -137,6 +145,7 @@ export default function DailyStockLoad() {
                                                         {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
                                                             <input
                                                                 value={formik.values.stockDetails[rowIndex][cell.value[1]]['price']}
+                                                                type="number"
                                                                 onChange={formik.handleChange}
                                                                 onBlur={formik.handleBlur}
                                                                 id={`stockDetails.${rowIndex}.${cell.value[1]}.price`} name={`stockDetails.${rowIndex}.${cell.value[1]}.price`}
@@ -151,6 +160,7 @@ export default function DailyStockLoad() {
                                                         {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
                                                             <input
                                                                 value={formik.values.stockDetails[rowIndex][cell.value[1]]['discount']}
+                                                                type="number"
                                                                 onChange={formik.handleChange}
                                                                 onBlur={formik.handleBlur}
                                                                 id={`stockDetails.${rowIndex}.${cell.value[1]}.discount`} name={`stockDetails.${rowIndex}.${cell.value[1]}.discount`}
@@ -165,6 +175,7 @@ export default function DailyStockLoad() {
                                                         {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
                                                             <input
                                                                 value={formik.values.stockDetails[rowIndex][cell.value[1]]['stock']}
+                                                                type="number"
                                                                 onChange={formik.handleChange}
                                                                 onBlur={formik.handleBlur}
                                                                 id={`stockDetails.${rowIndex}.${cell.value[1]}.stock`} name={`stockDetails.${rowIndex}.${cell.value[1]}.stock`}

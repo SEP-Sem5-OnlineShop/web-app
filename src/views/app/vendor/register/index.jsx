@@ -198,7 +198,7 @@ export default function VendorRegistration() {
     return (
         <React.Fragment>
             <div className="flex justify-center">
-                <div className="w-full lg:w-1/2 xl:w-1/3 flex flex-col items-center justify-center p-8">
+                <div className="w-full lg:w-1/2 xl:w-1/3 flex flex-col items-center justify-center p-0 lg:p-8">
                     {showTelephoneForm ? <>
                         <div className="w-full text-3xl font-medium">Enter your email address</div>
                         <CardTemplate>

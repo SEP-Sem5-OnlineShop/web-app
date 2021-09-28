@@ -101,8 +101,8 @@ export default function AddProduct ({edit}) {
         <React.Fragment>
             {role === "vendor" ?
             <div className="flex justify-center">
-                <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8">
-                    <div className="w-full text-3xl font-medium">Add New product</div>
+                <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-0 lg:p-8">
+                    <div className="w-full text-2xl lg:text-3xl font-medium">Add New product</div>
                     <CardTemplate>
                         <form className="h-full" onSubmit={formik.handleSubmit}>
                             <InputWithValidation
