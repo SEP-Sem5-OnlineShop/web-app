@@ -38,6 +38,9 @@ module.exports = {
         'food-style': "url('/src/assets/svg/backgrounds/food-style.svg')",
         'pizza': "url('/src/assets/img/pizza.jpg')",
       }),
+      inset: {
+        '300': '300px',
+      },
       borderRadius: {
         '3.5xl': '3.5rem',
         '6xl': '6rem',
@@ -84,11 +87,13 @@ module.exports = {
       height: {
         '33': '8.25rem',
         '23': '5.75rem',
-        '13': '3.25rem'
+        '13': '3.25rem',
       },
       width: {
-        '1/8': '12.5%'
-      }
+        '1/8': '12.5%',
+        'desktop': 'calc(100vw - 300px)',
+        'mobile': '100vw',
+      },
     }
   },
   variants: {

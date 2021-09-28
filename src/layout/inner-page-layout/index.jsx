@@ -1,25 +1,75 @@
-import React from "react"
-import logo from "../../assets/svg/logo/logo-264A75.svg";
+import React, {useState, useEffect} from "react"
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux"
+import { motion, useCycle, AnimatePresence } from "framer-motion";
+import { actions } from "../../store"
+
+import SideNavigation from "../mobile-navigation"
+import LoginRegister from "../home-layout/login-register"
+
+import logo from "../../assets/svg/logo/logo-264A75.svg";
 
 export default function InnerPageLayout(props) {
+    const [isOpen, toggleOpen] = useCycle(false, true);
     let history = useHistory()
+    const dispatch = useDispatch()
+    const selectedLanguage = useSelector(state => state.language.language)
+    const [isMobile, setIsMobile] = useState(false)
+    const isLogin = useSelector(state => state.user.isLogin)
+    const token = useSelector(state => state.user.token)
+
+    useEffect(() => {
+        function verifyScreen() {
+            if (window.innerWidth < 976) {
+                setIsMobile(true)
+            }
+            else {
+                setIsMobile(false)
+            }
+        }
+        verifyScreen()
+        window.addEventListener("resize", verifyScreen)
+        return () => {
+            window.removeEventListener("resize", verifyScreen)
+        }
+    }, [])
+
     return (
         <React.Fragment>
             <div className="w-screen min-h-screen overflow-x-hidden">
                 <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
+                    <AnimatePresence>
+                        {
+                            isOpen &&
+                            <motion.div 
+                                initial={{opacity: 0}}
+                                animate={{opacity: 0.5}}
+                                exit={{opacity: 0}}
+                                onClick={() => toggleOpen()}
+                                className="fixed top-0 left-0 bg-black w-full h-screen z-20" 
+                            />
+                        }
+                    </AnimatePresence>
+                    <SideNavigation isOpen={isOpen} toggleOpen={toggleOpen} />
                     {/* <div className="bg-food-style opacity-40 w-full h-full absolute top-0 left-0 z-0" /> */}
-                    <div className="h-20 bg-white w-full fixed flex px-10 top-0 left-0 justify-between items-center z-10">
-                        <img className="cursor-pointer" style={{height: 80}} onClick={() => history.push("/")} src={logo} alt="logo" />
+                    <div className="h-20 bg-white w-full fixed flex px-10 top-0 left-0 justify-end lg:justify-between items-center z-10">
+                        <div className="hidden lg:flex h-full items-center">
+                            <img className="cursor-pointer ml-8" style={{height: 80}} onClick={() => history.push("/")} src={logo} alt="logo" />
+                        </div>    
 
                         <div className="flex items-center">
-                            <ul className="flex mr-10">
-                                <li className="mx-4 cursor-pointer" onClick={() => history.push("/app/register/vendor")}>Vendor Registration</li>
-                                <li className="mx-4 cursor-pointer" onClick={() => history.push("/app/product/add")}>Add Product</li>
-                                <li className="mx-4 cursor-pointer" onClick={() => history.push("/app/alert")}>Alerts</li>
-                            </ul>
-                            <button onClick={() => history.push("/auth/login")} className="rounded-lg px-4 py-2 bg-textLight text-white">
+                            <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))} 
+                                className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
+                                <option value="english" key="english">English</option>
+                                <option value="sinhala" key="sinhala">සිංහල</option>
+                                <option value="tamil" key="tamil">தமிழ்</option>
+                            </select>
+                            {
+                                isLogin === "yes" ?
+                                <LoginRegister className="mr-4" freeze={!isMobile} /> :
+                                <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                 Login | Register</button>
+                            }
                         </div>
                     </div>
 

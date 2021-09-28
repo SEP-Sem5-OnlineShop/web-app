@@ -23,6 +23,10 @@ export default function InputWithValidation (props) {
         name: props.name || "",
         type: props.type || "text",
         formik: props.formik || {},
+        readOnly: props.readOnly || false,
+        disabled: props.disabled || false,
+        labelStyles: props.labelStyles || {},
+        value: props.value || ""
     }
 
     return (
@@ -32,7 +36,9 @@ export default function InputWithValidation (props) {
                     compProps.label
                         ?
                     <label
-                    className='font-medium text-secondary text-sm xs:text-lg md:text-base'>{compProps.label}</label>
+                    className={`font-medium text-secondary text-sm xs:text-lg md:text-base`}
+                    style={compProps.labelStyles}>
+                        {compProps.label}</label>
                         :
                         null
                 }
@@ -42,7 +48,9 @@ export default function InputWithValidation (props) {
                     type={compProps.type}
                     onChange={compProps.formik.handleChange}
                     onBlur={compProps.formik.handleBlur}
-                    value={compProps.formik.values[compProps.name]}
+                    value={compProps.formik.values[compProps.name] || compProps.value}
+                    readOnly={compProps.readOnly}
+                    disabled={compProps.disabled}
                     className={
                         `rounded-md
                         mt-1 p-2

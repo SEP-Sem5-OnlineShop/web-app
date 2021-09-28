@@ -15,24 +15,33 @@ export default function Step1(props) {
                     <div className="mb-5"><span className="text-xl text-medium">Vendor Details</span></div>
                     <InputWithValidation
                         formik={comProps.formik}
-                        id="name"
-                        name="name"
+                        id="fullName"
+                        name="fullName"
                         label="Name"
                         type="text"
                         className="mb-4"
                     />
                     <InputWithValidation
                         formik={comProps.formik}
-                        id="telephoneNumber"
-                        name="telephoneNumber"
+                        id="telephone"
+                        name="telephone"
                         label="Telephone Number"
                         type="text"
                         className="mb-4"
                     />
                     <InputWithValidation
                         formik={comProps.formik}
-                        id="nicNumber"
-                        name="nicNumber"
+                        id="email1"
+                        name="email1"
+                        label="Email Address"
+                        type="text"
+                        className="mb-4"
+                        disabled={true}
+                    />
+                    <InputWithValidation
+                        formik={comProps.formik}
+                        id="nic"
+                        name="nic"
                         label="NIC Number"
                         type="text"
                         className="mb-4"
@@ -51,7 +60,6 @@ export default function Step1(props) {
                         type="button"
                         onClick={
                             () =>
-                                !comProps.formik.errors.name &&
                                 comProps.setActiveTab(2)
                         }
                         disabled={comProps.formik.errors.name}

@@ -31,8 +31,8 @@ export default function Step2(props) {
                     />
                     <InputWithValidation
                         formik={comProps.formik}
-                        id="region"
-                        name="region"
+                        id="regionToBeCovered"
+                        name="regionToBeCovered"
                         label="Region to be Covered"
                         type="text"
                         className="mb-4"

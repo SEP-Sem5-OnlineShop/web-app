@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion } from "framer-motion";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const variants = {
   open: {
@@ -19,8 +19,9 @@ const variants = {
   }
 };
 
-export const MenuItem = ({ menuName, link }) => {
+export const MenuItem = ({ menuName, link, freeze }) => {
   const history = useHistory()
+  const location = useLocation()
   return (
     <motion.li
       variants={variants}
@@ -30,7 +31,8 @@ export const MenuItem = ({ menuName, link }) => {
       onClick={() => history.push(link)}
     >
       <div className="icon-placeholder" />
-      <div className="text-placeholder" >{menuName}</div>
+      <div className={location.pathname === link ? `${freeze ? "text-white" : "text-textLight"} 
+      transform scale-105 font-medium` : !freeze ? "text-secondary" : "text-white"} >{menuName}</div>
     </motion.li>
   );
 };

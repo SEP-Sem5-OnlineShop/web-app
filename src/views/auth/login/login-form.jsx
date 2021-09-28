@@ -6,10 +6,14 @@ import {thunks} from "../../../store/index";
 import {useDispatch} from "react-redux";
 import {motion} from "framer-motion";
 
+import { useHistory } from "react-router-dom";
+
 const LoginForm = (props, ref) => {
 
-
+    const history = useHistory();
     const dispatch = useDispatch()
+
+    const [loading, setLoading] = React.useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -25,7 +29,19 @@ const LoginForm = (props, ref) => {
                 .required('Required')
         }),
         onSubmit: async values => {
-            await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+            setLoading(true)
+            try {
+                const {data, status} = await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+                console.log(status)
+                if(status === 200 && data && data.message === "Success") {
+                    history.push('/')
+                }
+            }
+            catch(e) {
+                console.log("error")
+            }
+            setLoading(false)
+            // history.push("/")
         },
     });
 
@@ -49,7 +65,7 @@ const LoginForm = (props, ref) => {
                 className='w-full'
             />
             <button type="submit" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
-                Submit
+                {loading ? 'Loading...' : 'Submit'}
             </button>
         </motion.form>
     );
