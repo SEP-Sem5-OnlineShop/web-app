@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useCycle, AnimatePresence } from "framer-motion";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
@@ -13,8 +13,28 @@ export default function MainLayout(props) {
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
     const dashboardStrings = useSelector(state => state.language.languageFile.dashboard)
+    const [isMobile, setIsMobile] = useState(false)
     const isLogin = useSelector(state => state.user.isLogin)
     const dispatch = useDispatch()
+
+
+
+    useEffect(() => {
+        function verifyScreen() {
+            if (window.innerWidth < 976) {
+                setIsMobile(true)
+            }
+            else {
+                setIsMobile(false)
+            }
+        }
+        verifyScreen()
+        window.addEventListener("resize", verifyScreen)
+        return () => {
+            window.removeEventListener("resize", verifyScreen)
+        }
+    }, [])
+
     return (
         <div className="w-screen min-h-screen overflow-x-hidden bg-primary">
             <div className="w-full min-h-screen overflow-x-hidden relative">
@@ -32,26 +52,26 @@ export default function MainLayout(props) {
                 </AnimatePresence>
                 <SideNavigation isOpen={isOpen} toggleOpen={toggleOpen} />
                 <div className="bg-primary w-full h-28 fixed top-0 left-0 z-10">
-                    <div className="bg-food-style h-full w-full flex px-10 justify-between items-center">
-                        <div className="h-full flex items-center">
+                    <div className={`bg-food-style h-full w-full flex px-10 justify-end lg:justify-between items-center`}>
+                        <div className="hidden lg:block h-full flex items-center">
                             <img className="ml-4 h-3/4 cursor-pointer" onClick={() => history.push("/")} src={logo} alt="logo" />
                         </div>
 
-                        <div className="sm:w-full md:w-3/4 lg:w-1/2">
+                        {/* <div className="sm:w-full md:w-3/4 lg:w-1/2">
                             <input className="bg-o p-2 rounded-lg w-full outline-none" 
                             placeholder={dashboardStrings.searchBox} />
-                        </div>
+                        </div> */}
 
                         <div className="flex items-center">
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))}
-                                className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
+                                className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
                                 <option value="english" key="english">English</option>
                                 <option value="sinhala" key="sinhala">සිංහල</option>
                                 <option value="tamil" key="tamil">தமிழ்</option>
                             </select>
                             {
                                 isLogin === "yes" ?
-                                    <LoginRegister className="mr-4" /> :
+                                    <LoginRegister className="mr-4" freeze={!isMobile} /> :
                                     <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                         Login | Register</button>
                             }

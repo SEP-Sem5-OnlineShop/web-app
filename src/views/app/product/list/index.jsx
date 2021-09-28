@@ -81,9 +81,9 @@ export default function ProductList() {
 
     return (
         <div className="flex justify-center">
-            <div className="w-full flex flex-col items-center justify-center p-8">
+            <div className="w-full flex flex-col items-center justify-center p-0 lg:p-8">
                 <div className="w-full text-3xl font-medium">My Products</div>
-                <CardTemplate>
+                <CardTemplate style={{overFlowX: "auto"}}>
                     <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-cardColor">
                         {headerGroups.map(headerGroup => (
