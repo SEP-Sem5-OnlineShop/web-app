@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { thunks } from "../../store"
 import { Link } from 'react-router-dom'
 
-export default function Example() {
+export default function Example(props) {
   const userData = useSelector(state => state.user.userData)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -26,7 +26,7 @@ export default function Example() {
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-secondary bg-cardColor rounded-md bg-opacity-70 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-            {`Hi ${userData.firstName || ""} ${userData.lastName || ""}!`}
+            {`Hi ${props.freeze ? userData.firstName : ""} ${props.freeze ? userData.lastName : ""}!`}
           </Menu.Button>
         </div>
         <Transition

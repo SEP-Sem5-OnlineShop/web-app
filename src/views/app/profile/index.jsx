@@ -39,9 +39,9 @@ export default function Profile() {
     return (
         <React.Fragment>
             <div className="flex justify-center">
-                <div className="w-full lg:w-1/2 xl:w-1/3 flex flex-col items-center justify-center p-8">
+                <div className="w-full flex flex-col items-center justify-center p-8">
                     <div className="w-full text-3xl font-medium">My Account</div>
-                    <div className="w-1/3 mt-4">
+                    <div className="mt-4">
                         <FilePond
                             ref={ref}
                             allowMultiple={false}

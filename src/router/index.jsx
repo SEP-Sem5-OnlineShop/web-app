@@ -17,6 +17,7 @@ import Page404 from "../views/404"
 import { actions } from "../store"
 import DashboardLayout from "../layout/dashboard-layour";
 import Dashboard from "../views/app/driver/dashboard";
+import CreatePassword from "../views/other/create-password";
 
 export default function MainRouter() {
 
@@ -63,6 +64,9 @@ export default function MainRouter() {
                     <Switch>
                         <Route path="/404">
                             <Page404 />
+                        </Route>
+                        <Route path="/create_password/:token">
+                            <CreatePassword />
                         </Route>
                         <Route path={"/register/vendor/:token"}>
                             <VendorRegistration />

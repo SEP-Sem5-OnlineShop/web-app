@@ -18,7 +18,7 @@ export function localSignIn(username, password) {
                 dispatch(userSlice.actions.setRole(data.data.role))
                 dispatch(userSlice.actions.setIsLogin("yes"))
             }
-            return status
+            return {status, data}
         }
         catch (error) {
 

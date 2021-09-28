@@ -29,8 +29,7 @@ export default function Profile() {
             lastName: '',
             telephone: '',
             email: '',
-            licenseNumber: '',
-            licenseFileUrl: 'http://localhost:3000/app/product/add',
+            licenseNumber: ''
         },
         validationSchema: Yup.object({
             firstName: Yup.string()
@@ -46,10 +45,7 @@ export default function Profile() {
         }),
         onSubmit: async values => {
             try {
-                const { data, status } = await driverApi.update({
-                    firstName: values.firstName,
-                    lastName: values.lastName
-                })
+                const { data, status } = await driverApi.update(values)
                 if (status === 200 && data && data.message === "Success") {
                     console.log(data.data)
                 }
@@ -145,13 +141,13 @@ export default function Profile() {
         <React.Fragment>
             <div className="flex flex-col justify-center items-center">
                 <div className="w-full text-3xl font-medium">My Account</div>
-                <div className="w-full lg:w-2/3 flex flex-col items-center justify-center p-8">
-                    <div className="w-1/3 mt-4 flex flex-col items-center">
+                <div className="w-full lg:w-2/3 flex flex-col items-center justify-center p-0 lg:p-8">
+                    <div className="w-full lg:w-1/3 mt-4 flex flex-col items-center">
 
                         <div className="w-full">
                             {
                                 !showFileUploader ?
-                                    <div>
+                                    <div className="w-full flex flex-col items-center justify-center">
                                         <div className="rounded-full w-60 h-60 bg-center bg-cover"
                                             style={{ backgroundImage: `url(${getFileUrl(imageUrl)})` }} />
                                         <div className="w-full flex justify-center mt-4">
