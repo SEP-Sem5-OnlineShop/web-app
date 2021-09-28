@@ -32,6 +32,8 @@ import DriverProfile from '../views/app/driver/profile'
 import SelectRoute from "../views/app/driver/select-route";
 import Cart from "../views/app/driver/cart";
 import DashboardLayout from "../layout/dashboard-layour";
+import SellingCart from "../views/app/tem/sellingCart";
+import BuyingCart from "../views/app/customer/buyingCart";
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -111,6 +113,12 @@ export default function AppRouter() {
                     <Route path={`${match.path}/customer_notification`}>
                         <CustomerNotificationScreen />
                     </Route>
+                    <Route path={`${match.path}/buying_cart`}>
+                            <BuyingCart />
+                        </Route>
+                        <Route path={`${match.path}/selling_cart`}>
+                            <SellingCart />
+                        </Route>
                 </Switch>
             </InnerPageLayout>
             </> :
