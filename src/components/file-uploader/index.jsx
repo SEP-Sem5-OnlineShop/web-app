@@ -25,11 +25,13 @@ export default function FileUpload(props) {
 
     const comProps = {
         files: props.files || [],
-        setFiles: props.setFiles || (() => {}),
+        setFiles: props.setFiles || (() => { }),
         maxFiles: props.maxFiles || 1,
         allowMultiple: props.allowMultiple || true,
         circle: props.circle || false,
-        label: props.label || 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+        label: props.label || 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
+        setFileName: props.setFileName || (() => { }),
+        formikFieldName: props.formikFieldName || ""
     }
     return (
         <div>
@@ -49,6 +51,9 @@ export default function FileUpload(props) {
                             try {
                                 await uploadFileToBlob(file);
                                 load(file.name)
+                                if (props.setFileName) {
+                                    props.setFileName(comProps.formikFieldName, file.name)
+                                }
                             }
                             catch (e) {
                                 console.log(e)
