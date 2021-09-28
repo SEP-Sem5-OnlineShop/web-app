@@ -73,7 +73,7 @@ export default function InnerPageLayout(props) {
                         </div>
                     </div>
 
-                    <div className="w-full bg-white relative p-8"
+                    <div className="w-full bg-white relative p-2 sm:p-8"
                         style={{ minHeight: 'calc(100vh - 80px)', marginTop: '80px' }}>
                         {props.children}
                     </div>
