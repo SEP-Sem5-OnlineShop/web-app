@@ -6,7 +6,7 @@ import InputWithValidation from "../../../../components/input-with-validation";
 import CardTemplate from "../../../../components/card/template";
 import { useDispatch, useSelector } from "react-redux";
 import { getFileUrl } from "../../../../api/azure-storage-blob";
-import { driverApi } from "../../../../api"
+import { driverApi, authApi } from "../../../../api"
 import { actions } from "../../../../store/index"
 import FileUploader from "../../../../components/file-uploader"
 
@@ -19,6 +19,7 @@ export default function Profile() {
     const [imageUrl, setImageUrl] = useState('')
     const [image, setImage] = useState([])
     const [disabled, setDisabled] = useState(true)
+    const [passwordDisabled, setPasswordDisabled] = useState(true)
 
     const ref = useRef()
     const formik = useFormik({
@@ -44,10 +45,64 @@ export default function Profile() {
                 .required('Required'),
         }),
         onSubmit: async values => {
-            console.log(values)
+            try {
+                const { data, status } = await driverApi.update({
+                    firstName: values.firstName,
+                    lastName: values.lastName
+                })
+                if (status === 200 && data && data.message === "Success") {
+                    console.log(data.data)
+                }
+            }
+            catch (e) {
+                try {
+                    const { data, status } = await authApi.updatePassword({ password: values.password })
+                    if (status === 200 && data && data.message === "Success") {
+                        console.log(data.data)
+                    }
+                }
+                catch (e) {
+                    console.log(e.message)
+                }
+            }
             // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
         },
     });
+
+
+    const formik2 = useFormik({
+        initialValues: {
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: '',
+        },
+        validationSchema: Yup.object({
+            currentPassword: Yup.string()
+                .required('Required'),
+            newPassword: Yup.string()
+                .required('Required')
+                .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                    "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+                ),
+            confirmPassword: Yup.string()
+                .required('Required').oneOf([Yup.ref('newPassword'), null], 'Password not matched!'),
+        }),
+        onSubmit: async values => {
+            try {
+                const { data, status } = await authApi.updatePassword(values)
+                if (status === 200 && data && data.message === "Success") {
+                    console.log(data.data)
+                    setPasswordDisabled(true)
+                    formik2.resetForm()
+                }
+            }
+            catch (e) {
+                console.log(e.message)
+            }
+            // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+        },
+    })
+
     useEffect(async () => {
         formik.setFieldValue("licenseNumber", userData.driver.licenseNumber)
         try {
@@ -171,11 +226,42 @@ export default function Profile() {
                     </form>
                     <CardTemplate>
                         <div className="">
-                            <div className="text-text font-medium">Password</div>
-                            <div className="flex justify-between">
-                                <span>*************</span>
-                                <button className="bg-buttonColor text-secondary font-semibold rounded py-1 px-4">Change</button>
-                            </div>
+                            {
+                                passwordDisabled ?
+                                    <button onClick={(e) => { e.preventDefault(); setPasswordDisabled(false) }} type="button"
+                                        className="rounded-lg p-2 text-white bg-textLight">Update Password</button> :
+                                    <form>
+                                        <div className="text-text font-medium">Password</div>
+                                        <InputWithValidation
+                                            formik={formik2}
+                                            label="Current Password"
+                                            id="currentPassword"
+                                            name="currentPassword"
+                                            disabled={passwordDisabled}
+                                            type="password"
+                                        />
+                                        <InputWithValidation
+                                            formik={formik2}
+                                            label="Password"
+                                            id="newPassword"
+                                            name="newPassword"
+                                            disabled={passwordDisabled}
+                                            type="password"
+                                        />
+                                        <InputWithValidation
+                                            formik={formik2}
+                                            label="Confirm Password"
+                                            id="confirmPassword"
+                                            name="confirmPassword"
+                                            disabled={passwordDisabled}
+                                            type="password"
+                                        />
+                                        <div className="mt-8 flex justify-end">
+                                            <button onClick={(e) => { e.preventDefault(); formik2.handleSubmit(); }} type="submit"
+                                                className="rounded-lg p-2 text-white bg-textLight">Submit</button>
+                                        </div>
+                                    </form>
+                            }
                         </div>
                     </CardTemplate>
                 </div>
