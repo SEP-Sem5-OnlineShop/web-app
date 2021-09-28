@@ -1,56 +1,83 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import RatingComponent from './ratingComponent';
 import { FaStar } from "react-icons/fa";
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { axios } from '../../api';
 
-export default function OrderComponent({ order, handleReview }) {
-  const productStrings = useSelector(state => state.language.languageFile.productpage)
+export default function OrderComponent({ order, customer_id, handleReview }) {
+    const productStrings = useSelector(state => state.language.languageFile.productpage)
     const [showModal, setShowModal] = useState(false);
     const [reviewProduct, setReviewProduct] = useState('');
     // const [isAlert, setIsAlert] = useState(false);
-    const vendor_name = "Yummy Bakers"
+
+    const [vendor, setVendor] = useState({})
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
-    const customer = '613ebc89c71d2e07e0ec5e93';
+
+    const [width, height] = useWindowSize();
+    
+    useEffect(() => {
+      async function detailsVendor(vendor_id){
+        try {
+          const { data } = await axios.get(`app/customer/vendors/${vendor_id}`);
+          console.log('order history screen vendor details');
+          console.log(data);
+          setVendor(data);
+          setLoading(false);
+        } catch (error) {
+          console.log("vendor felch error");
+          setError("vendor felch error");
+          setLoading(false);
+        };
+      };
+      if(order.vendor_id){
+        detailsVendor(order.vendor_id);
+      }
+    }, [order.vendor_id]);
 
     const handleSubmit = () => {
       if (review && rating) {
-        handleReview(order._id, reviewProduct, { rating, review, customer: customer })
+        handleReview(order._id, reviewProduct, { rating, review, customer_id })
         setShowModal(false);
       } else {
         alert('Please enter review and rating');
       }
-  };
+    };
     return (
         <>
         <div className="flex justify-start rounded-2xl overflow-hidden shadow-md bg-white transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${order.vendor_id}`}>
-            <img src={ order.image } alt="" className="my-2 h-20 w-20 sm:h-64 sm:w-72 rounded-2xl object-cover"/>
+            <img src={ vendor.imageUrl } alt="" className="my-2 h-16 w-16 sm:h-20 sm:w-20 md:h-64 md:w-72 rounded-2xl object-cover"/>
             </Link>
-            <div className="w-full mx-4 my-2 flex flex-col justify-start items-start">
-                <Link className="text-base sm:text-xl text-secondary font-semibold sm:mx-2" to={`/vendor_${order.vendor_id}`}>{ vendor_name }</Link>
-                <span className="text-sm sm:text-base text-secondary sm:mx-2">{order.totalItems} {productStrings.items} {productStrings.for} {productStrings.currency} {order.totalCost} • {order.date} at 08:10 PM •</span>
+            <div className="w-full mx-2 sm:mx-4 sm:my-2 flex flex-col justify-start items-start">
+                <Link className="text-xs xs:text-sm sm:text-lg text-secondary font-semibold sm:mx-2" to={`/vendor_${order.vendor_id}`}>{vendor.vendor_name}</Link>
+                <span className="text-xs sm:text-base text-secondary sm:mx-2">{order.totalItems} {productStrings.items} {productStrings.for} {productStrings.currency} {order.totalCost} • {new Date(order.createdAt).toUTCString()} •</span>
                 <div className="w-full mt-4 grid grid-cols-1 gap-4 lg:gap-4">
                     {order.products && <>
                         {order.products.map((product) => (
                             <div className="flex justify-between items-center sm:mx-6 shadow-sm overflow-hidden transform hover:shadow-md transition ease-out duration-400" key={product.product_id}>
                                 <div className="flex">
-                                    <Link to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>
+                                    {/* <Link to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>
                                         <img src={ product.image } alt="" className="h-full my-2 w-10 sm:w-20 object-cover"/>
-                                    </Link>
-                                    <div className="mx-4 my-2 flex flex-col justify-between items-start">
-                                        <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>{ product.product_name }</Link>
-                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.items}: { product.amount }</span>
-                                        <span className="text-sm sm:text-lg text-secondary">{productStrings.currency} { product.price * product.amount }</span>
+                                    </Link> */}
+                                    <ProductImage product_id={product.product_id} />
+                                    <div className="mx-1 sm:mx-4 my-2 flex flex-col justify-between items-start">
+                                        {/* <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${product.vendor_id}/product_${product.product_id}`}>{ product.product_name }</Link> */}
+                                        <ProductName product_id={product.product_id} />
+                                        <span className="text-xs sm:text-base text-secondary">{productStrings.items}: { product.items }</span>
+                                        <span className="text-xs sm:text-base text-secondary">{productStrings.currency} { product.price * product.items }</span>
                                     </div>
                                 </div>
-                                <div className="sm:mr-4">
-                                {product.rated ? (
-                                    <RatingComponent rating={product.rated} size={24} />
+                                <div className="sm:mr-4" >
+                                {product.rating ? (
+                                    <RatingComponent rating={product.rating} size={width>768? 24: width>600?20: width>480?16:width>300?12:width>200?8:6} />
                                 ) : (
                                     <div>
-                                        <button className="sm:mx-1 rounded-xl shadow w-24 h-12 sm:w-28 sm:h-14 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400 " onClick={() => setShowModal(true) && setReviewProduct(product.product_id)}>
+                                        <button className="sm:mx-1 rounded-xl shadow w-24 h-12 sm:w-28 sm:h-14 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400 " onClick={() => {setShowModal(true); setReviewProduct(product.product_id)}}>
                                             <span className="">Add Review</span>
                                         </button>
                                     </div>
@@ -88,7 +115,7 @@ export default function OrderComponent({ order, handleReview }) {
                       {[...Array(5)].map((item, index) => {
                         const givenRating = index + 1;
                         return (
-                          <label>
+                          <label key={index}>
                             <input className="invisible" type="radio" value={givenRating} onClick={() => {setRating(givenRating);}}/>
                             <FaStar color={ givenRating < rating || givenRating === rating ? "#ffc107" : "#e4e5e9" } size={25} />
                           </label>
@@ -113,3 +140,76 @@ export default function OrderComponent({ order, handleReview }) {
         </>
     )
 }
+
+const ProductImage = ({product_id}) => {
+  const [productDetails, setProductDetails] = useState({})
+  const [loading3, setLoading3] = useState(true);
+  const [error3, setError3] = useState(null);
+  useEffect(() => {
+      async function detailsProduct(product_id){
+        try {
+            const { data } = (await axios.get(`app/customer/product/${product_id}`)).data;
+            console.log('order history screen product details');
+            console.log(data);
+            setProductDetails(data);
+            setLoading3(false);
+            setError3(null);
+        } catch (err) {
+            setLoading3(false);
+            console.log(err);
+            setError3(err);
+        };
+    };
+    if (product_id) {
+        detailsProduct(product_id);
+    };
+  }, [product_id]);
+
+  return (
+    <Link to={`/vendor_${productDetails.seller}/product_${productDetails._id}`}>
+    <img src={ productDetails.imageUrl } alt="" className="my-2 w-8 h-full sm:w-16 md:w-20 object-cover"/>
+  </Link>
+  );
+}
+
+const ProductName = ({product_id}) => {
+  const [productDetails, setProductDetails] = useState({})
+  const [loading3, setLoading3] = useState(true);
+  const [error3, setError3] = useState(null);
+  useEffect(() => {
+      async function detailsProduct(product_id){
+        try {
+            const { data } = (await axios.get(`app/customer/product/${product_id}`)).data;
+            console.log('order history screen product details');
+            console.log(data);
+            setProductDetails(data);
+            setLoading3(false);
+            setError3(null);
+        } catch (err) {
+            setLoading3(false);
+            console.log(err);
+            setError3(err);
+        };
+    };
+    if (product_id) {
+        detailsProduct(product_id);
+    };
+  }, [product_id]);
+
+  return (
+    <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${productDetails.seller}/product_${productDetails._id}`}>{ productDetails.product_name }</Link>
+  );
+}
+
+function useWindowSize() {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+};
