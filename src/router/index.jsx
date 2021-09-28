@@ -45,13 +45,13 @@ export default function MainRouter() {
             <Switch>
                 <Route exact path="/">
                     {
-                        role === "guest" || role === "customer" ?
-                        <MainLayout>
-                            <HomeDsand/>
-                        </MainLayout> :
+                        role === "vendor" || role === "driver" ?
                         <DashboardLayout>
                             <Dashboard />
-                        </DashboardLayout>
+                        </DashboardLayout> :
+                        <MainLayout>
+                            <HomeDsand/>
+                        </MainLayout>
                     }
                 </Route>
                 <Route path="/auth">
