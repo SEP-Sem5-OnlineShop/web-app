@@ -42,12 +42,14 @@ export const Navigation = (props) => {
 const itemIds = [
   {name: "Vendor Registration", link: "/register/vendor", accessLevel: "guest"},
 
+  {name: "Dashboard", link: "/", accessLevel: "vendor"},
   {name: "Add Product", link: "/app/product", accessLevel: "vendor"},
   {name: "Product List", link: "/app/products", accessLevel: "vendor"},
   {name: "Load Daily Stock", link: "/app/products/stock/daily", accessLevel: "vendor"},
   {name: "Add A Driver", link: "/app/driver", accessLevel: "vendor"},
   {name: "Drivers List", link: "/app/drivers", accessLevel: "vendor"},
 
+  {name: "Dashboard", link: "/", accessLevel: "driver"},
   {name: "Select Route", link: "/app/select-route", accessLevel: "driver"},
   {name: "Start New Bill", link: "/app/cart", accessLevel: "driver"},
 

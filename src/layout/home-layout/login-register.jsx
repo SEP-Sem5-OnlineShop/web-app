@@ -45,6 +45,7 @@ export default function Example() {
                   <button
                     className={`${active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                    onClick={() => history.push('/app/profile')}
                   >
                     My Profile
                   </button>

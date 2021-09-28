@@ -3,9 +3,13 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
 import { motion, useCycle, AnimatePresence } from "framer-motion";
 import { actions } from "../../store"
+import {MdNotifications} from "react-icons/md"
+import {MdNotificationsActive} from "react-icons/md"
 
 import SideNavigation from "../mobile-navigation"
 import LoginRegister from "../home-layout/login-register"
+import {FaBell} from "react-icons/fa";
+import {IconContext} from "react-icons";
 
 
 export default function DashboardLayout(props) {

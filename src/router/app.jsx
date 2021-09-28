@@ -27,6 +27,8 @@ import DailyStockLoad from "../views/app/product/daily-stock"
 import AddDriver from '../views/app/vendor/driver/add'
 import DriversList from '../views/app/vendor/driver/list'
 import InnerPageLayout from "../layout/inner-page-layout";
+import VendorProfile from "../views/app/vendor/profile/index"
+import DriverProfile from '../views/app/driver/profile'
 import SelectRoute from "../views/app/driver/select-route";
 import Cart from "../views/app/driver/cart";
 import DashboardLayout from "../layout/dashboard-layour";
@@ -45,6 +47,9 @@ export default function AppRouter() {
                         </Route>
                         <Route path={`${match.path}/cart`}>
                             <Cart />
+                        </Route>
+                        <Route path={`${match.path}/profile`}>
+                            <DriverProfile />
                         </Route>
                     </Switch>
                 </DashboardLayout>
@@ -72,6 +77,9 @@ export default function AppRouter() {
                 </Route>
                 <Route exact={true} path={`${match.path}/driver/:id`}>
                     <AddDriver />
+                </Route>
+                <Route path={`${match.path}/profile`}>
+                    <VendorProfile />
                 </Route>
             </DashboardLayout> :
             role === "customer" ?
@@ -106,7 +114,8 @@ export default function AppRouter() {
                 </Switch>
             </InnerPageLayout>
             </> :
-            <Redirect to="/404" />
+            // <Redirect to="/404" />
+            null
         }
         </React.Fragment>
     )
