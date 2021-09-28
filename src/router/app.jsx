@@ -114,11 +114,11 @@ export default function AppRouter() {
                         <CustomerNotificationScreen />
                     </Route>
                     <Route path={`${match.path}/buying_cart`}>
-                            <BuyingCart />
-                        </Route>
-                        <Route path={`${match.path}/selling_cart`}>
-                            <SellingCart />
-                        </Route>
+                        <BuyingCart />
+                    </Route>
+                    <Route path={`${match.path}/selling_cart`}>
+                        <SellingCart />
+                    </Route>
                 </Switch>
             </InnerPageLayout>
             </> :

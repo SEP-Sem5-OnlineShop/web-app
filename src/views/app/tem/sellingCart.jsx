@@ -1,210 +1,123 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import { axios } from '../../../api';
-
-// const SellingCart = () => {
-//     const [imageUrl, setImageUrl] = useState('');
-//     // const orderId='613eba8b94acbe3710fed691';
-
-//     const [order, setOrder] = useState({a:'aaa',b:'bbb'});
-//     const [orderId, setOrderId] = useState(null);
-
-//     const handleSubmit = () => {
-//         async function saveOrder(){
-//             try {
-//                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-//                 const { data } = await axios.post(`app/customer/purchase/`,{order});
-//                 console.log('new order id');
-//                 console.log(data);
-//                 setOrderId(data);
-//                 // alert('added alert');
-//             } catch (error) {
-//                 console.log(error);
-//             };
-//         };
-//         saveOrder();
-//     };
-
-//     useEffect(() => {
-//         async function generateQRCode(orderId){
-//             try {
-//                 const response = await QRCode.toDataURL(orderId);
-//                 setImageUrl(response);
-//             } catch (error) {
-//                 console.log(error);
-//             };
-//         };
-//         if(orderId){
-//             generateQRCode(orderId);
-//         }
-//     }, [orderId])
-
-//     return (
-//         <div>
-//             <div>
-//                 {!orderId ? (<button className="p-2 bg-text" onClick={handleSubmit}>Submit</button>) : null}
-//             </div>
-//             <div>
-//                 {imageUrl ? (<a href={imageUrl} download><img src={imageUrl} alt="qr" /></a>) : null}
-//             </div>
-//         </div>
-//     )
-// }
-
-
-
-
 import { useTable, useGlobalFilter } from 'react-table'
 import { useFormik } from 'formik';
 import React from 'react';
 
 const SellingCart = () => {
-    const [data, setData] = React.useState([])
-    const [formikInitial, setFormikInitial] = useState([])
+    const [imageUrl, setImageUrl] = useState('');
+    // const orderId='613eba8b94acbe3710fed691';
     const vendor_id = "613eb365af0d5b2c142fa326";
-    
+
+    const [orderId, setOrderId] = useState(null);
+    const [products, setProducts] = useState([]);
+
     useEffect(() => {
         async function listProducts(vendor_id){
             try {
-                const { data } = await axios.get(`gen/customer/products/sell/${vendor_id}`);
-                console.log(data);
-                const list = []
-                const testData = []
-                data.forEach((item, index) => {
-                    list.push({
-                        'col1': index + 1,
-                        'col2': item.product_name || "",
-                        'col3': [item.price || "", item._id],
-                        'col4': [item.discount || "", item._id],
-                        'col5': ["", item._id],
-                    })
-                    testData.push({
-                        [item._id]: {
-                            price: item.price || "0",
-                            discount: item.discount || "0",
-                            stock: item.stock || "0",
-                        }
-                    })
-                })
-                setData(list)
-                setFormikInitial(testData)
+              const { data } = await axios.get(`gen/customer/products/sell/${vendor_id}`);
+              console.log('sellcart screen sell product list');
+              console.log(data);
+              setProducts(data);
             } catch (error) {
-                console.log("product felch error");
-              };
-        };
-        if (vendor_id) {
-          listProducts(vendor_id);
-        };
+              console.log("product felch error");
+            };
+          };
+          if (vendor_id) {
+            listProducts(vendor_id);
+          };
     }, [vendor_id]);
 
-    const columns = React.useMemo(
-        () => [
-            {Header: '#',accessor: 'col1',},
-            {Header: 'Name',accessor: 'col2',},
-            {Header: 'Price',accessor: 'col3',},
-            {Header: 'Discount',accessor: 'col4',},
-            {Header: 'Today Stock',accessor: 'col5',},
-        ],
-        []
-    )
+    const handleSubmit = () => {
+        async function saveOrder(vendor_id,pro){
+            try {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+                const { data } = await axios.post(`app/customer/purchase/${vendor_id}`,pro);
+                console.log('new order id');
+                console.log(data);
+                setOrderId(data);
+            } catch (error) {
+                console.log(error);
+            };
+        };
+        let pro = [];
+        let c = 0;
+        for (var i in products) {
+            if (products[i].items > 0) {
+                pro[c] = products[i];
+            }
+            c += 1;
+        }
+        if (pro.length>0) {
+            console.log(pro);
+            saveOrder(vendor_id,pro)
+        }
 
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, } = useTable({ columns, data })
+    };
 
+    const handleChange = (id,val) => {
+        for (var i in products) {
+            if (products[i]._id === id) {
+                products[i].items = parseInt(val);
+                break; //Stop this loop, we found it!
+            }
+        }
+    };
 
-    const formik = useFormik({enableReinitialize: true,initialValues: {stockDetails: formikInitial,},onSubmit: values => {console.log(values)},});
+    useEffect(() => {
+        async function generateQRCode(orderId){
+            try {
+                const response = await QRCode.toDataURL(orderId);
+                setImageUrl(response);
+            } catch (error) {
+                console.log(error);
+            };
+        };
+        if(orderId){
+            generateQRCode(orderId);
+        }
+    }, [orderId])
+
 
     return (
-        <div className="flex justify-center">
-            <div className="w-full flex flex-col items-center justify-center p-8">
-                <div className="w-full text-3xl font-medium">Sell</div>
-                <form onSubmit={formik.handleSubmit}>
-                        <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-cardColor">
-                                {headerGroups.map(headerGroup => (
-                                    <tr {...headerGroup.getHeaderGroupProps()}>
-                                        {headerGroup.headers.map(column => (
-                                            <th
-                                                {...column.getHeaderProps()}
-                                                scope="col"
-                                                className="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider"
-                                            >
-                                                {column.render('Header')}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </thead>
-                            <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
-                                {rows.map((row, rowIndex) => {
-                                    prepareRow(row)
-                                    return (
-                                        <tr {...row.getRowProps()}>
-                                            {row.cells.map((cell, index) => {
-                                                if (index === 2) return (
-                                                    <td
-                                                        {...cell.getCellProps()}
-                                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
-                                                    >
-                                                        {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
-                                                            <input
-                                                                value={formik.values.stockDetails[rowIndex][cell.value[1]]['price']}
-                                                                onChange={formik.handleChange}
-                                                                onBlur={formik.handleBlur}
-                                                                id={`stockDetails.${rowIndex}.${cell.value[1]}.price`} name={`stockDetails.${rowIndex}.${cell.value[1]}.price`}
-                                                                className="bg-cardColor rounded-sm p-2" /> : ""}
-                                                    </td>
-                                                )
-                                                if (index === 3) return (
-                                                    <td
-                                                        {...cell.getCellProps()}
-                                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
-                                                    >
-                                                        {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
-                                                            <input
-                                                                value={formik.values.stockDetails[rowIndex][cell.value[1]]['discount']}
-                                                                onChange={formik.handleChange}
-                                                                onBlur={formik.handleBlur}
-                                                                id={`stockDetails.${rowIndex}.${cell.value[1]}.discount`} name={`stockDetails.${rowIndex}.${cell.value[1]}.discount`}
-                                                                className="bg-cardColor rounded-sm p-2" /> : ""}
-                                                    </td>
-                                                )
-                                                if (index === 4) return (
-                                                    <td
-                                                        {...cell.getCellProps()}
-                                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
-                                                    >
-                                                        {(formik.values.stockDetails[rowIndex] && formik.values.stockDetails[rowIndex][cell.value[1]]) ?
-                                                            <input
-                                                                value={formik.values.stockDetails[rowIndex][cell.value[1]]['stock']}
-                                                                onChange={formik.handleChange}
-                                                                onBlur={formik.handleBlur}
-                                                                id={`stockDetails.${rowIndex}.${cell.value[1]}.stock`} name={`stockDetails.${rowIndex}.${cell.value[1]}.stock`}
-                                                                className="bg-cardColor rounded-sm p-2" /> : ""}
-                                                    </td>
-                                                )
-                                                return (
-                                                    <td
-                                                        {...cell.getCellProps()}
-                                                        className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
-                                                    >
-                                                        {cell.render('Cell')}
-                                                    </td>
-                                                )
-                                            })}
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
-                    <div className="flex justify-end mt-4 w-full">
-                        <button className="py-2 px-4 text-white bg-textLight rounded-lg" type="submit">
-                            Submit
-                    </button>
+        <div>
+            <div>
+                {!orderId ? (
+                    <div className="">
+                        <div className="my-2 sm:mx-2 sm:my-4">
+                            <div className="m-2  flex justify-between">
+                                    <span className="m-2 text-sm sm:text-lg">product</span>
+                                    <span className="m-2 text-sm sm:text-lg">price</span>
+                                    <span className="m-2 text-sm sm:text-lg">stock</span>
+                                    <span className="m-2 text-sm sm:text-lg">items</span>
+                            </div>
+                            {products.map((product) => (
+                                <div key={product._id} className="m-2 flex justify-between">
+                                    <span className="m-2 text-sm sm:text-lg">{product.product_name}</span>
+                                    <span className="m-2 text-sm sm:text-lg">{product.price}</span>
+                                    <span className="m-2 text-sm sm:text-lg">{product.stock}</span>
+                                    <input className="bg-cardColor text-sm sm:text-lg rounded-sm p-2 w-16" id={product._id} type="number" min={0} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex justify-center mt-2 sm:mt-4">
+                            <button className="p-2 bg-textLight text-primary rounded-md" onClick={handleSubmit}>Submit</button>
+                        </div>
                     </div>
-                </form>
+                ) : null}
             </div>
-        </div>
-
+            {imageUrl ? (
+            <div className="flex justify-center items-center">
+                <div className="flex border-2 border-text mt-6 sm:mt-8 w-40 sm:w-72 justify-center">
+                    <div>
+                        <h1 className="flex justify-center text-lg sm:text-3xl mt-2 sm:mt-4 sm:mb-4">QR Code</h1>
+                        <a href={imageUrl} download><img className="sm:w-60 sm:h-60" src={imageUrl} alt="qr" /></a>
+                    </div>
+                </div>
+            </div>
+            ) : null}
+            </div>
     )
 }
 
