@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {
     BrowserRouter as Router,
     Switch,
@@ -15,6 +15,9 @@ import ProductScreen from "../views/app/customer/productScreen";
 import VendorScreen from "../views/app/customer/vendorScreen";
 import Page404 from "../views/404"
 import { actions } from "../store"
+import DashboardLayout from "../layout/dashboard-layour";
+import Dashboard from "../views/app/driver/dashboard";
+import CreatePassword from "../views/other/create-password";
 
 export default function MainRouter() {
 
@@ -36,38 +39,49 @@ export default function MainRouter() {
         dispatch(actions.user.setIsLogin(isLogin))
 
     }, [dispatch])
-
+    const role = useSelector(state => state.user.role)
     return (
         <Router>
             <Switch>
                 <Route exact path="/">
-                    <MainLayout>
-                        <HomeDsand />
-                    </MainLayout>
+                    {
+                        role === "guest" || role === "customer" ?
+                        <MainLayout>
+                            <HomeDsand/>
+                        </MainLayout> :
+                        <DashboardLayout>
+                            <Dashboard />
+                        </DashboardLayout>
+                    }
                 </Route>
                 <Route path="/auth">
                     <AuthRouter />
                 </Route>
                 <Route path="/app">
-                    <InnerPageLayout>
-                        <AppRouter />
-                    </InnerPageLayout>
+                    <AppRouter />
                 </Route>
-                <Route path="/404">
-                    <InnerPageLayout><Page404 /></InnerPageLayout>
-                </Route>
-                <Route path={"/register/vendor/:token"}>
-                    <InnerPageLayout><VendorRegistration /></InnerPageLayout>
-                </Route>
-                <Route exact={true} path={`/register/vendor`}>
-                    <InnerPageLayout><VendorRegistration /></InnerPageLayout>
-                </Route>
-                <Route path={`/vendor_:id`} exact>
-                    <InnerPageLayout><VendorScreen /></InnerPageLayout>
-                </Route>
-                <Route path={`/vendor_:id/product_:pid`} exact>
-                    <InnerPageLayout><ProductScreen /></InnerPageLayout>
-                </Route>
+                <InnerPageLayout>
+                    <Switch>
+                        <Route path="/404">
+                            <Page404 />
+                        </Route>
+                        <Route path="/create_password/:token">
+                            <CreatePassword />
+                        </Route>
+                        <Route path={"/register/vendor/:token"}>
+                            <VendorRegistration />
+                        </Route>
+                        <Route exact={true} path={`/register/vendor`}>
+                            <VendorRegistration />
+                        </Route>
+                        <Route path={`/vendor_:id`} exact>
+                            <VendorScreen />
+                        </Route>
+                        <Route path={`/vendor_:id/product_:pid`} exact>
+                            <ProductScreen />
+                        </Route>
+                    </Switch>
+                </InnerPageLayout>
             </Switch>
         </Router>
     )

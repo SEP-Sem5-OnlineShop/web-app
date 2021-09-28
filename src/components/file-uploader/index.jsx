@@ -28,9 +28,11 @@ export default function FileUpload(props) {
         setFiles: props.setFiles || (() => {}),
         maxFiles: props.maxFiles || 1,
         allowMultiple: props.allowMultiple || true,
+        circle: props.circle || false,
+        label: props.label || 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
     }
     return (
-        <div className="App">
+        <div>
             <FilePond
                 files={comProps.files}
                 onupdatefiles={comProps.setFiles}
@@ -40,6 +42,7 @@ export default function FileUpload(props) {
                     const fileName = uuidv4()
                     return `${fileName}${file.extension}`;
                 }}
+                stylePanelLayout={comProps.circle ? 'compact circle' : ''}
                 server={
                     {
                         process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
@@ -67,7 +70,7 @@ export default function FileUpload(props) {
 
                 }
                 name="files"
-                labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                labelIdle={comProps.label}
             />
         </div>
     );

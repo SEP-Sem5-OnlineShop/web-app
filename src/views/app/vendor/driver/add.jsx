@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { FilePond, registerPlugin } from 'react-filepond'
+import { registerPlugin } from 'react-filepond'
 import 'filepond/dist/filepond.min.css'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import { useParams } from "react-router-dom"
-import { productApi } from "../../../../api";
+import { driverApi } from "../../../../api";
 
 import { useSelector } from "react-redux"
 
@@ -24,15 +21,11 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function AddDriver({ edit }) {
 
-    let { id } = useParams()
     const role = useSelector(state => state.user.role)
-    const userData = useSelector(state => state.user.userData)
 
     const [editorState, setEditorState] = React.useState(
         () => EditorState.createEmpty(),
     );
-    const [mainImage, setMainImage] = React.useState([])
-    const [mainThumbnailImage, setThumbnailImage] = React.useState([])
 
     const formik = useFormik({
         initialValues: {
@@ -41,7 +34,6 @@ export default function AddDriver({ edit }) {
             telephone: '',
             email: '',
             licenseNumber: '',
-            licenseFileUrl: 'http://localhost:3000/app/product/add',
         },
         validationSchema: Yup.object({
             firstName: Yup.string()
@@ -57,7 +49,7 @@ export default function AddDriver({ edit }) {
         }),
         onSubmit: async values => {
             try {
-                const { data, status } = await productApi.create(values)
+                const { data, status } = await driverApi.create(values)
                 if (status === 200) {
                     console.log(data)
                 }
@@ -68,26 +60,6 @@ export default function AddDriver({ edit }) {
             console.log(values)
         },
     });
-
-    useEffect(async () => {
-        if (edit) {
-            const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>';
-            try {
-                const { data, status } = await productApi.get(id)
-                if (data.data) {
-                    const contentBlock = htmlToDraft(data.data.description);
-                    if (contentBlock) {
-                        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-                        const editorState = EditorState.createWithContent(contentState);
-                        setEditorState(editorState)
-                    }
-                }
-            }
-            catch (e) {
-
-            }
-        }
-    }, [])
 
     useEffect(() => {
         // formik.setFieldValue("description", editorState)
@@ -142,16 +114,10 @@ export default function AddDriver({ edit }) {
                                     type="text"
                                     className="mb-4"
                                 />
-                                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>License File</label>
-                                <FilePond
-                                    files={mainImage}
-                                    onupdatefiles={setMainImage}
-                                    allowMultiple={true}
-                                    maxFiles={1}
-                                    server="/api"
-                                    name="files"
-                                    labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-                                />
+                                <div className="mt-8 flex justify-end">
+                                    <button onClick={(e) => { e.preventDefault(); formik.handleSubmit() }}
+                                        className="rounded-lg p-2 text-white bg-textLight">Submit</button>
+                                </div>
                             </form>
                         </CardTemplate>
                     </div>

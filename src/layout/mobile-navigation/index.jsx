@@ -38,9 +38,10 @@ export default function SideNavigation(props) {
             className={`fixed top-0 left-0 bottom-0 ${props.isOpen ? "z-30": "h-0 z-20"}`}
             style={{width: props.isOpen ? 300 : 0}}
         >
-            <motion.div className="bg-white h-screen" style={{width: 300}} variants={sidebar} >
-                <MenuToggle toggle={() => props.toggleOpen()} />
-                <Navigation />
+            <motion.div className={`${props.freeze ? "bg-textLight" : "bg-white"} h-screen`} style={{width: 300}}
+                        variants={sidebar} >
+                {props.noToggle ? null : <MenuToggle freeze={props.freeze} toggle={() => props.toggleOpen(!props.isOpen)}/>}
+                <Navigation freeze={props.freeze} />
             </motion.div>
         </motion.nav>
     )
