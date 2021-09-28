@@ -34,7 +34,7 @@ const ProductScreen = () => {
         async function detailsProduct(product_id){
             setLoading(true);
             try {
-                const { data } = (await axios.get(`app/customer/product/${product_id}`)).data;
+                const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
                 console.log('product screen product details');
                 console.log(data);
                 setProduct(data);

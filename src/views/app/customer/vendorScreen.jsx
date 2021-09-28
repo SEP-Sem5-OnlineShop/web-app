@@ -33,7 +33,7 @@ const VendorScreen = () => {
   useEffect(() => {
     async function detailsVendor(vendor_id){
       try {
-        const { data } = await axios.get(`app/customer/vendors/${vendor_id}`);
+        const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
         console.log('vendor screen vendor details');
         console.log(data);
         setVendor(data);
@@ -50,7 +50,7 @@ const VendorScreen = () => {
   useEffect(() => {
     async function listProducts(vendor_id){
       try {
-        const { data } = await axios.get(`app/customer/products/${vendor_id}`);
+        const { data } = await axios.get(`gen/customer/products/${vendor_id}`);
         console.log('vendor screen vendor product list');
         console.log(data);
         setProducts(data);

@@ -9,10 +9,10 @@ import { useSelector } from "react-redux";
 const AlertScreen = () => {
   const history = useHistory();
 
-  // const isLogged = useSelector(state => state.user.isLogin)
-  // if (!isLogged) {
-  //   history.push('/auth/login');
-  // }
+  const isLogged = useSelector(state => state.user.isLogin)
+  if (!isLogged) {
+    history.push('/auth/login');
+  }
   // const [customer_id, setCustomer_id] = useState('613eba8b94acbe3710fed690');
   const userData = useSelector(state => state.user.userData);
   let customer_id = '';

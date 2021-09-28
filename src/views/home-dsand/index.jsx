@@ -26,7 +26,7 @@ export default function HomeDsand() {
     async function listVendors(){
         setLoading(true);
         try {
-        const { data } = await axios.get(`app/customer/vendorlist`);
+        const { data } = await axios.get(`gen/customer/vendorlist`);
         console.log('home screen vendor list');
         console.log(data);
         // const data = [
