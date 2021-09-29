@@ -29,7 +29,8 @@ export default function VendorRegistration() {
         document3: null
     })
     const [initialState, setInitialState] = useState({
-        fullName: '',
+        firstName: '',
+        lastName: '',
         telephone: '',
         email1: '',
         nic: '',
@@ -69,7 +70,9 @@ export default function VendorRegistration() {
         enableReinitialize: true,
         initialValues: initialState,
         validationSchema: Yup.object({
-            fullName: Yup.string()
+            firstName: Yup.string()
+                .required('Required'),
+            lastName: Yup.string()
                 .required('Required'),
             telephone: Yup.string()
                 .required('Required')
