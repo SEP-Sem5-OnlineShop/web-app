@@ -15,9 +15,17 @@ export default function Step1(props) {
                     <div className="mb-5"><span className="text-xl text-medium">Vendor Details</span></div>
                     <InputWithValidation
                         formik={comProps.formik}
-                        id="fullName"
-                        name="fullName"
-                        label="Name"
+                        id="firstName"
+                        name="firstName"
+                        label="First Name"
+                        type="text"
+                        className="mb-4"
+                    />
+                    <InputWithValidation
+                        formik={comProps.formik}
+                        id="lastName"
+                        name="lastName"
+                        label="Last Name"
                         type="text"
                         className="mb-4"
                     />
