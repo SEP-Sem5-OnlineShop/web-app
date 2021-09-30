@@ -24,7 +24,8 @@ const SellingCart = () => {
               const { data } = await axios.get(`gen/customer/products/sell/${vendor_id}`);
               console.log('sellcart screen sell product list');
               console.log(data);
-              setProducts(data);
+              console.log(data.dailyStock);
+              setProducts(data.dailyStock);
             } catch (error) {
               console.log("product felch error");
             };
@@ -99,7 +100,8 @@ const SellingCart = () => {
                             </div>
                             {products.map((product) => (
                                 <div key={product._id} className="m-2 flex justify-between">
-                                    <span className="m-2 text-sm sm:text-lg">{product.product_name}</span>
+                                    {/* <span className="m-2 text-sm sm:text-lg">{product.product_name}</span> */}
+                                    <ProductName product_id={product.productId} />
                                     <span className="m-2 text-sm sm:text-lg">{product.price}</span>
                                     <span className="m-2 text-sm sm:text-lg">{product.stock}</span>
                                     <input className="bg-cardColor text-sm sm:text-lg rounded-sm p-2 w-16" id={product._id} type="number" min={0} max={product.stock} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/>
@@ -127,3 +129,33 @@ const SellingCart = () => {
 }
 
 export default SellingCart;
+
+
+const ProductName = ({product_id}) => {
+    const [productDetails, setProductDetails] = useState({})
+    const [loading3, setLoading3] = useState(true);
+    const [error3, setError3] = useState(null);
+    useEffect(() => {
+        async function detailsProduct(product_id){
+          try {
+              const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
+              console.log('order history screen product details');
+              console.log(data);
+              setProductDetails(data);
+              setLoading3(false);
+              setError3(null);
+          } catch (err) {
+              setLoading3(false);
+              console.log(err);
+              setError3(err);
+          };
+      };
+      if (product_id) {
+          detailsProduct(product_id);
+      };
+    }, [product_id]);
+  
+    return (
+        <span className="m-2 text-sm sm:text-lg">{productDetails.product_name}</span>
+    );
+  }
