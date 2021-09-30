@@ -1,11 +1,16 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import FileUploaderWithPreview from "../../../../components/file-uploader/with-preview";
 import InputWithValidation from "../../../../components/input-with-validation";
 
 export default function Step2(props) {
 
     const comProps = {
         formik: props.formik || {},
-        setActiveTab: props.setActiveTab || (() => {})
+        setActiveTab: props.setActiveTab || (() => { })
+    }
+
+    const setImageName = (fieldName, fileName) => {
+        comProps.formik.setFieldValue(fieldName, fileName)
     }
 
     return (
@@ -37,6 +42,15 @@ export default function Step2(props) {
                         type="text"
                         className="mb-4"
                     />
+                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image for mobile shop</label>
+                    <div className="my-4">
+                        <FileUploaderWithPreview
+                            label={props.label || 'Upload your an image thumbnail here'}
+                            imageUrl={comProps.formik.values.imageUrl || ""}
+                            formikFieldName={'imageUrl'}
+                            setFileName={setImageName}
+                        />
+                    </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <button

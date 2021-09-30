@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import InputWithValidation from "../../../../components/input-with-validation";
 import SelectWithValidation from "../../../../components/select-with-validation";
 import FileUploader from "../../../../components/file-uploader"
+import FileUploaderWithPreview from "../../../../components/file-uploader/with-preview";
 
 export default function Step3(props) {
 
@@ -25,6 +26,11 @@ export default function Step3(props) {
         }
         setArray(array)
     }, [comProps.formik.values.numberOfVehicles])
+
+
+    const setImageName = (fieldName, fileName) => {
+        comProps.formik.setFieldValue(fieldName, fileName)
+    }
 
     return (
         <React.Fragment>
@@ -72,9 +78,15 @@ export default function Step3(props) {
                                         labelStyles={{ fontSize: 14 }}
                                     />
                                     <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Image of clear view of the vehicle</label>
-                                    <FileUploader allowMultiple={false} files={image} setFiles={setImage} maxFiles={1} />
-                                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Vehicle license file here</label>
-                                    <FileUploader allowMultiple={false} files={document} setFiles={setDocument} maxFiles={1} />
+                                    {/* <FileUploader allowMultiple={false} files={image} setFiles={setImage} maxFiles={1} /> */}
+                                    <FileUploaderWithPreview
+                                        label={'Upload your an image here'}
+                                        imageUrl={comProps.formik.values.vehicles[index].imageUrl}
+                                        formikFieldName={`vehicles.${index}.imageUrl`}
+                                        setFileName={setImageName}
+                                    />
+                                    {/* <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Vehicle license file here</label>
+                                    <FileUploader allowMultiple={false} files={document} setFiles={setDocument} maxFiles={1} /> */}
                                 </div>)
                         }
                     </motion.div>
