@@ -3,7 +3,7 @@ import { useTable, useGlobalFilter } from 'react-table'
 import { productApi } from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
 import { useFormik } from 'formik';
-import { stockApi } from '../../../../api/index'
+import { stockApi, driverApi } from '../../../../api/index'
 import { useSelector } from "react-redux"
 
 export default function DailyStockLoad() {
@@ -13,6 +13,11 @@ export default function DailyStockLoad() {
     React.useEffect(async () => {
         try {
             const { data, status } = await productApi.getList()
+            const { drivers, status2 } = await driverApi.getDrivers()
+            const { vehicles, status3 } = await driverApi.getVehicles()
+
+            console.log(drivers.data)
+            console.log(vehicles.data)
 
             const list = []
             const testData = []
@@ -85,12 +90,12 @@ export default function DailyStockLoad() {
                 const stock = []
                 values.stockDetails.forEach(item => {
                     const productId = Object.keys(item)[0]
-                    if(parseInt(item[productId].stock))
-                    stock.push({
-                        ...item[productId], productId: productId
-                    })
+                    if (parseInt(item[productId].stock))
+                        stock.push({
+                            ...item[productId], productId: productId
+                        })
                 })
-                const { data, status } = await stockApi.update({vendorId: vendorId, vehicleId: "Vehicle 1", dailyStock: stock})
+                const { data, status } = await stockApi.update({ vendorId: vendorId, vehicleId: "Vehicle 1", dailyStock: stock })
                 if (status === 200 && data && data.message === 'Success') {
                     console.log(data.data)
                 }
