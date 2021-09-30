@@ -122,8 +122,8 @@ export default function AppRouter() {
                                 </Switch>
                             </InnerPageLayout>
                         </> :
-                        // <Redirect to='/auth/login' />
-                        null
+                        <Redirect to='/auth/login' />
+                        // null
         }
         </React.Fragment>
     )

@@ -2,21 +2,16 @@ import MainRouter from "./router";
 import { Provider } from "react-redux";
 import store from "./store/index";
 import { ToastContainer } from "react-toastify"
-import { io } from "socket.io-client"
 
 // Import Swiper styles
 import 'swiper/swiper-bundle.css'
 
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
-const socket = io('http://localhost:8000')
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
-
-    socket.on("hello", (arg) => {
-        console.log(arg)
-    })
 
     return (
         <div className="App">

@@ -10,7 +10,8 @@ import * as Yup from "yup";
 // importing hooks
 import {useParams} from "react-router-dom"
 import {useFormik} from "formik";
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import {actions} from "../../../../store/index"
 
 // importing created components
 import CardTemplate from "../../../../components/card/template";
@@ -22,12 +23,15 @@ import {productApi} from "../../../../api";
 
 // importing css files
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { toast } from "react-toastify";
 
 export default function AddProduct ({edit}) {
 
     let {id} = useParams()
     const role = useSelector(state => state.user.role)
     const userData = useSelector(state => state.user.userData)
+
+    const dispatch = useDispatch()
 
     const [editorState, setEditorState] = React.useState(
         () => EditorState.createEmpty(),
@@ -37,8 +41,8 @@ export default function AddProduct ({edit}) {
 
     const formik = useFormik({
         initialValues: {
-            name: 'asdf',
-            price: '45',
+            name: '',
+            price: '',
             discount: '',
             category: '',
             description: '',
@@ -46,29 +50,37 @@ export default function AddProduct ({edit}) {
             image: 'http://localhost:3000/app/product/add'
         },
         validationSchema: Yup.object({
-            name: Yup.string()
-                .required('Required'),
-            price: Yup.string()
-                .required('Required'),
-            discount: Yup.string(),
-            category: Yup.string(),
-            description: Yup.string()
-                .required('Required'),
+            // name: Yup.string()
+            //     .required('Required'),
+            // price: Yup.string()
+            //     .required('Required'),
+            // discount: Yup.string(),
+            // category: Yup.string(),
+            // description: Yup.string()
+            //     .required('Required'),
         }),
         onSubmit: async values => {
+            const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+            await formik.setFieldValue("description",description)
+            const id = toast.loading("Please wait...")
             try {
                 const {data, status} = await productApi.create({...values,
                     image: mainImage[0].serverId,
                     imageThumbnail: mainThumbnailImage[0].serverId
                 })
-                if (status === 200) {
-                    console.log(data)
+                if (status === 201 && data.message === "Success") {
+                    const contentBlock = htmlToDraft("");
+                    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                    const editorState = EditorState.createWithContent(contentState);
+                    setEditorState(editorState)
+                    toast.update(id, { render: "Product is created successfully!", type: "success", isLoading: false, autoClose: true });
+                    dispatch(actions.user.setUserData(data.data || userData))
+                    formik.resetForm()
                 }
             }
             catch (e) {
-
+                toast.update(id, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
             }
-            console.log(values)
         },
     });
 

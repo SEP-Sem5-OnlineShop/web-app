@@ -17,7 +17,7 @@ const vendor = {
         return await axios.get("/app/products")
     },
     delete: async function (id) {
-        return await axios.delete(`//appproduct/${id}`)
+        return await axios.delete(`/app/product/${id}`)
     },
 }
 
