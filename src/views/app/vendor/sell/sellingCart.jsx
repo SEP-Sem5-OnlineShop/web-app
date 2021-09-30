@@ -6,14 +6,14 @@ import { useSelector } from 'react-redux';
 const SellingCart = () => {
     const [imageUrl, setImageUrl] = useState('');
     // const orderId='613eba8b94acbe3710fed691';
-    // const vendor_id = "613eb365af0d5b2c142fa326";
-    const userData = useSelector(state => state.user.userData);
-    let vendor_id = '';
-    if (userData){
-        vendor_id = userData._id;
-    }
-    console.log("vendor_id")
-    console.log(vendor_id)
+    const vendor_id = "613eb365af0d5b2c142fa326";
+    // const userData = useSelector(state => state.user.userData);
+    // let vendor_id = '';
+    // if (userData){
+    //     vendor_id = userData._id;
+    // }
+    // console.log("vendor_id")
+    // console.log(vendor_id)
 
     const [orderId, setOrderId] = useState(null);
     const [products, setProducts] = useState([]);
@@ -21,7 +21,8 @@ const SellingCart = () => {
     useEffect(() => {
         async function listProducts(vendor_id){
             try {
-              const { data } = await axios.get(`gen/customer/products/sell/${vendor_id}`);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+              const { data } = await axios.app(`app/customer/products/sell/${vendor_id}`);
               console.log('sellcart screen sell product list');
               console.log(data);
               setProducts(data);
