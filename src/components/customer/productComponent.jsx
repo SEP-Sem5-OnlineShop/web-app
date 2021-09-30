@@ -4,6 +4,7 @@ import { FaBell } from "react-icons/fa";
 import {axios} from "../../api/index";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { getFileUrl } from "../../api/azure-storage-blob";
 
 const ProductComponent = ({ product, vendor_id, customer_id }) => {
     
@@ -87,7 +88,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     return (
         <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-full xs:h-24 sm:h-28 md:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${vendor_id}/product_${product._id}`}>
-            <img src={ product.imageUrl } alt="" className="h-full w-20 sm:w-28 md:w-36 object-cover"/>
+            <img src={`${getFileUrl(product.imageUrl)}` } alt="" className="h-full w-20 sm:w-28 md:w-36 object-cover"/>
             </Link>
             <div className="mx-2 my-1 xs:mx-4 xs:my-2 flex flex-col justify-between items-start">
                 <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>

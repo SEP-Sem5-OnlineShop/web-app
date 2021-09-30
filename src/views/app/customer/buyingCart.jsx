@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { axios } from '../../../api';
 
 const BuyingCart = () => {
@@ -14,6 +15,7 @@ const BuyingCart = () => {
     console.log(customer_id);
 
     const [order, setOrder] = useState({});
+    const history = useHistory();
     
     useEffect(() => {
         async function loadOrder(orderId){
@@ -55,7 +57,7 @@ const BuyingCart = () => {
             };
         };
         if (customer_id) {
-            saveOrder(scanResultWebCam, customer_id)
+            saveOrder(scanResultWebCam, customer_id).then(history.push("/"))
         }
 
     };
@@ -64,11 +66,11 @@ const BuyingCart = () => {
         <div>
             <div>
                 {!scanResultWebCam ? (
-                    <div>
-                        <h3>Qr Code Scan by WebCam</h3>
+                    <div className="flex h-full w-full justify-center items-center">
+                        {/* <h3>Qr Code Scan by WebCam</h3> */}
                         <QrReader
                           delay={300}
-                          style={{width: '20%'}}
+                          style={{width: '30%'}}
                           onError={handleErrorWebCam}
                           onScan={handleScanWebCam}
                         />
@@ -86,23 +88,44 @@ const BuyingCart = () => {
                                     <span className="m-2 text-sm sm:text-lg">items</span>
                             </div>
                             {order.products && <>
-                            {order.products.map((product) => (
-                                <div key={product._id} className="m-2 flex justify-between">
-                                    <ProductName product_id={product.product_id} />
-                                    <span className="m-2 text-sm sm:text-lg">{product.price}</span>
-                                    <span className="m-2 text-sm sm:text-lg">{product.items}</span>
-                                    
-                                </div>
-                            ))}
+                                {order.products.map((product) => (
+                                    <div key={product._id} className="m-2 flex justify-between">
+                                        <ProductName product_id={product.product_id} />
+                                        <span className="m-2 text-sm sm:text-lg">{product.price}</span>
+                                        <span className="m-2 text-sm sm:text-lg">{product.items}</span>
+                                        
+                                    </div>
+                                ))}
                             </>
                             }
+                            {/* <table className="m-2">
+                                <thead>
+                                <tr>
+                                    <th className="m-2 text-sm sm:text-lg w-60 text-center">product</th>
+                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">price</th>
+                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">items</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {order.products && <>
+                                    {order.products.map((product) => (
+                                    <tr key={product._id}>
+                                        <td className="m-2 text-sm sm:text-lg w-60 text-center"><ProductName product_id={product.product_id} /></td>
+                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.price}</td>
+                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.items}</td>
+                                    </tr>
+                                ))}
+                                </>
+                                }
+                                </tbody>
+                            </table> */}
                         </div>
-                        <div>
+                        <div className="flex justify-center mt-4 sm:mt-6">
                             <span className="m-2 text-sm sm:text-lg">Total Items: {order.totalItems}</span>
                             <span className="m-2 text-sm sm:text-lg">Total Cost: {order.totalCost}</span>
                         </div>
                         <div className="flex justify-center mt-2 sm:mt-4">
-                            <button className="p-2 bg-textLight text-primary rounded-md" onClick={handlePay}>Pay</button>
+                            <button className="p-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button>
                         </div>
                     </div>
                 ) : null}

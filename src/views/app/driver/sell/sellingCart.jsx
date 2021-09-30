@@ -10,7 +10,7 @@ const SellingCart = () => {
     const userData = useSelector(state => state.user.userData);
     let vendor_id = '';
     if (userData){
-        vendor_id = userData._id;
+        vendor_id = userData.driver.vendorId;
     }
     console.log("vendor_id")
     console.log(vendor_id)
@@ -91,7 +91,7 @@ const SellingCart = () => {
                 {!orderId ? (
                     <div className="">
                         <div className="my-2 sm:mx-2 sm:my-4">
-                            <div className="m-2  flex justify-between">
+                            {/* <div className="m-2  flex justify-between">
                                     <span className="m-2 text-sm sm:text-lg">product</span>
                                     <span className="m-2 text-sm sm:text-lg">price</span>
                                     <span className="m-2 text-sm sm:text-lg">stock</span>
@@ -104,7 +104,27 @@ const SellingCart = () => {
                                     <span className="m-2 text-sm sm:text-lg">{product.stock}</span>
                                     <input className="bg-cardColor text-sm sm:text-lg rounded-sm p-2 w-16" id={product._id} type="number" min={0} max={product.stock} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/>
                                 </div>
-                            ))}
+                            ))} */}
+                            <table className="m-2">
+                                <thead>
+                                <tr>
+                                    <th className="m-2 text-sm sm:text-lg w-60 text-center">product</th>
+                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">price</th>
+                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">stock</th>
+                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">items</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {products.map((product) => (
+                                    <tr key={product._id}>
+                                        <td className="m-2 text-sm sm:text-lg w-60 text-center">{product.product_name}</td>
+                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.price}</td>
+                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.stock}</td>
+                                        <td><input className="bg-cardColor text-sm sm:text-lg rounded-sm p-2 w-40 text-center" id={product._id} type="number" min={0} max={product.stock} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/></td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
                         </div>
                         <div className="flex justify-center mt-2 sm:mt-4">
                             <button className="p-2 bg-textLight text-primary rounded-md" onClick={handleSubmit}>Submit</button>

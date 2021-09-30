@@ -58,11 +58,11 @@ const itemIds = [
   { name: "Drivers List", link: "/app/drivers", accessLevel: "vendor" },
 
   { name: "Dashboard", link: "/", accessLevel: "driver" },
-  { name: "Select Route", link: "/app/select-route", accessLevel: "driver" },
-  { name: "Start New Bill", link: "/app/cart", accessLevel: "driver" },
+  // { name: "Select Route", link: "/app/select-route", accessLevel: "driver" },
+  // { name: "Start New Bill", link: "/app/cart", accessLevel: "driver" },
 
   { name: "Check Alerts", link: "/app/alert", accessLevel: "customer" },
   { name: "Check Order History", link: "/app/order_history", accessLevel: "customer" },
   {name: "Buy", link: "/app/buying_cart", accessLevel: "customer"},
-  {name: "Selling Cart", link: "/app/selling_cart", accessLevel: "vendor"},
+  {name: "Selling Cart", link: "/app/selling_cart", accessLevel: "driver"},
 ];
