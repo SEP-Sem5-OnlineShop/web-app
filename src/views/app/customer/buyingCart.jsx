@@ -57,7 +57,7 @@ const BuyingCart = () => {
             };
         };
         if (customer_id) {
-            saveOrder(scanResultWebCam, customer_id).then(history.push("/app/order_history"))
+            saveOrder(scanResultWebCam, customer_id).then(history.push("/"))
         }
 
     };
@@ -66,8 +66,8 @@ const BuyingCart = () => {
         <div>
             <div>
                 {!scanResultWebCam ? (
-                    <div>
-                        <h3>Qr Code Scan by WebCam</h3>
+                    <div className="flex h-full w-full justify-center items-center">
+                        {/* <h3>Qr Code Scan by WebCam</h3> */}
                         <QrReader
                           delay={300}
                           style={{width: '20%'}}
