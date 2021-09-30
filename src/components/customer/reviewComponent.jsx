@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import RatingComponent from "./ratingComponent";
+import { getFileUrl } from "../../api/azure-storage-blob";
 
 const ReviewComponent = ({review}) => {
     
@@ -25,7 +26,7 @@ const ReviewComponent = ({review}) => {
                     <div className="flex-shrink-0">
                         <div className="inline-block relative">
                             <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                                <img className="absolute top-0 left-0 w-full h-full bg-cover object-fit object-cover" src={review.imageUrl} alt="Profile" />
+                                <img className="absolute top-0 left-0 w-full h-full bg-cover object-fit object-cover" src={`${getFileUrl(review.imageUrl)}` } alt="Profile" />
                                 <div className="absolute top-0 left-0 w-full h-full rounded-full shadow-inner"></div>
                             </div>
                         </div>

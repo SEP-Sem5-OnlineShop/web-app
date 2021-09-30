@@ -63,7 +63,7 @@ const OrderHistoryScreen = () => {
               } else {
                 setReviewed(true)
               }
-              alert('added new review and rating');
+            //   alert('added new review and rating');
           } catch (err) {
             setError1(err);
             console.log(error1);

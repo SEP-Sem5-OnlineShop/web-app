@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { axios } from '../../../api';
 
 const BuyingCart = () => {
@@ -14,6 +15,7 @@ const BuyingCart = () => {
     console.log(customer_id);
 
     const [order, setOrder] = useState({});
+    const history = useHistory();
     
     useEffect(() => {
         async function loadOrder(orderId){
@@ -55,7 +57,7 @@ const BuyingCart = () => {
             };
         };
         if (customer_id) {
-            saveOrder(scanResultWebCam, customer_id)
+            saveOrder(scanResultWebCam, customer_id).then(history.push("/app/order_history"))
         }
 
     };
@@ -102,7 +104,7 @@ const BuyingCart = () => {
                             <span className="m-2 text-sm sm:text-lg">Total Cost: {order.totalCost}</span>
                         </div>
                         <div className="flex justify-center mt-2 sm:mt-4">
-                            <button className="p-2 bg-textLight text-primary rounded-md" onClick={handlePay}>Pay</button>
+                            <button className="p-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button>
                         </div>
                     </div>
                 ) : null}

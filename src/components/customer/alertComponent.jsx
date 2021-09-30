@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getFileUrl } from '../../api/azure-storage-blob';
 import {axios} from "../../api/index";
 
 const AlertComponent = ({ alert, handleRemove }) => {
@@ -55,7 +56,7 @@ const AlertComponent = ({ alert, handleRemove }) => {
     return (
         <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-28 sm:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${product.seller}/product_${alert.product_id}`}>
-            <img src={ product.imageUrl } alt="" className="h-full w-20 sm:w-36 sm:h-36 object-cover"/>
+            <img src={ `${getFileUrl(product.imageUrl)}` } alt="" className="h-full w-20 sm:w-36 sm:h-36 object-cover"/>
             </Link>
             <div className="mx-2 my-2 flex flex-col justify-between items-start">
                 <Link className="text-base sm:text-xl text-secondary font-semibold" to={`/vendor_${product.seller}/product_${alert.product_id}`}>{ product.product_name }</Link>
