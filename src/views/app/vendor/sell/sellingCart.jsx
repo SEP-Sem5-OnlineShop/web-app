@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
-import { axios } from '../../../api';
-import { useTable, useGlobalFilter } from 'react-table'
-import { useFormik } from 'formik';
-import React from 'react';
+import { axios } from '../../../../api';
+import { useSelector } from 'react-redux';
 
 const SellingCart = () => {
     const [imageUrl, setImageUrl] = useState('');
     // const orderId='613eba8b94acbe3710fed691';
-    const vendor_id = "613eb365af0d5b2c142fa326";
+    // const vendor_id = "613eb365af0d5b2c142fa326";
+    const userData = useSelector(state => state.user.userData);
+    let vendor_id = '';
+    if (userData){
+        vendor_id = userData._id;
+    }
+    console.log("vendor_id")
+    console.log(vendor_id)
 
     const [orderId, setOrderId] = useState(null);
     const [products, setProducts] = useState([]);
@@ -97,7 +102,7 @@ const SellingCart = () => {
                                     <span className="m-2 text-sm sm:text-lg">{product.product_name}</span>
                                     <span className="m-2 text-sm sm:text-lg">{product.price}</span>
                                     <span className="m-2 text-sm sm:text-lg">{product.stock}</span>
-                                    <input className="bg-cardColor text-sm sm:text-lg rounded-sm p-2 w-16" id={product._id} type="number" min={0} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/>
+                                    <input className="bg-cardColor text-sm sm:text-lg rounded-sm p-2 w-16" id={product._id} type="number" min={0} max={product.stock} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/>
                                 </div>
                             ))}
                         </div>

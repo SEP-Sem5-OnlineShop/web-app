@@ -52,8 +52,8 @@ export default function InnerPageLayout(props) {
                     </AnimatePresence>
                     <SideNavigation isOpen={isOpen} toggleOpen={toggleOpen} />
                     {/* <div className="bg-food-style opacity-40 w-full h-full absolute top-0 left-0 z-0" /> */}
-                    <div className="h-20 bg-white w-full fixed flex px-10 top-0 left-0 justify-end lg:justify-between items-center z-10">
-                        <div className="hidden lg:flex h-full items-center">
+                    <div className="h-20 bg-white w-full fixed flex px-10 top-0 left-0 justify-end md:justify-between items-center z-10">
+                        <div className="hidden md:flex h-full items-center">
                             <img className="cursor-pointer ml-8" style={{height: 80}} onClick={() => history.push("/")} src={logo} alt="logo" />
                         </div>    
 
