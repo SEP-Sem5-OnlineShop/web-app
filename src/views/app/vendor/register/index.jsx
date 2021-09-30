@@ -9,6 +9,7 @@ import CardTemplate from "../../../../components/card/template";
 import { vendorRequestApi } from "../../../../api/index"
 import { useHistory, useParams } from "react-router-dom"
 import InputWithValidation from "../../../../components/input-with-validation";
+import { toast } from "react-toastify";
 
 export default function VendorRegistration() {
 
@@ -29,7 +30,8 @@ export default function VendorRegistration() {
         document3: null
     })
     const [initialState, setInitialState] = useState({
-        fullName: '',
+        firstName: '',
+        lastName: '',
         telephone: '',
         email1: '',
         nic: '',
@@ -69,7 +71,9 @@ export default function VendorRegistration() {
         enableReinitialize: true,
         initialValues: initialState,
         validationSchema: Yup.object({
-            fullName: Yup.string()
+            firstName: Yup.string()
+                .required('Required'),
+            lastName: Yup.string()
                 .required('Required'),
             telephone: Yup.string()
                 .required('Required')
@@ -93,12 +97,17 @@ export default function VendorRegistration() {
         onSubmit: async values => {
             // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
             values.email = values.email1
+            const id = toast.loading("Please wait...")
             try {
                 setSubmitButtonLoading(true)
                 if (state === "create") {
                     const { data, status } = await vendorRequestApi.create(values)
                     if (status === 201) {
                         formik.resetForm()
+                        toast.update(id, {
+                            render: "Successfully added your request! An email will be sent to your email address informing you the status of the request",
+                            type: "success", isLoading: false, autoClose: true
+                        });
                         setShowTelephoneForm(true)
                     }
                 }
@@ -107,12 +116,18 @@ export default function VendorRegistration() {
                     if (status === 200) {
                         formik.resetForm()
                         setShowTelephoneForm(true)
+                        toast.update(id, {
+                            render: "Successfully updated your request! An email will be sent to your email address informing you the status of the request",
+                            type: "success", isLoading: false, autoClose: true
+                        });
+                        history.push("/")
                     }
                 }
                 setSubmitButtonLoading(false)
                 // addToast('Sent your request successfully!', { appearance: 'success' });
             }
             catch (error) {
+                toast.update(id, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
                 // addToast(error.response.data.message, { appearance: 'error' });
             }
         },
@@ -129,19 +144,24 @@ export default function VendorRegistration() {
         }),
         onSubmit: async values => {
             // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+            const id = toast.loading("Please wait...")
             try {
                 setSubmitButtonLoading2(true)
                 const { data, status } = await vendorRequestApi.verifyRequest(values)
                 if (data.data) {
                     setShowEmailSentMessage(true)
+                    setShowTelephoneForm(false)
+                    toast.update(id, { render: "Please check your email inbox!", type: "success", isLoading: false, autoClose: true });
                 }
                 else {
                     setShowTelephoneForm(false)
+                    toast.update(id, { render: "No previous requests found!", type: "info", isLoading: false, autoClose: true });
                 }
                 setSubmitButtonLoading2(false)
                 formik.setFieldValue("email1", formik2.values.email)
             }
             catch (error) {
+                toast.update(id, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
                 // addToast(error.response.data.message, { appearance: 'error' });
             }
         },
@@ -198,8 +218,8 @@ export default function VendorRegistration() {
     return (
         <React.Fragment>
             <div className="flex justify-center">
-                <div className="w-full lg:w-1/2 xl:w-1/3 flex flex-col items-center justify-center p-8">
-                    {showTelephoneForm ? <>
+                <div className="w-full lg:w-1/2 xl:w-1/3 flex flex-col items-center justify-center p-0 lg:p-8">
+                    {showTelephoneForm && <>
                         <div className="w-full text-3xl font-medium">Enter your email address</div>
                         <CardTemplate>
                             <form className="h-full" onSubmit={formik2.handleSubmit}>
@@ -218,39 +238,42 @@ export default function VendorRegistration() {
                                 </button>
                             </form>
                         </CardTemplate>
-                    </> :
-                        showEmailSentMessage ?
-                            <div>An email was sent. Please check your inbox and use the link embeded there to edit your previous request!</div> :
-                            <>
-                                <div className="w-full text-3xl font-medium">Register As a Vendor</div>
-                                <CardTemplate>
-                                    <form className="h-full" onSubmit={formik.handleSubmit}
-                                        style={{ minHeight: 472 }}>
-                                        <AnimatePresence>
-                                            {
-                                                activeTab === 1 &&
-                                                <motion.div key="tab1" initial={initialAnimation} animate={middleAnimation} exit={exitAnimation} className="h-full">
-                                                    <Step1 formik={formik} setActiveTab={setActiveTab} />
-                                                </motion.div>
-                                            }
-                                            {
-                                                activeTab === 2 &&
-                                                <motion.div key="tab2" initial={initialAnimation} animate={middleAnimation} exit={exitAnimation} className="h-full">
-                                                    <Step2 formik={formik} setActiveTab={setActiveTab} />
-                                                </motion.div>
-                                            }
-                                            {
-                                                activeTab === 3 &&
-                                                <motion.div key="tab3" initial={initialAnimation} animate={middleAnimation} exit={exitAnimation} className="h-full">
-                                                    <Step3 formik={formik} setActiveTab={setActiveTab}
-                                                        submitButtonLoading={submitButtonLoading} setSubmitButtonLoading={setSubmitButtonLoading}
-                                                    />
-                                                </motion.div>
-                                            }
-                                        </AnimatePresence>
-                                    </form>
-                                </CardTemplate>
-                            </>
+                    </>}
+                    {showEmailSentMessage &&
+                        <div>
+                            <div className="w-full text-3xl font-medium">An email was sent</div>
+                            <div className="mt-8">An email was sent. Please check your inbox and use the link embeded there to edit your previous request!</div>
+                        </div>}
+                    {(!showTelephoneForm && !showEmailSentMessage) && <>
+                        <div className="w-full text-3xl font-medium">Register As a Vendor</div>
+                        <CardTemplate>
+                            <form className="h-full" onSubmit={formik.handleSubmit}
+                                style={{ minHeight: 472 }}>
+                                <AnimatePresence>
+                                    {
+                                        activeTab === 1 &&
+                                        <motion.div key="tab1" initial={initialAnimation} animate={middleAnimation} exit={exitAnimation} className="h-full">
+                                            <Step1 formik={formik} setActiveTab={setActiveTab} />
+                                        </motion.div>
+                                    }
+                                    {
+                                        activeTab === 2 &&
+                                        <motion.div key="tab2" initial={initialAnimation} animate={middleAnimation} exit={exitAnimation} className="h-full">
+                                            <Step2 formik={formik} setActiveTab={setActiveTab} />
+                                        </motion.div>
+                                    }
+                                    {
+                                        activeTab === 3 &&
+                                        <motion.div key="tab3" initial={initialAnimation} animate={middleAnimation} exit={exitAnimation} className="h-full">
+                                            <Step3 formik={formik} setActiveTab={setActiveTab}
+                                                submitButtonLoading={submitButtonLoading} setSubmitButtonLoading={setSubmitButtonLoading}
+                                            />
+                                        </motion.div>
+                                    }
+                                </AnimatePresence>
+                            </form>
+                        </CardTemplate>
+                    </>
                     }
                 </div>
             </div>

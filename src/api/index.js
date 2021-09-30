@@ -3,6 +3,7 @@ import auth from './auth/index'
 import vendor from './app/vendor'
 import driver from './app/driver'
 import product from './app/product'
+import stock from './app/stock'
 import vendorRequest from "./general/vendorRequest";
 import store, {actions} from "../store/index"
 import customer from './general/customer';
@@ -68,5 +69,6 @@ export const authApi = auth
 export const vendorApi = vendor
 export const driverApi = driver
 export const productApi = product
+export const stockApi = stock
 export const vendorRequestApi = vendorRequest
 export const customerApi = customer
