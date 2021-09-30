@@ -70,7 +70,7 @@ const BuyingCart = () => {
                         {/* <h3>Qr Code Scan by WebCam</h3> */}
                         <QrReader
                           delay={300}
-                          style={{width: '20%'}}
+                          style={{width: '30%'}}
                           onError={handleErrorWebCam}
                           onScan={handleScanWebCam}
                         />
@@ -99,7 +99,7 @@ const BuyingCart = () => {
                             </>
                             }
                         </div>
-                        <div>
+                        <div className="flex justify-center mt-4 sm:mt-6">
                             <span className="m-2 text-sm sm:text-lg">Total Items: {order.totalItems}</span>
                             <span className="m-2 text-sm sm:text-lg">Total Cost: {order.totalCost}</span>
                         </div>
