@@ -88,16 +88,37 @@ const BuyingCart = () => {
                                     <span className="m-2 text-sm sm:text-lg">items</span>
                             </div>
                             {order.products && <>
-                            {order.products.map((product) => (
-                                <div key={product._id} className="m-2 flex justify-between">
-                                    <ProductName product_id={product.product_id} />
-                                    <span className="m-2 text-sm sm:text-lg">{product.price}</span>
-                                    <span className="m-2 text-sm sm:text-lg">{product.items}</span>
-                                    
-                                </div>
-                            ))}
+                                {order.products.map((product) => (
+                                    <div key={product._id} className="m-2 flex justify-between">
+                                        <ProductName product_id={product.product_id} />
+                                        <span className="m-2 text-sm sm:text-lg">{product.price}</span>
+                                        <span className="m-2 text-sm sm:text-lg">{product.items}</span>
+                                        
+                                    </div>
+                                ))}
                             </>
                             }
+                            {/* <table className="m-2">
+                                <thead>
+                                <tr>
+                                    <th className="m-2 text-sm sm:text-lg w-60 text-center">product</th>
+                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">price</th>
+                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">items</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {order.products && <>
+                                    {order.products.map((product) => (
+                                    <tr key={product._id}>
+                                        <td className="m-2 text-sm sm:text-lg w-60 text-center"><ProductName product_id={product.product_id} /></td>
+                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.price}</td>
+                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.items}</td>
+                                    </tr>
+                                ))}
+                                </>
+                                }
+                                </tbody>
+                            </table> */}
                         </div>
                         <div className="flex justify-center mt-4 sm:mt-6">
                             <span className="m-2 text-sm sm:text-lg">Total Items: {order.totalItems}</span>
