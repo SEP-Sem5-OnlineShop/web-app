@@ -1,7 +1,7 @@
 import React from "react"
 import { useTable, useGlobalFilter } from 'react-table'
 import parse from 'html-react-parser'
-import { productApi } from "../../../../api";
+import { productApi, driverApi } from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
 import { Link } from "react-router-dom"
 
@@ -9,26 +9,7 @@ export default function DriverList() {
     const [data, setData] = React.useState([])
     React.useEffect(async () => {
         try {
-            // const {data, status} =  await productApi.getList()
-            const data = {
-                data: [
-                    {
-                        _id: '456112354',
-                        firstName: 'Saman',
-                        lastName: 'Karunarathna',
-                        telephone: '0712345678',
-                        email: 'saman@gmail.com'
-                    },
-                    {
-                        _id: '456114574',
-                        firstName: 'Pasan',
-                        lastName: 'Amarasingha',
-                        telephone: '0712565678',
-                        email: 'pasan@gmail.com'
-                    },
-
-                ]
-            }
+            const {data, status} = await driverApi.getDrivers()
             const list = []
             data.data.forEach((item, index) => {
                 list.push({

@@ -1,12 +1,21 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux"
+import {productApi, driverApi} from "../../../../api/index"
 
 import CardDashboard from "../../../../components/card-desktop/index"
 
 export default function VendorDashboard() {
     const userData = useSelector(state => state.user.userData)
+    const [numberOfProducts, setNumberOfProducts] = React.useState(0)
+    const [numberOfDrivers, setNumberOfDrivers] = React.useState(0)
+    const [numberOfVehicles, setNumberOfVehicles] = React.useState(0)
     useEffect(async () => {
-        
+        const products = await productApi.getList()
+        const drivers = await driverApi.getDrivers()
+        const vehicles = await driverApi.getVehicles()
+        setNumberOfProducts((products.data && products.data.data) ? products.data.data.length : 0)
+        setNumberOfDrivers((drivers.data && products.data.data) ? drivers.data.data.length : 0)
+        setNumberOfVehicles((vehicles.data && products.data.data) ? vehicles.data.data.length : 0)
     }, [])
     return (
         <div className="flex justify-center">
@@ -16,10 +25,10 @@ export default function VendorDashboard() {
                 </div>
 
                 <div className="grid grid-cols-4 gap-10 h-60 mt-10">
-                    <CardDashboard content={`${userData.vendor && userData.vendor.drivers ? userData.vendor.drivers.length : 0} Drivers`} />
-                    <CardDashboard content={`${userData.vendor && userData.vendor.products ? userData.vendor.products.length : 0} Products`} />
-                    <CardDashboard content={`${userData.vendor && userData.vendor.vehicles ? userData.vendor.drivers.vehicles : 0} Vehicles`} />
-                    <CardDashboard content={`${userData.vendor && userData.vendor.purchases ? userData.vendor.drivers.purchases : 0} Daily Purchases`} />
+                    <CardDashboard content={`${numberOfProducts} Products`} />
+                    <CardDashboard content={`${numberOfDrivers} Drivers`} />
+                    <CardDashboard content={`${numberOfVehicles} Vehicles`} />
+                    <CardDashboard content="0 Purchases" />
                 </div>
             </div>
         </div>
