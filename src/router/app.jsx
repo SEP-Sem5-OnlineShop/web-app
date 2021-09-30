@@ -53,6 +53,9 @@ export default function AppRouter() {
                             <Route path={`${match.path}/profile`}>
                                 <DriverProfile />
                             </Route>
+                            <Route path={`${match.path}/selling_cart`}>
+                                <SellingCart />
+                            </Route>
                         </Switch>
                     </DashboardLayout>
                 </> :
