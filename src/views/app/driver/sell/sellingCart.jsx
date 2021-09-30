@@ -10,7 +10,7 @@ const SellingCart = () => {
     const userData = useSelector(state => state.user.userData);
     let vendor_id = '';
     if (userData){
-        vendor_id = userData.driver.vendorId;
+        vendor_id = userData._id;
     }
     console.log("vendor_id")
     console.log(vendor_id)

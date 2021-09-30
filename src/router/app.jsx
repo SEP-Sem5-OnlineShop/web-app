@@ -53,9 +53,6 @@ export default function AppRouter() {
                         <Route path={`${match.path}/profile`}>
                             <DriverProfile />
                         </Route>
-                        <Route path={`${match.path}/selling_cart`}>
-                        <SellingCart />
-                </Route>
                     </Switch>
                 </DashboardLayout>
             </> :
@@ -85,6 +82,9 @@ export default function AppRouter() {
                 </Route>
                 <Route path={`${match.path}/profile`}>
                     <VendorProfile />
+                </Route>
+                <Route path={`${match.path}/selling_cart`}>
+                    <SellingCart />
                 </Route>
             </DashboardLayout> :
             role === "customer" ?
