@@ -4,6 +4,7 @@ import {axios} from "../../api/index"
 const initialState = {
     userData: {},
     token: "",
+    socketId: "",
     role: "guest",
     isLogin: "no"
 }
@@ -30,6 +31,10 @@ const userSlice = createSlice({
         setIsLogin(state, action) {
             state.isLogin = action.payload
             window.localStorage.setItem("isLogin", state.isLogin)
+        },
+        setSocketId(state, action) {
+            state.socketId = action.payload
+            window.localStorage.setItem("socketId", state.socketId)
         }
     }
 })

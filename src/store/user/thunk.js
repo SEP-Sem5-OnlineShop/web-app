@@ -1,6 +1,8 @@
 import userSlice from "./index"
 import {authApi} from "../../api/index"
 
+import socket from "../../socket/index"
+
 /**
  * Thunk action
  * Local login
@@ -17,6 +19,13 @@ export function localSignIn(username, password) {
                 dispatch(userSlice.actions.setAuthToken(data.accessToken))
                 dispatch(userSlice.actions.setRole(data.data.role))
                 dispatch(userSlice.actions.setIsLogin("yes"))
+                const role = data.data.role
+                socket.auth = {username, role}
+                socket.connect();
+                socket.on("connect", () => {
+                    dispatch(userSlice.actions.setSocketId(socket.id))
+                    console.log(socket.id)
+                })
             }
             return {status, data}
         }
@@ -27,9 +36,11 @@ export function localSignIn(username, password) {
 }
 
 export function signOUt() {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         try {
             const {status, data} = await authApi.logout()
+            socket.emit("remove-user", getState().user.socketId)
+            socket.disconnect()
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
             dispatch(userSlice.actions.setRole("guest"))

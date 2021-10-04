@@ -5,6 +5,7 @@ import {axios} from "../../api/index";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getFileUrl } from "../../api/azure-storage-blob";
+import socket from "../../socket/index"
 
 const ProductComponent = ({ product, vendor_id, customer_id }) => {
     
@@ -21,7 +22,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
 
     const [width, height] = useWindowSize();
 
-    useEffect(() => {
+    useEffect(async () => {
         async function detailsAlert(customer_id, product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
@@ -43,7 +44,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             };
         };
         if (customer_id) {
-            detailsAlert(customer_id, product._id);
+            await detailsAlert(customer_id, product._id);
         };
     }, [customer_id, product._id]);
 
@@ -52,6 +53,8 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
+                const payload = {productId: product_id, vendor_id: vendor_id}
+                socket.emit("alert:create", payload)
                 console.log('new alert');
                 console.log(data);
                 // alert('added alert');
@@ -64,6 +67,8 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
+                const payload = {productId: product_id, vendor_id: vendor_id}
+                socket.emit("alert:remove", payload)
                 console.log('alert removed');
                 console.log(data);
                 // alert('removed alert');
