@@ -16,10 +16,12 @@ export default function AlertMenu() {
 
     useEffect(() => {
         alertSocket.on("alert:set", (data) => {
-            setAlerts([...alerts, {key: data.productId, text: `Set alert for ${data.productName}`}])
+            setAlerts(prevAlerts => [...prevAlerts, {key: `set-${data.productId}`, text: `Set alert for ${data.productName}`}])
         })
+    }, [])
+    useEffect(() => {
         alertSocket.on("alert:unset", (data) => {
-            setAlerts([...alerts, {key: data.productId, text: `Unset alert for ${data.productName}`}])
+            setAlerts(prevAlerts => [...prevAlerts, {key: `unset-${data.productId}`, text: `Unset alert for ${data.productName}`}])
         })
     }, [])
 

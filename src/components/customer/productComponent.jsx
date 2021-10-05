@@ -73,7 +73,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
-                const payload = {productId: product_id, vendor_id: vendor_id}
+                const payload = {productId: product_id, productName: product.product_name}
                 clearTimeout(timeoutId)
                 if(timeoutInitiated) alertSocket.emit("alert:remove", {room: vendor_id, payload: payload})
                 // alert('removed alert');
