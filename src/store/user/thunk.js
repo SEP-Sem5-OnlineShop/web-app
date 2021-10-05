@@ -1,7 +1,7 @@
 import userSlice from "./index"
 import {authApi} from "../../api/index"
 
-import socket from "../../socket/index"
+import {alertSocket} from "../../socket/index"
 
 /**
  * Thunk action
@@ -19,12 +19,13 @@ export function localSignIn(username, password) {
                 dispatch(userSlice.actions.setAuthToken(data.accessToken))
                 dispatch(userSlice.actions.setRole(data.data.role))
                 dispatch(userSlice.actions.setIsLogin("yes"))
-                const role = data.data.role
-                socket.auth = {username, role}
-                socket.connect();
-                socket.on("connect", () => {
-                    dispatch(userSlice.actions.setSocketId(socket.id))
-                    console.log(socket.id)
+                const role = data.data.role || ""
+                alertSocket.auth = {role}
+                alertSocket.connect();
+                alertSocket.emit("join", {userId: data.data._id})
+                console.log(data.data._id)
+                alertSocket.on("connect", () => {
+                    dispatch(userSlice.actions.setSocketId(alertSocket.id))
                 })
             }
             return {status, data}
@@ -39,8 +40,8 @@ export function signOUt() {
     return async (dispatch, getState) => {
         try {
             const {status, data} = await authApi.logout()
-            socket.emit("remove-user", getState().user.socketId)
-            socket.disconnect()
+            alertSocket.emit("remove-user", getState().user.socketId)
+            alertSocket.disconnect()
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
             dispatch(userSlice.actions.setRole("guest"))
@@ -48,6 +49,7 @@ export function signOUt() {
             window.localStorage.removeItem("userData")
             window.localStorage.setUserData("token", "")
             window.localStorage.setItem("role", "guest")
+            window.localStorage.setItem("isLogin", "no")
         }
         catch (error) {
 

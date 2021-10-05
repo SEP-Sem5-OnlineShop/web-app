@@ -38,6 +38,7 @@ import BuyingCart from "../views/app/customer/buyingCart";
 export default function AppRouter() {
     const match = useRouteMatch()
     const role = useSelector(state => state.user.role)
+    const isLogin = useSelector(state => state.user.isLogin)
     return (
         <React.Fragment>{
             role === "driver" ?
@@ -122,8 +123,8 @@ export default function AppRouter() {
                 </Switch>
             </InnerPageLayout>
             </> :
-            // <Redirect to="/404" />
-            null
+            <Redirect to="/" />
+            // null
         }
         </React.Fragment>
     )

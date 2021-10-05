@@ -5,7 +5,7 @@ import {axios} from "../../api/index";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getFileUrl } from "../../api/azure-storage-blob";
-import socket from "../../socket/index"
+import {alertSocket} from "../../socket/index"
 
 const ProductComponent = ({ product, vendor_id, customer_id }) => {
     
@@ -19,6 +19,9 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     const [er, setEr] = useState(null);
     const [error, setError] = useState(null);
     const [error1, setError1] = useState(null);
+
+    const [timeoutId, setTimeoutId] = useState(0)
+    const [timeoutInitiated, setTimoutInitiated] = useState(false)
 
     const [width, height] = useWindowSize();
 
@@ -53,10 +56,13 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
-                const payload = {productId: product_id, vendor_id: vendor_id}
-                socket.emit("alert:create", payload)
-                console.log('new alert');
-                console.log(data);
+                const payload = {productId: product_id, productName: product.product_name}
+                const timeoutId = setTimeout(async () => {
+                    await alertSocket.emit("alert:create", {room: vendor_id, payload: payload})
+                    setTimoutInitiated(true)
+                }, 2000)
+                setTimeoutId(timeoutId)
+                console.log(timeoutId)
                 // alert('added alert');
             } catch (err) {
                 setError(err);
@@ -68,9 +74,8 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, vendor_id: vendor_id}
-                socket.emit("alert:remove", payload)
-                console.log('alert removed');
-                console.log(data);
+                clearTimeout(timeoutId)
+                if(timeoutInitiated) alertSocket.emit("alert:remove", {room: vendor_id, payload: payload})
                 // alert('removed alert');
             } catch (err) {
                 setError1(err);

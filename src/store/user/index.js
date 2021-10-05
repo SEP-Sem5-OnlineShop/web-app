@@ -15,14 +15,13 @@ const userSlice = createSlice({
     reducers: {
         setUserData(state, action) {
             Object.assign(state.userData, action.payload)
-            window.localStorage.setItem("userData", JSON.stringify(state.userData))
+            window.localStorage.setItem("userData", JSON.stringify(action.payload))
         },
         setAuthToken(state, action) {
             state.token = action.payload
             window.localStorage.setItem("token", state.token)
             if(state.token !== "" || state.token !== "null")
-            {console.log("test")
-            axios.defaults.headers.common = {'Authorization': `Bearer ${state.token}`}}
+            {axios.defaults.headers.common = {'Authorization': `Bearer ${state.token}`}}
         },
         setRole(state, action) {
             state.role = action.payload

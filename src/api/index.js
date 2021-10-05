@@ -7,6 +7,7 @@ import stock from './app/stock'
 import vendorRequest from "./general/vendorRequest";
 import store, {actions} from "../store/index"
 import customer from './general/customer';
+import userSlice from "../store/user";
 
 /*
  * Setup axios  
@@ -39,16 +40,19 @@ Axios.interceptors.response.use(async response => {
             store.dispatch(actions.user.setUserData({}))
             store.dispatch(actions.user.setAuthToken(""))
             store.dispatch(actions.user.setRole("guest"))
+            store.dispatch(actions.user.setIsLogin("no"))
             window.localStorage.removeItem("userData")
             window.localStorage.removeItem("token")
             window.localStorage.setItem("role", "guest")
         }
         else if(error.response.status === 401 && error.response.data.message === "Session is invalid!") {
-            const {status, data} = await auth.token()
-            setAuthToken(data.accessToken)
-            originalRequest.headers.Authorization = `Bearer ${data.accessToken}`
-            originalRequest._retry = true;
-            return axiosApiInstance(originalRequest)
+            const data = await auth.token()
+            if(data && data.data) {
+                setAuthToken(data.data.accessToken)
+                originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`
+                originalRequest._retry = true;
+                return axiosApiInstance(originalRequest)
+            }
         }
         else return error
     }

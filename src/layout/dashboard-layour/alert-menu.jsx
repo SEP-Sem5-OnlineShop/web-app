@@ -1,18 +1,27 @@
 import { Menu, Transition } from '@headlessui/react'
 import { useSelector, useDispatch } from "react-redux"
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, {Fragment, useEffect, useState} from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { thunks } from "../../store"
-import { Link } from 'react-router-dom'
 import { IconContext } from "react-icons";
 import { MdNotifications, MdNotificationsActive } from "react-icons/md";
+import {alertSocket} from "../../socket";
 
 export default function AlertMenu() {
     const userData = useSelector(state => state.user.userData)
     const [alerts, setAlerts] = useState([])
     const dispatch = useDispatch()
     const history = useHistory()
+
+    useEffect(() => {
+        alertSocket.on("alert:set", (data) => {
+            setAlerts([...alerts, {key: data.productId, text: `Set alert for ${data.productName}`}])
+        })
+        alertSocket.on("alert:unset", (data) => {
+            setAlerts([...alerts, {key: data.productId, text: `Unset alert for ${data.productName}`}])
+        })
+    }, [])
 
     const logout = async () => {
         try {
@@ -30,8 +39,8 @@ export default function AlertMenu() {
                 <div>
                     <Menu.Button className="inline-flex justify-center w-full px-2">
                         {
-                            alerts.length ?
-                                <IconContext.Provider value={{ color: alert ? "rgb(255, 193, 7)" : "#fff", className: "global-class-name", size: "2.5rem" }}>
+                            alerts && alerts.length ?
+                                <IconContext.Provider value={{ color: alert ? "#264A75" : "#fff", className: "global-class-name", size: "1.5rem" }}>
                                     <MdNotificationsActive />
                                 </IconContext.Provider> :
                                 <IconContext.Provider value={{ color: alert ? "#264A75" : "#fff", className: "global-class-name", size: "1.5rem" }}>
@@ -52,19 +61,19 @@ export default function AlertMenu() {
                     <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div className="px-1 py-1 ">
                             {
-                                alerts.length ?
-                                    alerts.map(item => (
-                                        <Menu.Item>
+                                alerts && alerts.length ?
+                                    alerts.map(item => {
+                                        return <Menu.Item key={item.key}>
                                             {({ active }) => (
                                                 <button
                                                     className={`${active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
-                                                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                                                    } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                                                 >
                                                     {item.text || ""}
                                                 </button>
                                             )}
                                         </Menu.Item>
-                                    ))
+                                    })
                                     :
                                     <Menu.Item>
                                         {({ active }) => (
