@@ -16,6 +16,7 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 
 import CardTemplate from "../../../../components/card/template";
 import InputWithValidation from "../../../../components/input-with-validation";
+import { toast } from "react-toastify";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
@@ -48,16 +49,18 @@ export default function AddDriver({ edit }) {
                 .required('Required'),
         }),
         onSubmit: async values => {
+            const id = toast.loading("Please wait...")
             try {
                 const { data, status } = await driverApi.create(values)
-                if (status === 200) {
-                    console.log(data)
+                if (status === 201) {
+                    toast.update(id, { render: "New driver account is added and an email was sent!", type: "success", isLoading: false, autoClose: true });
+                    formik.resetForm()
                 }
             }
             catch (e) {
+                toast.update(id, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
 
             }
-            console.log(values)
         },
     });
 

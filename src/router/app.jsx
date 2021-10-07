@@ -32,7 +32,7 @@ import DriverProfile from '../views/app/driver/profile'
 import SelectRoute from "../views/app/driver/select-route";
 import Cart from "../views/app/driver/cart";
 import DashboardLayout from "../layout/dashboard-layour";
-import SellingCart from "../views/app/tem/sellingCart";
+import SellingCart from "../views/app/driver/sell/sellingCart";
 import BuyingCart from "../views/app/customer/buyingCart";
 
 export default function AppRouter() {
@@ -41,35 +41,38 @@ export default function AppRouter() {
     return (
         <React.Fragment>{
             role === "driver" ?
-            <>
-                <DashboardLayout>
-                    <Switch>
-                        <Route path={`${match.path}/select-route`}>
-                            <SelectRoute />
+                <>
+                    <DashboardLayout>
+                        <Switch>
+                            <Route path={`${match.path}/select-route`}>
+                                <SelectRoute />
+                            </Route>
+                            <Route path={`${match.path}/cart`}>
+                                <Cart />
+                            </Route>
+                            <Route path={`${match.path}/profile`}>
+                                <DriverProfile />
+                            </Route>
+                            <Route path={`${match.path}/selling_cart`}>
+                                <SellingCart />
+                            </Route>
+                        </Switch>
+                    </DashboardLayout>
+                </> :
+                role === "vendor" ?
+                    <DashboardLayout>
+                        <Route path={`${match.path}/product/:id`}>
+                            <AddProduct edit={true} />
                         </Route>
-                        <Route path={`${match.path}/cart`}>
-                            <Cart />
+                        <Route exact={true} path={`${match.path}/product`}>
+                            <AddProduct />
                         </Route>
-                        <Route path={`${match.path}/profile`}>
-                            <DriverProfile />
+                        <Route exact={true} path={`${match.path}/products/stock/daily`}>
+                            <DailyStockLoad />
                         </Route>
-                    </Switch>
-                </DashboardLayout>
-            </> :
-            role === "vendor" ?
-            <DashboardLayout>
-                <Route path={`${match.path}/product/:id`}>
-                    <AddProduct edit={true} />
-                </Route>
-                <Route exact={true} path={`${match.path}/product`}>
-                    <AddProduct />
-                </Route>
-                <Route exact={true} path={`${match.path}/products/stock/daily`}>
-                    <DailyStockLoad />
-                </Route>
-                <Route exact={true} path={`${match.path}/products`}>
-                    <ProductList />
-                </Route>
+                        <Route exact={true} path={`${match.path}/products`}>
+                            <ProductList />
+                        </Route>
 
                 <Route exact={true} path={`${match.path}/driver`}>
                     <AddDriver />
@@ -95,7 +98,7 @@ export default function AppRouter() {
                         <Profile />
                     </Route>
 
-                    {/* <Route path={`${match.path}/vendor_:id`} exact>
+                                    {/* <Route path={`${match.path}/vendor_:id`} exact>
                     <VendorScreen />
                 </Route>
                 <Route path={`${match.path}/vendor_:id/product_:pid`} exact>
@@ -114,11 +117,8 @@ export default function AppRouter() {
                         <CustomerNotificationScreen />
                     </Route>
                     <Route path={`${match.path}/buying_cart`}>
-                            <BuyingCart />
-                        </Route>
-                        <Route path={`${match.path}/selling_cart`}>
-                            <SellingCart />
-                        </Route>
+                        <BuyingCart />
+                    </Route>
                 </Switch>
             </InnerPageLayout>
             </> :

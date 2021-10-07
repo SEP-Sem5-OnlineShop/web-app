@@ -8,6 +8,7 @@ import LoadingBox from '../../../components/customer/loadingBox';
 import MessageBox from '../../../components/customer/messageBox';
 import {axios} from "../../../api/index";
 import { useSelector } from 'react-redux';
+import { getFileUrl } from '../../../api/azure-storage-blob';
 
 
 const VendorScreen = () => {
@@ -74,7 +75,7 @@ const VendorScreen = () => {
           <MessageBox variant="danger">{error}</MessageBox>
       ) : (
           <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
-              <div style={{ backgroundImage: `url(${vendor.imageUrl})` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full object-center absolute top-0 left-0 z-0"/>
+              <div style={{ backgroundImage: `url(${getFileUrl(vendor.imageUrl)})` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full object-center absolute top-0 left-0 z-0"/>
               <Link to={`/vendor_${vendor_id}`}>
               <div className="h-24 xs:h-32 sm:h-40 md:h-52 w-full flex sm:px-10 items-end relative">
                   {/* <span className="ml-8 my-6 text-3xl sm:text-5xl text-black font-semibold absolute">{vendor.vendor_name}</span> */}

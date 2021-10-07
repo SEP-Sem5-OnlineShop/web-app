@@ -7,6 +7,8 @@ import LoadingBox from '../../../components/customer/loadingBox';
 import MessageBox from '../../../components/customer/messageBox';
 import { useSelector } from 'react-redux';
 import {axios} from "../../../api/index";
+import { getFileUrl } from '../../../api/azure-storage-blob';
+import parse from 'html-react-parser';
 
 const ProductScreen = () => {
     const { id: vendor_id, pid: product_id } = useParams();
@@ -124,7 +126,7 @@ const ProductScreen = () => {
         ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-16">
             <div className="relative">
-                <div  className="w-full h-full bg-center bg-cover rounded-xl" style={{ minHeight: '50vh', backgroundImage: `url(${product.imageUrl})` }}>
+                <div  className="w-full h-full bg-center bg-cover rounded-xl" style={{ minHeight: '50vh', backgroundImage: `url(${getFileUrl(product.imageUrl)})` }}>
                 </div>
 
                 <div className="absolute flex top-3 right-3">
@@ -148,7 +150,7 @@ const ProductScreen = () => {
                     <span className="text-sm sm:text-lg text-secondary">{productStrings.price}: {productStrings.currency} { product.price }</span>
                 </div>
                 <div className="mt-4 sm:mt-8">
-                    <span className="text-secondary">{product.description}</span>
+                    <span className="text-secondary">{parse(`${product.description}`)}</span>
                 </div>
             </div>
             <div>

@@ -20,18 +20,22 @@ export const Navigation = (props) => {
   const role = useSelector(state => state.user.role)
   const token = useSelector(state => state.user.token)
   return (
-    <div className="p-8">
+    <div className="p-8 pt-0 lg:pt-8">
       {props.freeze ?
         <div className="h-full flex items-center p-2 bg-white rounded-xl">
           <img className="cursor-pointer ml-8 lg:ml-0" style={{ height: 80 }} onClick={() => history.push("/")} src={logo} alt="logo" />
         </div>
         :
         token ?
-        null :
-        <button onClick={() => history.push("/auth/login")}
-          className={`rounded-lg px-2 py-2 ${props.freeze ? "bg-white bg-textLight" :
-            "bg-textLight text-white"} w-full`}>
-          Login | Register</button>
+          <img className="cursor-pointer lg:ml-0" style={{ height: 80 }} onClick={() => history.push("/")} src={logo} alt="logo" /> :
+          <div>
+            <img className="cursor-pointer lg:ml-0" style={{ height: 80 }} onClick={() => history.push("/")} src={logo} alt="logo" /> :
+            <button onClick={() => history.push("/auth/login")}
+              className={`rounded-lg px-2 py-2 ${props.freeze ? "bg-white bg-textLight" :
+                "bg-textLight text-white"} w-full`}>
+              Login | Register
+          </button>
+          </div>
       }
       <motion.ul className="mt-8" variants={variants}>
         {itemIds.map(i => (
@@ -54,11 +58,11 @@ const itemIds = [
   { name: "Drivers List", link: "/app/drivers", accessLevel: "vendor" },
 
   { name: "Dashboard", link: "/", accessLevel: "driver" },
-  { name: "Select Route", link: "/app/select-route", accessLevel: "driver" },
-  { name: "Start New Bill", link: "/app/cart", accessLevel: "driver" },
+  // { name: "Select Route", link: "/app/select-route", accessLevel: "driver" },
+  // { name: "Start New Bill", link: "/app/cart", accessLevel: "driver" },
 
   { name: "Check Alerts", link: "/app/alert", accessLevel: "customer" },
   { name: "Check Order History", link: "/app/order_history", accessLevel: "customer" },
   {name: "Buy", link: "/app/buying_cart", accessLevel: "customer"},
-  {name: "Selling Cart", link: "/app/selling_cart", accessLevel: "customer"},
+  {name: "Selling Cart", link: "/app/selling_cart", accessLevel: "driver"},
 ];

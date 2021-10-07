@@ -17,6 +17,7 @@ import Page404 from "../views/404"
 import { actions } from "../store"
 import DashboardLayout from "../layout/dashboard-layour";
 import Dashboard from "../views/app/driver/dashboard";
+import VendorDashboard from "../views/app/vendor/dashboard/index"
 import CreatePassword from "../views/other/create-password";
 
 export default function MainRouter() {
@@ -45,7 +46,11 @@ export default function MainRouter() {
             <Switch>
                 <Route exact path="/">
                     {
-                        role === "vendor" || role === "driver" ?
+                        role === "vendor" ?
+                        <DashboardLayout>
+                            <VendorDashboard />
+                        </DashboardLayout> :
+                        role === "driver" ?
                         <DashboardLayout>
                             <Dashboard />
                         </DashboardLayout> :

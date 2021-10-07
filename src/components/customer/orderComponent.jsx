@@ -5,6 +5,7 @@ import { FaStar } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { axios } from '../../api';
+import { getFileUrl } from '../../api/azure-storage-blob';
 
 export default function OrderComponent({ order, customer_id, handleReview }) {
     const productStrings = useSelector(state => state.language.languageFile.productpage)
@@ -51,7 +52,7 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
         <>
         <div className="flex justify-start rounded-2xl overflow-hidden shadow-md bg-white transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${order.vendor_id}`}>
-            <img src={ vendor.imageUrl } alt="" className="my-2 h-16 w-16 sm:h-20 sm:w-20 md:h-64 md:w-72 rounded-2xl object-cover"/>
+            <img src={`${getFileUrl(vendor.imageUrl)}` } alt="" className="my-2 h-16 w-16 sm:h-20 sm:w-20 md:h-64 md:w-72 rounded-2xl object-cover"/>
             </Link>
             <div className="w-full mx-2 sm:mx-4 sm:my-2 flex flex-col justify-start items-start">
                 <Link className="text-xs xs:text-sm sm:text-lg text-secondary font-semibold sm:mx-2" to={`/vendor_${order.vendor_id}`}>{vendor.vendor_name}</Link>
@@ -167,7 +168,7 @@ const ProductImage = ({product_id}) => {
 
   return (
     <Link to={`/vendor_${productDetails.seller}/product_${productDetails._id}`}>
-    <img src={ productDetails.imageUrl } alt="" className="my-2 w-8 h-full sm:w-16 md:w-20 object-cover"/>
+    <img src={`${getFileUrl(productDetails.imageUrl)}` } alt="" className="my-2 w-8 h-full sm:w-16 md:w-20 object-cover"/>
   </Link>
   );
 }
