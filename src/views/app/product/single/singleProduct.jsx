@@ -1,6 +1,5 @@
 import React from 'react';
 import Review from '../../../../components/review'
-import ProductComponent from '../../productComponent'
 import { IconContext } from "react-icons";
 import { FaBell } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";

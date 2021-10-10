@@ -17,7 +17,7 @@ import AlertScreen from "../views/app/customer/alertScreen";
 import OrderHistoryScreen from "../views/app/customer/orderHistoryScreen";
 import CustomerProfileScreen from "../views/app/customer/customerProfileScreen";
 import CustomerNotificationScreen from "../views/app/customer/customerNotificationScreen";
-import History from '../views/app/history'
+import History from '../views/app/customer/history'
 
 import AddProduct from '../views/app/product/add'
 import Profile from '../views/app/profile'
