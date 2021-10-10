@@ -8,7 +8,8 @@ export default function FileUploaderWithPreview(props) {
     const [image, setImage] = useState(null)
     useEffect(() => {
         if(!props.imageUrl) setShowFilePreview(false)
-    }, [])
+        else setShowFilePreview(true)
+    }, [props.imageUrl])
     return (
         <div>
             {

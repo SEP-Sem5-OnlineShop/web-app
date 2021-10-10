@@ -101,7 +101,7 @@ export default function ProductList() {
                         ))}
                         </thead>
                         <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
-                        {rows.map(row => {
+                        {rows && rows.length && rows.map(row => {
                             prepareRow(row)
                             return (
                                 <tr {...row.getRowProps()}>
@@ -117,9 +117,13 @@ export default function ProductList() {
                                     })}
                                 </tr>
                             )
-                        })}
+                        })
+                    }
                         </tbody>
                     </table>
+                    {
+                        rows && !rows.length && <div className="flex justify-center">No items to show</div>
+                    }
                 </CardTemplate>
             </div>
         </div>
