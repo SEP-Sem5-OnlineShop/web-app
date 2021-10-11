@@ -9,7 +9,7 @@ const PaymentModal = ({ orderId, name, amount, customer }) => {
     merchant_id: '1218835', // Replace your Merchant ID
     return_url: 'https://ontheway-sep.netlify.app/',
     cancel_url: '',
-    notify_url: 'https://ontheway-backend-auth-api3.herokuapp.com/api/app/customer/notify',
+    notify_url: 'https://ontheway-backend-auth-api.herokuapp.com/api/app/customer/notify',
     order_id: orderId,
     items: name,
     amount: amount, 
