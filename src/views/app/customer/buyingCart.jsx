@@ -128,7 +128,7 @@ const BuyingCart = () => {
                         </div>
                         <div className="flex justify-center mt-2 sm:mt-4">
                             {/* <button className="p-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button> */}
-                            <PaymentModal orderId={"6161a54a775ede2cecd8a6dfhfdfggd"} name="something" amount={order.totalCost} customer={userData} />
+                            <PaymentModal orderId={"6161a54a775ede2cecd8a6dfhfdfgfghfghgd"} name="something" amount={order.totalCost} customer={userData} />
                         </div>
                     </div>
                 ) : null}
