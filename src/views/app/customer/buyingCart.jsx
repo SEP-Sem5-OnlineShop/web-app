@@ -92,7 +92,7 @@ const BuyingCart = () => {
                             {order.products && <>
                                 {order.products.map((product) => (
                                     <div key={product._id} className="m-2 flex justify-between">
-                                        <ProductName product_id={product.product_id} />
+                                        {/* <ProductName product_id={product.product_id} /> */}
                                         <span className="m-2 text-sm sm:text-lg">{product.price}</span>
                                         <span className="m-2 text-sm sm:text-lg">{product.items}</span>
                                         
