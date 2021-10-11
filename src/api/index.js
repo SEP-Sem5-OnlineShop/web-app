@@ -11,7 +11,7 @@ import customer from './general/customer';
 /*
  * Setup axios  
  */
-const BASE_URL = 'https://ontheway-backend-auth-api.herokuapp.com/api'
+const BASE_URL = 'https://ontheway-backend-auth-api3.herokuapp.com/api'
 // const BASE_URL = 'http://localhost:8000/api'
 Axios.defaults.baseURL = BASE_URL
 Axios.defaults.withCredentials = true
