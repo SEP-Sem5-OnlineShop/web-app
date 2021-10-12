@@ -41,44 +41,56 @@ export default function AddProduct({ edit }) {
     const [mainThumbnailImage, setThumbnailImage] = React.useState([])
 
     const [formikInitial, setFormikInitial] = React.useState({
-        name: '',
+        product_name: '',
         price: '',
         discount: '',
         category: '',
         description: '',
-        imageThumbnail: '',
-        image: ''
+        imageThumbnailUrl: '',
+        imageUrl: ''
     })
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: formikInitial,
         validationSchema: Yup.object({
-            name: Yup.string()
+            product_name: Yup.string()
                 .required('Required'),
             price: Yup.number('Must be a number')
                 .required('Required'),
             discount: Yup.number('Must be a number'),
         }),
         onSubmit: async values => {
-            console.log(values)
             const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
             await formik.setFieldValue("description", description)
-            const id = toast.loading("Please wait...")
+            const tokenId = toast.loading("Please wait...")
             try {
-                const { data, status } = await productApi.create(values)
-                if (status === 201 && data.message === "Success") {
-                    const contentBlock = htmlToDraft("");
-                    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-                    const editorState = EditorState.createWithContent(contentState);
-                    setEditorState(editorState)
-                    toast.update(id, { render: "Product is created successfully!", type: "success", isLoading: false, autoClose: true });
-                    dispatch(actions.user.setUserData(data.data || userData))
-                    formik.resetForm()
+                if(!id) {
+                    const { data, status } = await productApi.create(values)
+                    if (status === 201 && data.message === "Success") {
+                        const contentBlock = htmlToDraft("");
+                        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                        const editorState = EditorState.createWithContent(contentState);
+                        setEditorState(editorState)
+                        toast.update(tokenId, { render: "Product is created successfully!", type: "success", isLoading: false, autoClose: true });
+                        dispatch(actions.user.setUserData(data.data || userData))
+                        formik.resetForm()
+                    }
+                    else {
+                        toast.update(tokenId, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
+                    }
+                }
+                else {
+                    const { data, status } = await productApi.update(values, id)
+                    if (status === 201 && data.message === "Success") {
+                        toast.update(tokenId, { render: "Product is updated successfully!", type: "success", isLoading: false, autoClose: true });
+                        dispatch(actions.user.setUserData(data.data || userData))
+                    }
                 }
             }
             catch (e) {
-                toast.update(id, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
+                console.log(e)
+                toast.update(tokenId, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
             }
         },
     });
@@ -124,7 +136,7 @@ export default function AddProduct({ edit }) {
                                 <InputWithValidation
                                     formik={formik}
                                     id="name"
-                                    name="name"
+                                    name="product_name"
                                     label="Name"
                                     type="text"
                                     className="mb-4"
@@ -156,15 +168,15 @@ export default function AddProduct({ edit }) {
                                 <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
                                 <FileUploaderWithPreview
                                     label={'Upload your an image thumbnail here'}
-                                    imageUrl={formik.values.image || ""}
-                                    formikFieldName={'image'}
+                                    imageUrl={formik.values.imageUrl || ""}
+                                    formikFieldName={'imageUrl'}
                                     setFileName={setImageName}
                                 />
                                 <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
                                 <FileUploaderWithPreview
                                     label={'Upload your main image here'}
-                                    imageUrl={formik.values.imageThumbnail || ""}
-                                    formikFieldName={'imageThumbnail'}
+                                    imageUrl={formik.values.imageThumbnailUrl || ""}
+                                    formikFieldName={'imageThumbnailUrl'}
                                     setFileName={setImageName}
                                 />
                                 <div className="flex justify-end">
