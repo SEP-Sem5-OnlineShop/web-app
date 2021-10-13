@@ -95,17 +95,16 @@ export default function AddProduct({ edit }) {
         },
     });
 
-    const setImageName = (fieldName, fileName) => {
-        formik.setFieldValue(fieldName, fileName)
+    const setImageName = async (fieldName, fileName) => {
+        await formik.setFieldValue(fieldName, fileName)
     }
 
     useEffect(async () => {
         if (edit) {
-            const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>';
             try {
                 const { data, status } = await productApi.get(id)
                 if (data.data) {
-                    setFormikInitial({ ...data.data, name: data.data.product_name, imageThumbnail: data.data.imageThumbnailUrl, image: data.data.imageUrl })
+                    setFormikInitial(data.data)
                     const contentBlock = htmlToDraft(data.data.description);
                     if (contentBlock) {
                         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);

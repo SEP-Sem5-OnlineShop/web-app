@@ -22,12 +22,14 @@ export default function FileUploaderWithPreview(props) {
     const [removeButtonLoading, setRemoveButtonLoading] = useState(false)
     useEffect(() => {
         if(!comProps.imageUrl) setShowFilePreview(false)
+        else setShowFilePreview(true)
     }, [comProps.imageUrl])
 
     const handleCLick = async () => {
         setRemoveButtonLoading(true)
         try {
-            if(comProps.setFileName) comProps.setFileName(comProps.formikFieldName, "")
+            await comProps.setFileName(comProps.formikFieldName, "")
+            setImage(null)
         }
         catch (e) {
 
