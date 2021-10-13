@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { actions } from "../../store"
 import SideNavigation from "../mobile-navigation"
 import LoginRegister from "./login-register"
+import CustomerMap from "../../geo-location/index-map"
 
 import logo from "../../assets/svg/logo/logo-264A75.svg";
 
@@ -82,6 +83,7 @@ export default function MainLayout(props) {
                 <div className="w-full mt-28 bg-white rounded-t-3xl lg:rounded-t-6xl"
                     style={{ minHeight: 'calc(100vh - 7rem)' }}>
                     {props.children}
+                    {/* <CustomerMap /> */}
                 </div>
 
             </div>

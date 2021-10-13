@@ -37,8 +37,6 @@ export default function AddProduct({ edit }) {
     const [editorState, setEditorState] = React.useState(
         () => EditorState.createEmpty(),
     );
-    const [mainImage, setMainImage] = React.useState([])
-    const [mainThumbnailImage, setThumbnailImage] = React.useState([])
 
     const [formikInitial, setFormikInitial] = React.useState({
         product_name: '',
@@ -97,6 +95,13 @@ export default function AddProduct({ edit }) {
 
     const setImageName = async (fieldName, fileName) => {
         await formik.setFieldValue(fieldName, fileName)
+    }
+
+    const resetDescription = () => {
+        const contentBlock = htmlToDraft("");
+        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+        const editorState = EditorState.createWithContent(contentState);
+        setEditorState(editorState)
     }
 
     useEffect(async () => {

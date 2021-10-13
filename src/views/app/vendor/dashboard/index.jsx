@@ -25,7 +25,8 @@ export default function VendorDashboard() {
                     Welcome Back {userData && userData.vendor ? userData.vendor.shopName : ""}!
                 </div>
 
-                <div className="grid grid-cols-4 gap-10 h-60 mt-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 
+                gap-2 sm:gap-4 md:gap-6 gap-10 h-60 mt-10">
                     <CardDashboard content={`${numberOfProducts} Products`} />
                     <CardDashboard content={`${numberOfDrivers} Drivers`} />
                     <CardDashboard content={`${numberOfVehicles} Vehicles`} />

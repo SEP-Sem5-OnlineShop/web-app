@@ -39,7 +39,6 @@ export default function FileUploaderWithPreview(props) {
             setShowFilePreview(false);
         }
     }
-
     return (
         <div>
             {

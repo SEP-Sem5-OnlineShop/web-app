@@ -6,6 +6,7 @@
     "@azure/storage-blob": "^12.7.0",
     "@craco/craco": "^6.2.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
+    "@googlemaps/js-api-loader": "^1.12.5",
     "@headlessui/react": "^1.4.1",
     "@reduxjs/toolkit": "^1.6.1",
     "@testing-library/jest-dom": "^5.11.4",
