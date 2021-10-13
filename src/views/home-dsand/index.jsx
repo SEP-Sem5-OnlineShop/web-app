@@ -2,12 +2,6 @@ import React from "react"
 import HomeItem from "./home-item";
 import { useSelector } from "react-redux"
 
-import pizza from "../../assets/img/pizza.jpg"
-import bread from "../../assets/img/bread.jpg"
-import cherry from "../../assets/img/cherry.jpg"
-import plants from "../../assets/img/plants.jpg"
-import vegetables from "../../assets/img/vegetables.jpg"
-
 import IconPanel from "./icon-panel"
 import SwiperSliderContainer from "./swiper-slider-container";
 import { SwiperSlide } from "swiper/react";
@@ -23,22 +17,27 @@ export default function HomeDsand() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-    async function listVendors(){
-        setLoading(true);
-        try {
-        const { data } = await axios.get(`gen/customer/vendorlist`);
-        console.log('home screen vendor list');
-        console.log(data);
-        setVendors(data);
-        setLoading(false);
-        setError(null);
-        } catch (err) {
-        setLoading(false);
-        console.log(err);
-        setError(err);
-        };
-    };
-    listVendors();
+        let mounted = true;
+        if (mounted) {
+            (async function listVendors(){
+                setLoading(true);
+                try {
+                    const { data } = await axios.get(`gen/customer/vendorlist`);
+                    console.log('home screen vendor list');
+                    console.log(data);
+                    setVendors(data);
+                    setLoading(false);
+                    setError(null);
+                } catch (err) {
+                    setLoading(false);
+                    console.log(err);
+                    setError(err);
+                }
+            })()
+        }
+        return () => {
+            mounted = false
+        }
     }, []);
 
     return (

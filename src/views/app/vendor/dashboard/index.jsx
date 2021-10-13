@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux"
-import {productApi, driverApi} from "../../../../api/index"
+import {axios, productApi, driverApi} from "../../../../api/index"
 
 import CardDashboard from "../../../../components/card-desktop/index"
 
@@ -10,13 +10,24 @@ export default function VendorDashboard() {
     const [numberOfDrivers, setNumberOfDrivers] = React.useState(0)
     const [numberOfVehicles, setNumberOfVehicles] = React.useState(0)
     useEffect(async () => {
-        const products = await productApi.getList()
-        const drivers = await driverApi.getDrivers()
-        const vehicles = await driverApi.getVehicles()
-        setNumberOfProducts((products && products.data && products.data.data) ? products.data.data.length : 0)
-        setNumberOfDrivers((drivers && drivers.data && products.data.data) ? drivers.data.data.length : 0)
-        setNumberOfVehicles((vehicles && vehicles.data && products.data.data) ? vehicles.data.data.length : 0)
 
+        let source = axios.CancelToken.source()
+
+        try {
+            const products = await productApi.getList(source)
+            const drivers = await driverApi.getDrivers(source)
+            const vehicles = await driverApi.getVehicles(source)
+            setNumberOfProducts((products && products.data && products.data.data) ? products.data.data.length : 0)
+            setNumberOfDrivers((drivers && drivers.data && drivers.data.data) ? drivers.data.data.length : 0)
+            setNumberOfVehicles((vehicles && vehicles.data && vehicles.data.data.vendor) ? vehicles.data.data.vendor.vehicles.length : 0)
+        }
+        catch (e) {
+            if(!axios.isCancel(e)) throw e
+        }
+
+        return () => {
+            source.cancel()
+        }
     }, [])
     return (
         <div className="flex justify-center">

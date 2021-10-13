@@ -14,11 +14,11 @@ const driver = {
     updateImage: async function (formData) {
         return await axios.put('/app/driver/image', formData)
     },
-    getDrivers: async function() {
-        return await axios.get('/app/drivers')
+    getDrivers: async function(source) {
+        return await axios.get('/app/drivers', {cancelToken: source.token})
     },
-    getVehicles: async function() {
-        return await axios.get('/app/vehicles')
+    getVehicles: async function(source) {
+        return await axios.get('/app/vehicles', {cancelToken: source.token})
     },
     getImage: async function () {
         return await axios.get('/app/driver/image')

@@ -21,6 +21,7 @@ export default function MainLayout(props) {
 
 
     useEffect(() => {
+        let mounted = true
         function verifyScreen() {
             if (window.innerWidth < 976) {
                 setIsMobile(true)
@@ -30,9 +31,12 @@ export default function MainLayout(props) {
             }
         }
         verifyScreen()
-        window.addEventListener("resize", verifyScreen)
+        if(mounted) {
+            window.addEventListener("resize", verifyScreen)
+        }
         return () => {
-            window.removeEventListener("resize", verifyScreen)
+            if (mounted) window.removeEventListener("resize", verifyScreen)
+            mounted = false
         }
     }, [])
 
