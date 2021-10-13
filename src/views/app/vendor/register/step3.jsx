@@ -4,6 +4,7 @@ import InputWithValidation from "../../../../components/input-with-validation";
 import SelectWithValidation from "../../../../components/select-with-validation";
 import FileUploader from "../../../../components/file-uploader"
 import FileUploaderWithPreview from "../../../../components/file-uploader/with-preview";
+import LoadingButton from "../../../../components/loading-button";
 
 export default function Step3(props) {
 
@@ -27,6 +28,21 @@ export default function Step3(props) {
         setArray(array)
     }, [comProps.formik.values.numberOfVehicles])
 
+    const handleRemoveVehicle = (index) => {
+        let numberOfVehicles = comProps.formik.values["numberOfVehicles"]
+        const vehicles = comProps.formik.values["vehicles"]
+        vehicles.splice(index, 1)
+        numberOfVehicles--
+        comProps.formik.setFieldValue("vehicles", vehicles)
+        comProps.formik.setFieldValue("numberOfVehicles", numberOfVehicles)
+    }
+
+    const handleAddVehicle = () => {
+        let numberOfVehicles = comProps.formik.values["numberOfVehicles"]
+        numberOfVehicles++
+        comProps.formik.setFieldValue("numberOfVehicles", numberOfVehicles)
+    }
+
 
     const setImageName = (fieldName, fileName) => {
         comProps.formik.setFieldValue(fieldName, fileName)
@@ -43,13 +59,13 @@ export default function Step3(props) {
                         name="numberOfVehicles"
                         label="Number of Vehicles"
                         items={["1", "2", "3"]}
-                        className="mb-4"
+                        className="mb-4 hidden"
                     />
                     <motion.div layout>
                         {
                             array.map((item, index) =>
                                 <div key={index}>
-                                    <span className="font-medium mb">Vehicle #{index} Details</span>
+                                    <span className="font-medium mb">Vehicle Number {index+1} Details</span>
                                     <InputWithValidation
                                         formik={comProps.formik}
                                         id={`vehicles.${index}.brand`}
@@ -81,14 +97,24 @@ export default function Step3(props) {
                                     {/* <FileUploader allowMultiple={false} files={image} setFiles={setImage} maxFiles={1} /> */}
                                     <FileUploaderWithPreview
                                         label={'Upload your an image here'}
-                                        imageUrl={comProps.formik.values.vehicles[index].imageUrl}
+                                        imageUrl={comProps.formik.values.vehicles[index] ? comProps.formik.values.vehicles[index].imageUrl : ""}
                                         formikFieldName={`vehicles.${index}.imageUrl`}
                                         setFileName={setImageName}
                                     />
                                     {/* <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Vehicle license file here</label>
                                     <FileUploader allowMultiple={false} files={document} setFiles={setDocument} maxFiles={1} /> */}
+                                    {
+                                        comProps.formik && parseInt(comProps.formik.values['numberOfVehicles'])>1 ?
+                                            <div className={"flex justify-end my-4"}>
+                                                <LoadingButton text={"Remove Vehicle"} onClick={() => handleRemoveVehicle(index)} />
+                                            </div> :
+                                            null
+                                    }
                                 </div>)
                         }
+                        <div>
+                            <LoadingButton text={"Add Vehicle"} onClick={handleAddVehicle} />
+                        </div>
                     </motion.div>
 
                 </div>

@@ -59,38 +59,42 @@ export default function AddProduct({ edit }) {
             discount: Yup.number('Must be a number'),
         }),
         onSubmit: async values => {
-            console.log(values)
             const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
             await formik.setFieldValue("description", description)
-            const id = toast.loading("Please wait...")
+            const tokenId = toast.loading("Please wait...")
             try {
-                if (!id) {
+                if(!id) {
                     const { data, status } = await productApi.create(values)
                     if (status === 201 && data.message === "Success") {
-                        resetDescription()
-                        toast.update(id, { render: "Product is created successfully!", type: "success", isLoading: false, autoClose: true });
+                        const contentBlock = htmlToDraft("");
+                        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                        const editorState = EditorState.createWithContent(contentState);
+                        setEditorState(editorState)
+                        toast.update(tokenId, { render: "Product is created successfully!", type: "success", isLoading: false, autoClose: true });
                         dispatch(actions.user.setUserData(data.data || userData))
                         formik.resetForm()
                     }
+                    else {
+                        toast.update(tokenId, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
+                    }
                 }
                 else {
-                    const {data, status} =  await productApi.update(values)
+                    const { data, status } = await productApi.update(values, id)
                     if (status === 201 && data.message === "Success") {
-                        resetDescription()
-                        toast.update(id, { render: "Product is updated successfully!", type: "success", isLoading: false, autoClose: true });
+                        toast.update(tokenId, { render: "Product is updated successfully!", type: "success", isLoading: false, autoClose: true });
                         dispatch(actions.user.setUserData(data.data || userData))
-                        formik.resetForm()
                     }
                 }
             }
             catch (e) {
-                toast.update(id, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
+                console.log(e)
+                toast.update(tokenId, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
             }
         },
     });
 
-    const setImageName = (fieldName, fileName) => {
-        formik.setFieldValue(fieldName, fileName)
+    const setImageName = async (fieldName, fileName) => {
+        await formik.setFieldValue(fieldName, fileName)
     }
 
     const resetDescription = () => {
@@ -105,7 +109,7 @@ export default function AddProduct({ edit }) {
             try {
                 const { data, status } = await productApi.get(id)
                 if (data.data) {
-                    setFormikInitial({ ...data.data })
+                    setFormikInitial(data.data)
                     const contentBlock = htmlToDraft(data.data.description);
                     if (contentBlock) {
                         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
