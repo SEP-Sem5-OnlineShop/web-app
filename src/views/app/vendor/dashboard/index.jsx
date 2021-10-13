@@ -13,9 +13,10 @@ export default function VendorDashboard() {
         const products = await productApi.getList()
         const drivers = await driverApi.getDrivers()
         const vehicles = await driverApi.getVehicles()
-        setNumberOfProducts((products.data && products.data.data) ? products.data.data.length : 0)
-        setNumberOfDrivers((drivers.data && products.data.data) ? drivers.data.data.length : 0)
-        setNumberOfVehicles((vehicles.data && products.data.data) ? vehicles.data.data.length : 0)
+        setNumberOfProducts((products && products.data && products.data.data) ? products.data.data.length : 0)
+        setNumberOfDrivers((drivers && drivers.data && products.data.data) ? drivers.data.data.length : 0)
+        setNumberOfVehicles((vehicles && vehicles.data && products.data.data) ? vehicles.data.data.length : 0)
+
     }, [])
     return (
         <div className="flex justify-center">

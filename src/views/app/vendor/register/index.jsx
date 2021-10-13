@@ -40,29 +40,8 @@ export default function VendorRegistration() {
         shopName: '',
         address: '',
         numberOfVehicles: '1',
-        vehicles: [
-            {
-                plateNumber: '',
-                brand: '',
-                model: '',
-                imageUrl: '',
-                documentUrl: ''
-            },
-            {
-                plateNumber: '',
-                brand: '',
-                model: '',
-                imageUrl: '',
-                documentUrl: ''
-            },
-            {
-                plateNumber: '',
-                brand: '',
-                model: '',
-                imageUrl: '',
-                documentUrl: ''
-            },
-        ]
+        imageUrl: '',
+        vehicles: []
     })
     const history = useHistory()
     const { token } = useParams()
@@ -72,36 +51,48 @@ export default function VendorRegistration() {
         initialValues: initialState,
         validationSchema: Yup.object({
             firstName: Yup.string()
-                .required('Required'),
+                .required('First name is required!'),
             lastName: Yup.string()
-                .required('Required'),
+                .required('Last name is required!'),
             telephone: Yup.string()
-                .required('Required')
+                .required('First name is required!')
                 .matches('^(?:0|94|\\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\\d)\\d{6}$',
                     'Telephone number did not matched with requirements!'),
             email1: Yup.string()
-                .required('Required').email('Not a valid email'),
+                .required('Email is required!').email('Not a valid email'),
             nic: Yup.string()
-                .required('Required'),
+                .required('National Identity Card number is required!'),
             regionToBeCovered: Yup.string()
-                .required('Required'),
+                .required('Region is required!'),
             permitId: Yup.string()
-                .required('Required'),
+                .required('Permit id is required!'),
             shopName: Yup.string()
-                .required('Required'),
+                .required('Shop name is required!'),
             address: Yup.string()
-                .required('Required'),
+                .required('Address is required!'),
             numberOfVehicles: Yup.string()
-                .required('Required'),
+                .required('Number of vehicles is required!'),
+            imageUrl: Yup.string()
+                .required('Image url is required!'),
+            vehicles: Yup.array().of(
+                Yup.object().shape({
+                    plateNumber: Yup.string().required('Plate number is required!'),
+                    brand: Yup.string().required('Brand is required!'),
+                    model: Yup.string().required('Model is required!'),
+                    imageUrl: Yup.string().required('Image is required!'),
+                })
+            )
         }),
         onSubmit: async values => {
             // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+            console.log('test test *')
             values.email = values.email1
             const id = toast.loading("Please wait...")
             try {
                 setSubmitButtonLoading(true)
                 if (state === "create") {
-                    const { data, status } = await vendorRequestApi.create(values)
+                    const { data, status } = await vendorRequestApi.create({...values,
+                        numberOfVehicles: formik.values['vehicles'].length || 1})
                     if (status === 201) {
                         formik.resetForm()
                         toast.update(id, {
@@ -112,7 +103,8 @@ export default function VendorRegistration() {
                     }
                 }
                 else {
-                    const { data, status } = await vendorRequestApi.update(values)
+                    const { data, status } = await vendorRequestApi.update({...values,
+                        numberOfVehicles: formik.values['vehicles'].length || 1})
                     if (status === 200) {
                         formik.resetForm()
                         setShowTelephoneForm(true)
@@ -132,6 +124,10 @@ export default function VendorRegistration() {
             }
         },
     });
+
+    const validateImageUrl = async () => {
+        await formik.validateField('imageUrl')
+    }
 
     const formik2 = useFormik({
         initialValues: {
@@ -247,7 +243,19 @@ export default function VendorRegistration() {
                     {(!showTelephoneForm && !showEmailSentMessage) && <>
                         <div className="w-full text-3xl font-medium">Register As a Vendor</div>
                         <CardTemplate>
-                            <form className="h-full" onSubmit={formik.handleSubmit}
+                            <form className="h-full" onSubmit={async (e) => {
+                                e.preventDefault()
+                                const errors = await formik.validateForm()
+                                let errorMessage = Object.values({...errors, vehicles: ''}).join('\n')
+                                if(errors['vehicles']) errors['vehicles'].forEach((vehicle, index) => {
+                                    if (vehicle)
+                                    Object.values(vehicle).forEach(value => {
+                                        errorMessage += ` Vehicle ${index+1}, ${value}`
+                                    })
+                                })
+                                if(errorMessage) toast.error(errorMessage)
+                                formik.handleSubmit(e)
+                            }}
                                 style={{ minHeight: 472 }}>
                                 <AnimatePresence>
                                     {
