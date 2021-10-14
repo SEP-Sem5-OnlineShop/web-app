@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useEffect, useState, useLayoutEffect } from 'react';
+import { Link, useHistory, useParams } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 import RatingComponent from '../../../components/customer/ratingComponent';
 import ReviewComponent from '../../../components/customer/reviewComponent';
@@ -30,6 +30,8 @@ const ProductScreen = () => {
     const [alert, setAlert] = useState(false);
     const [error1, setError1] = useState(null);
     const [error2, setError2] = useState(null);
+
+    const [width, height] = useWindowSize();
 
 
     useEffect(() => {
@@ -139,8 +141,11 @@ const ProductScreen = () => {
             </div>
             <div>
                 <span className="text-xl sm:text-2xl md:text-4xl font-bold text-textLight">{product.product_name}</span>
+                <div>
+                    <VendorName vendor_id={product.seller} />
+                </div>
                 <div className="mt-4 flex">
-                    <RatingComponent rating={product.rating} size={25} />
+                    <RatingComponent rating={product.rating} size={width>600?25:width>480?22:width>400?18:16} />
                     <span className="px-2">{(Math.round(product.rating * 10) / 10).toFixed(1)} ({product.numReviews}+)</span>
                 </div>
                 <div className="mt-4">
@@ -170,3 +175,45 @@ const ProductScreen = () => {
 };
  
 export default ProductScreen;
+
+const VendorName = ({vendor_id}) => {
+    const [vendorDetails, setVendorDetails] = useState({})
+    const [loading3, setLoading3] = useState(true);
+    const [error3, setError3] = useState(null);
+    useEffect(() => {
+        async function detailsVendor(vendor_id){
+          try {
+            const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
+            console.log('vendor screen vendor details');
+            console.log(data);
+            setVendorDetails(data);
+            setLoading3(false);
+            setError3(null);
+          } catch (err) {
+            setLoading3(false);
+            console.log(err);
+            setError3(err);
+          };
+        };
+        if (vendor_id) {
+            detailsVendor(vendor_id);
+        };
+      }, [vendor_id]);
+  
+    return (
+      <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${vendor_id}`}>{ vendorDetails.vendor_name }</Link>
+    );
+}
+
+function useWindowSize() {
+const [size, setSize] = useState([0, 0]);
+useLayoutEffect(() => {
+    function updateSize() {
+    setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+}, []);
+return size;
+};

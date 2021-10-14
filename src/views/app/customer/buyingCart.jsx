@@ -82,8 +82,8 @@ const BuyingCart = () => {
         
             <div>
                 {scanResultWebCam ? (
-                    <div className="">
-                        <div className="my-2 sm:mx-2 sm:my-4 block w-full overflow-x-auto">
+                    <div className="mx-1 my-2 sm:mx-12 sm:my-8">
+                        <div className="block w-full overflow-x-auto">
                             {/* <div className="m-2  flex justify-between">
                                     <span className="m-2 text-sm sm:text-lg">product</span>
                                     <span className="m-2 text-sm sm:text-lg">price</span>
@@ -103,18 +103,18 @@ const BuyingCart = () => {
                             <table className="items-center bg-transparent w-full border-collapse ">
                                 <thead className="">
                                 <tr>
-                                    <th className="px-6 bg-cardColor text-textLight align-middle border border-solid border-textLight py-3 text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Product Name</th>
-                                    <th className="px-6 bg-cardColor text-textLight align-middle border border-solid border-textLight py-3 text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Price</th>
-                                    <th className="px-6 bg-cardColor text-textLight align-middle border border-solid border-textLight py-3 text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Items</th>
+                                    <th className="px-2 py-2 sm:px-6 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Product Name</th>
+                                    <th className="px-2 py-2 sm:px-6 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Price</th>
+                                    <th className="px-2 py-2 sm:px-6 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Items</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {order.products && <>
                                     {order.products.map((product) => (
                                     <tr key={product._id}>
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap p-4 text-left text-blueGray-700"><ProductName product_id={product.product_id} /></td>
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap p-4">{product.price}</td>
-                                        <td className="border-t-0 px-6 align-center border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap p-4">{product.items}</td>
+                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap text-left text-textLight"><ProductName product_id={product.product_id} /></td>
+                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap ">{product.price}</td>
+                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-center border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap ">{product.items}</td>
                                     </tr>
                                 ))}
                                 </>
@@ -126,12 +126,11 @@ const BuyingCart = () => {
                             <span className="m-2 text-sm sm:text-base">Total Items: {order.totalItems}</span>
                             <span className="m-2 text-sm sm:text-base">Total Cost: {order.totalCost}</span>
                         </div>
+                        {/* <div className="flex justify-center mt-2 sm:mt-4">
+                            <button className="py-1 px-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button>
+                        </div> */}
                         <div className="flex justify-center mt-2 sm:mt-4">
-                            <button className="p-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button>
-                            {/* <PaymentModal orderId={"6161a54a775ede2cecd8a6dfhfdfggd"} name="something" amount={order.totalCost} customer={userData} /> */}
-                        </div>
-                        <div className="flex justify-center mt-2 sm:mt-4">
-                            <PaymentModal orderId={"6161a54a775ede2cecd8a6dfhfdfggd"} name="something" amount={order.totalCost} customer={userData} />
+                            <PaymentModal orderId={"6161a54a775ede2cecd8a6dfhfdfggd"} name="something" amount={order.totalCost} customer={userData} handlePay={handlePay} />
                         </div>
                     </div>
                 ) : null}
@@ -169,7 +168,7 @@ const ProductName = ({product_id}) => {
     }, [product_id]);
   
     return (
-        <span className="m-2 text-sm sm:text-lg">{ productDetails.product_name }</span>
+        <span className="">{ productDetails.product_name }</span>
     );
   }
 

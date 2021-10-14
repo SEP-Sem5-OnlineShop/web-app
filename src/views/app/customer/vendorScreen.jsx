@@ -29,7 +29,7 @@ const VendorScreen = () => {
   const [error1, setError1] = useState(null);
 
   const [width, height] = useWindowSize();
-  console.log(width);
+  // console.log(width);
 
   useEffect(() => {
     async function detailsVendor(vendor_id){
