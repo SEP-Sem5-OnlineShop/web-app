@@ -137,8 +137,8 @@ export default function DailyStockLoad() {
                 <div className="w-full text-3xl font-medium">Load Daily Stock to Mobile Shops</div>
                 <div className="mt-4 flex flex-col items-start w-full">
                     <label className="font-medium mt-4">Select the mobile shop for loading stock</label>
-                    <select onChange={e => {setVehicle(e.target.value); console.log(vehicle)}}>
-                            <option selected disabled>Select a vehicle</option>
+                    <select defaultValue={"default"} onChange={e => {setVehicle(e.target.value); console.log(vehicle)}}>
+                            <option disabled value={"default"}>Select a vehicle</option>
                         {
                             vehiclesAndDrivers.vehicles.map(item => {
                                 console.log(item)
@@ -147,7 +147,8 @@ export default function DailyStockLoad() {
                         }
                     </select>
                     <label className="font-medium mt-4">Assign a driver to mobile shop</label>
-                    <select onChange={e => setDriver(e.target.value)}>
+                    <select defaultValue={"default"} onChange={e => setDriver(e.target.value)}>\
+                        <option disabled value={"default"}>Select a driver</option>
                         {
                             vehiclesAndDrivers.drivers.map(item => (
                                 <option value={item._id} key={item._id}>{`${item.firstName} ${item.lastName}`}</option>

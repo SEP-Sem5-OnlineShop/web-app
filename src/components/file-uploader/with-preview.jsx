@@ -46,7 +46,10 @@ export default function FileUploaderWithPreview(props) {
                     <div className="w-full flex flex-col items-center justify-center">
                         {/* <div className={`${comProps.previewCircle ? "rounded-full w-60 h-60" : "w-full h-48"} bg-center bg-cover`}
                             style={{ backgroundImage: `url(${getFileUrl(comProps.imageUrl)})` }} /> */}
-                            <img className="h-60" src={getFileUrl(comProps.imageUrl)} alt={comProps.imageUrl} />
+                        {
+                            comProps.imageUrl ? <img className="h-60" src={getFileUrl(comProps.imageUrl)}
+                                                     alt={comProps.imageUrl} /> : null
+                        }
                         <div className="w-full flex justify-center mt-4">
                            <LoadingButton text="Remove" onClick={handleCLick} loading={removeButtonLoading} />
                         </div>

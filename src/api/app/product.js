@@ -1,6 +1,6 @@
 import {axios} from "../index";
 
-const vendor = {
+const product = {
     create: async function (formData) {
         return await axios.post("/app/product", formData)
     },
@@ -20,4 +20,4 @@ const vendor = {
     },
 }
 
-export default vendor
+export default product
