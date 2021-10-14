@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { actions } from "../../store"
 import SideNavigation from "../mobile-navigation"
 import LoginRegister from "./login-register"
-import CustomerMap from "../../geo-location/index-map"
 
 import logo from "../../assets/svg/logo/logo-264A75.svg";
 
@@ -13,7 +12,6 @@ export default function MainLayout(props) {
     const [isOpen, toggleOpen] = useCycle(false, true);
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
-    const dashboardStrings = useSelector(state => state.language.languageFile.dashboard)
     const [isMobile, setIsMobile] = useState(false)
     const isLogin = useSelector(state => state.user.isLogin)
     const dispatch = useDispatch()
@@ -21,7 +19,6 @@ export default function MainLayout(props) {
 
 
     useEffect(() => {
-        let mounted = true
         function verifyScreen() {
             if (window.innerWidth < 976) {
                 setIsMobile(true)
@@ -31,12 +28,11 @@ export default function MainLayout(props) {
             }
         }
         verifyScreen()
-        if(mounted) {
-            window.addEventListener("resize", verifyScreen)
-        }
+        console.log("outside")
+        window.addEventListener("resize", verifyScreen)
         return () => {
-            if (mounted) window.removeEventListener("resize", verifyScreen)
-            mounted = false
+            console.log("unmounted")
+            window.removeEventListener("resize", verifyScreen)
         }
     }, [])
 

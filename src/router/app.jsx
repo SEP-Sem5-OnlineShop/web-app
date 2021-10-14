@@ -31,7 +31,7 @@ import VendorProfile from "../views/app/vendor/profile/index"
 import DriverProfile from '../views/app/driver/profile'
 import SelectRoute from "../views/app/driver/select-route";
 import Cart from "../views/app/driver/cart";
-import DashboardLayout from "../layout/dashboard-layour";
+import DashboardLayout from "../layout/dashboard-layout";
 import SellingCart from "../views/app/driver/sell/sellingCart";
 import BuyingCart from "../views/app/customer/buyingCart";
 

@@ -1,15 +1,16 @@
 import React from "react"
 import { useTable, useGlobalFilter } from 'react-table'
 import parse from 'html-react-parser'
-import { productApi, driverApi } from "../../../../api";
+import { driverApi, axios} from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
-import { Link } from "react-router-dom"
 
 export default function DriverList() {
     const [data, setData] = React.useState([])
     React.useEffect(async () => {
+        let mounted = true
+        let source = axios.CancelToken.source()
         try {
-            const {data, status} = await driverApi.getDrivers()
+            const {data, status} = await driverApi.getDrivers(source)
             const list = []
             data.data.forEach((item, index) => {
                 list.push({
@@ -19,10 +20,15 @@ export default function DriverList() {
                     'col4': item.email || "",
                 })
             })
-            setData(list)
+            if (mounted) setData(list)
         }
         catch (e) {
+            if(!axios.isCancel(e)) throw e
+        }
 
+        return () => {
+            mounted = false
+            source.cancel()
         }
     }, [])
 

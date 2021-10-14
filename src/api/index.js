@@ -7,7 +7,6 @@ import stock from './app/stock'
 import vendorRequest from "./general/vendorRequest";
 import store, {actions} from "../store/index"
 import customer from './general/customer';
-import userSlice from "../store/user";
 
 /*
  * Setup axios  

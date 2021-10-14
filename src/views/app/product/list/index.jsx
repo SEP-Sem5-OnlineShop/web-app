@@ -1,7 +1,7 @@
 import React from "react"
 import { useTable, useGlobalFilter } from 'react-table'
 import parse from 'html-react-parser'
-import {productApi} from "../../../../api";
+import {axios, productApi} from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
 import {Link} from "react-router-dom"
 
@@ -16,8 +16,10 @@ const EditButton = (id) => {
 export default function ProductList() {
     const [data, setData] = React.useState([])
     React.useEffect( async () => {
+        let mounted = true
+        let source = axios.CancelToken.source()
         try {
-            const {data, status} =  await productApi.getList()
+            const {data, status} =  await productApi.getList(source)
             const list = []
             data.data.forEach((item, index) => {
                 list.push({
@@ -30,10 +32,15 @@ export default function ProductList() {
                     'col7': EditButton(item._id)
                 })
             })
-            setData(list)
+            if (mounted) setData(list)
         }
         catch (e) {
+            if(!axios.isCancel(e)) throw e
+        }
 
+        return () => {
+            mounted = false
+            source.cancel()
         }
     }, [])
 
@@ -101,7 +108,7 @@ export default function ProductList() {
                         ))}
                         </thead>
                         <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
-                        {rows && rows.length && rows.map(row => {
+                        {rows && rows.length ? rows.map(row => {
                             prepareRow(row)
                             return (
                                 <tr {...row.getRowProps()}>
@@ -117,7 +124,7 @@ export default function ProductList() {
                                     })}
                                 </tr>
                             )
-                        })
+                        }) : null
                     }
                         </tbody>
                     </table>

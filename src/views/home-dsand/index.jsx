@@ -18,23 +18,21 @@ export default function HomeDsand() {
 
     useEffect(() => {
         let mounted = true;
-        if (mounted) {
-            (async function listVendors(){
-                setLoading(true);
-                try {
-                    const { data } = await axios.get(`gen/customer/vendorlist`);
-                    console.log('home screen vendor list');
-                    console.log(data);
-                    setVendors(data);
-                    setLoading(false);
-                    setError(null);
-                } catch (err) {
-                    setLoading(false);
-                    console.log(err);
-                    setError(err);
-                }
-            })()
-        }
+        (async function listVendors(){
+            setLoading(true);
+            try {
+                const { data } = await axios.get(`gen/customer/vendorlist`);
+                console.log('home screen vendor list');
+                console.log(data);
+                if(mounted) setVendors(data);
+                if(mounted) setLoading(false);
+                if(mounted) setError(null);
+            } catch (err) {
+                setLoading(false);
+                console.log(err);
+                setError(err);
+            }
+        })()
         return () => {
             mounted = false
         }

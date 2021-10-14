@@ -1,5 +1,4 @@
 import {axios} from "../index";
-import store from "../../store";
 
 const driver = {
     create: async function (formData) {

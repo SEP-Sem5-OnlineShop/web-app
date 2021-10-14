@@ -11,21 +11,25 @@ export default function VendorDashboard() {
     const [numberOfVehicles, setNumberOfVehicles] = React.useState(0)
     useEffect(async () => {
 
+        let mounted = true
         let source = axios.CancelToken.source()
 
         try {
             const products = await productApi.getList(source)
             const drivers = await driverApi.getDrivers(source)
             const vehicles = await driverApi.getVehicles(source)
-            setNumberOfProducts((products && products.data && products.data.data) ? products.data.data.length : 0)
-            setNumberOfDrivers((drivers && drivers.data && drivers.data.data) ? drivers.data.data.length : 0)
-            setNumberOfVehicles((vehicles && vehicles.data && vehicles.data.data.vendor) ? vehicles.data.data.vendor.vehicles.length : 0)
+            if (mounted) {
+                setNumberOfProducts((products && products.data && products.data.data) ? products.data.data.length : 0)
+                setNumberOfDrivers((drivers && drivers.data && drivers.data.data) ? drivers.data.data.length : 0)
+                setNumberOfVehicles((vehicles && vehicles.data && vehicles.data.data.vendor) ? vehicles.data.data.vendor.vehicles.length : 0)
+            }
         }
         catch (e) {
             if(!axios.isCancel(e)) throw e
         }
 
         return () => {
+            mounted = false
             source.cancel()
         }
     }, [])
