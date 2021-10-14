@@ -160,10 +160,13 @@ const ProductScreen = () => {
             </div>
             <div>
                 <div className="text-xl text-textLight font-medium">{productStrings.reviews}</div>
+                    {(product.reviews.length < 1) && <>
+                        <div className="text-xs text-text">No Reviews</div>
+                    </>}
                 <div className="mt-4">
                     {product.reviews && <>
                         {product.reviews.map((review) => (
-                            <ReviewComponent key={review._id} review={review} />
+                            <ReviewComponent key={review._id} review={review} width={width} />
                         ))}
                     </>}
                 </div>
