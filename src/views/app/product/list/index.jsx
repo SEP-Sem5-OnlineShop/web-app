@@ -1,9 +1,11 @@
 import React from "react"
-import { useTable, useGlobalFilter } from 'react-table'
-import parse from 'html-react-parser'
-import {productApi} from "../../../../api";
-import CardTemplate from "../../../../components/card/template";
+import {useTable, useGlobalFilter, usePagination} from 'react-table'
 import {Link} from "react-router-dom"
+
+import {axios, productApi} from "../../../../api";
+import CardTemplate from "../../../../components/card/template";
+import GlobalFilter from "../../../../components/table/global-filter";
+import Pagination from "../../../../components/table/pagination";
 
 const EditButton = (id) => {
     return (
@@ -16,8 +18,10 @@ const EditButton = (id) => {
 export default function ProductList() {
     const [data, setData] = React.useState([])
     React.useEffect( async () => {
+        let mounted = true
+        let source = axios.CancelToken.source()
         try {
-            const {data, status} =  await productApi.getList()
+            const {data, status} =  await productApi.getList(source)
             const list = []
             data.data.forEach((item, index) => {
                 list.push({
@@ -30,10 +34,15 @@ export default function ProductList() {
                     'col7': EditButton(item._id)
                 })
             })
-            setData(list)
+            if (mounted) setData(list)
         }
         catch (e) {
+            if(!axios.isCancel(e)) throw e
+        }
 
+        return () => {
+            mounted = false
+            source.cancel()
         }
     }, [])
 
@@ -77,13 +86,28 @@ export default function ProductList() {
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data })
+        state,
+        setGlobalFilter,
+        gotoPage,
+        canPreviousPage,
+        previousPage,
+        nextPage,
+        canNextPage,
+        pageCount,
+        pageOptions,
+        setPageSize,
+        state: { pageIndex, pageSize },
+    } = useTable({ columns, data }, useGlobalFilter, usePagination)
 
     return (
         <div className="flex justify-center">
             <div className="w-full flex flex-col items-center justify-center p-0 lg:p-8">
                 <div className="w-full text-3xl font-medium">My Products</div>
                 <CardTemplate style={{overFlowX: "auto"}}>
+                    <GlobalFilter
+                        globalFilter={state.globalFilter}
+                        setGlobalFilter={setGlobalFilter}
+                    />
                     <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-cardColor">
                         {headerGroups.map(headerGroup => (
@@ -101,7 +125,7 @@ export default function ProductList() {
                         ))}
                         </thead>
                         <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
-                        {rows && rows.length && rows.map(row => {
+                        {rows && rows.length ? rows.map(row => {
                             prepareRow(row)
                             return (
                                 <tr {...row.getRowProps()}>
@@ -117,12 +141,24 @@ export default function ProductList() {
                                     })}
                                 </tr>
                             )
-                        })
+                        }) : null
                     }
                         </tbody>
                     </table>
                     {
-                        rows && !rows.length && <div className="flex justify-center">No items to show</div>
+                        rows && !rows.length ? <div className="flex justify-center">No items to show</div> :
+                            <Pagination
+                                gotoPage={gotoPage}
+                                canPreviousPage={canPreviousPage}
+                                canNextPage={canNextPage}
+                                previousPage={previousPage}
+                                nextPage={nextPage}
+                                pageCount={pageCount}
+                                pageIndex={pageIndex}
+                                pageOptions={pageOptions}
+                                pageSize={pageSize}
+                                setPageSize={setPageSize}
+                            />
                     }
                 </CardTemplate>
             </div>

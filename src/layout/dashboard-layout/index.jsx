@@ -3,13 +3,9 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
 import { motion, AnimatePresence } from "framer-motion";
 import { actions } from "../../store"
-import { MdNotifications } from "react-icons/md"
-import { MdNotificationsActive } from "react-icons/md"
 
 import SideNavigation from "../mobile-navigation"
 import LoginRegister from "../home-layout/login-register"
-import { FaBell } from "react-icons/fa";
-import { IconContext } from "react-icons";
 import AlertMenu from "./alert-menu";
 
 
@@ -24,7 +20,6 @@ export default function DashboardLayout(props) {
         minHeight: 'calc(100vh - 80px)', marginTop: '80px', width: 'calc(100% - 300px)',
         marginLeft: '300px'
     })
-    const token = useSelector(state => state.user.token)
 
     // const variants = {
     //     open: { width: 'calc(100% - 300px)', left: '300px' },

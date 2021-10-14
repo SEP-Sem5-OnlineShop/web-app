@@ -10,7 +10,6 @@ import 'swiper/swiper-bundle.css'
 import 'filepond/dist/filepond.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import {useEffect} from "react";
 
 
 function App() {

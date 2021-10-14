@@ -1,4 +1,3 @@
-import {axios} from "../index";
 
 const vendor = {
 }

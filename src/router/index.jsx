@@ -15,7 +15,7 @@ import ProductScreen from "../views/app/customer/productScreen";
 import VendorScreen from "../views/app/customer/vendorScreen";
 import Page404 from "../views/404"
 import { actions } from "../store"
-import DashboardLayout from "../layout/dashboard-layour";
+import DashboardLayout from "../layout/dashboard-layout";
 import Dashboard from "../views/app/driver/dashboard";
 import VendorDashboard from "../views/app/vendor/dashboard/index"
 import CreatePassword from "../views/other/create-password";

@@ -1,18 +1,12 @@
 import { Menu, Transition } from '@headlessui/react'
-import { useSelector, useDispatch } from "react-redux"
 import React, {Fragment, useEffect, useState} from 'react'
-import { useHistory } from 'react-router-dom'
 
-import { thunks } from "../../store"
 import { IconContext } from "react-icons";
 import { MdNotifications, MdNotificationsActive } from "react-icons/md";
 import {alertSocket} from "../../socket";
 
 export default function AlertMenu() {
-    const userData = useSelector(state => state.user.userData)
     const [alerts, setAlerts] = useState([])
-    const dispatch = useDispatch()
-    const history = useHistory()
 
     useEffect(() => {
         alertSocket.on("alert:set", (data) => {
@@ -25,15 +19,15 @@ export default function AlertMenu() {
         })
     }, [])
 
-    const logout = async () => {
-        try {
-            await dispatch(thunks.user.signOUt())
-            history.push("/auth/login")
-        }
-        catch (e) {
-            console.log('Something went wrong!')
-        }
-    }
+    // const logout = async () => {
+    //     try {
+    //         await dispatch(thunks.user.signOUt())
+    //         history.push("/auth/login")
+    //     }
+    //     catch (e) {
+    //         console.log('Something went wrong!')
+    //     }
+    // }
 
     return (
         <div className="text-right">
