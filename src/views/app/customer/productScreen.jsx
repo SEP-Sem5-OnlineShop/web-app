@@ -141,7 +141,7 @@ const ProductScreen = () => {
                 <span className="text-xl sm:text-2xl md:text-4xl font-bold text-textLight">{product.product_name}</span>
                 <div className="mt-4 flex">
                     <RatingComponent rating={product.rating} size={25} />
-                    <span className="px-2">{product.rating} ({product.numReviews}+)</span>
+                    <span className="px-2">{(Math.round(product.rating * 10) / 10).toFixed(1)} ({product.numReviews}+)</span>
                 </div>
                 <div className="mt-4">
                     <span className="text-sm sm:text-lg text-secondary">{productStrings.available}: { product.stock }</span>

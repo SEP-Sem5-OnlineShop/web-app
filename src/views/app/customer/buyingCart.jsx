@@ -44,7 +44,7 @@ const BuyingCart = () => {
         //     console.log(result);
         //     setScanResultWebCam(result);
         // }
-        setScanResultWebCam("6161a54a775ede2cecd8a6db");
+        setScanResultWebCam("6167a9b1197dbe1e944b6272");
     }
 
     const handlePay = () => {
@@ -58,9 +58,9 @@ const BuyingCart = () => {
                 console.log(error);
             };
         };
-        // if (customer_id) {
-        //     saveOrder(scanResultWebCam, customer_id).then(history.push("/"))
-        // }
+        if (customer_id) {
+            saveOrder(scanResultWebCam, customer_id).then(history.push("/"))
+        }
 
     };
 
@@ -127,7 +127,7 @@ const BuyingCart = () => {
                             <span className="m-2 text-sm sm:text-lg">Total Cost: {order.totalCost}</span>
                         </div>
                         <div className="flex justify-center mt-2 sm:mt-4">
-                            {/* <button className="p-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button> */}
+                            <button className="p-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button>
                             <PaymentModal orderId={"6161a54a775ede2cecd8a6dfhfdfggd"} name="something" amount={order.totalCost} customer={userData} />
                         </div>
                     </div>

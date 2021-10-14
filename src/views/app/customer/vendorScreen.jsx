@@ -86,7 +86,7 @@ const VendorScreen = () => {
               <div className="w-full bg-white relative" style={{minHeight: 'calc(100vh - 11rem)'}}>
                   <div className="px-4 pt-2 sm:px-14 sm:pt-6">
                       <RatingComponent rating={vendor.rating} size={width>600?25:width>480?22:width>400?18:16} />
-                      <span className="text-xs xs:text-sm sm:text-base">{vendor.rating} ({vendor.ratingCount}+)</span>
+                      <span className="text-xs xs:text-sm sm:text-base">{(Math.round(vendor.rating * 10) / 10).toFixed(1)} ({vendor.ratingCount}+)</span>
                       <p className="mt-2 text-xs xs:text-sm sm:text-base">{vendor.vendor_description}</p>
                   </div>
 

@@ -13,7 +13,7 @@ export default function HomeItem({vendor}) {
             {/* <div className="text-xs lg:text-base">{"city"}</div> */}
             <div className="flex">
                 <RatingComponent rating={vendor.vendor.rating || 0} size={20} />
-                <span className="px-2">{vendor.vendor.rating || 0} ({vendor.vendor.ratingCount || 0}+)</span>
+                <span className="px-2">{(Math.round(vendor.vendor.rating * 10) / 10).toFixed(1) || 0} ({vendor.vendor.numReviews || 0}+)</span>
             </div>
         </div>
     )
