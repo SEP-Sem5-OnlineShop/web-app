@@ -1,8 +1,9 @@
 import React from "react"
-import { useTable, useGlobalFilter, useAsyncDebounce } from 'react-table'
-import parse from 'html-react-parser'
+import {useTable, useGlobalFilter, usePagination} from 'react-table'
 import { driverApi, axios} from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
+import GlobalFilter from "../../../../components/table/global-filter";
+import Pagination from "../../../../components/table/pagination";
 
 export default function DriverList() {
     const [data, setData] = React.useState([])
@@ -31,36 +32,6 @@ export default function DriverList() {
             source.cancel()
         }
     }, [])
-
-    const GlobalFilter = ({
-                              preGlobalFilteredRows,
-                              globalFilter,
-                              setGlobalFilter,
-                          }) => {
-        const count = preGlobalFilteredRows.length
-        const [value, setValue] = React.useState(globalFilter)
-        const onChange = useAsyncDebounce(value => {
-            setGlobalFilter(value || undefined)
-        }, 200)
-
-        return (
-            <span>
-      Search:{' '}
-                <input
-                    value={value || ""}
-                    onChange={e => {
-                        setValue(e.target.value);
-                        onChange(e.target.value);
-                    }}
-                    placeholder={`${count} records...`}
-                    style={{
-                        fontSize: '1.1rem',
-                        border: '0',
-                    }}
-                />
-    </span>
-        )
-    }
 
     const columns = React.useMemo(
         () => [
@@ -91,9 +62,17 @@ export default function DriverList() {
         rows,
         prepareRow,
         state,
-        preGlobalFilteredRows,
         setGlobalFilter,
-    } = useTable({ columns, data }, useGlobalFilter)
+        gotoPage,
+        canPreviousPage,
+        previousPage,
+        nextPage,
+        canNextPage,
+        pageCount,
+        pageOptions,
+        setPageSize,
+        state: { pageIndex, pageSize },
+    } = useTable({ columns, data }, useGlobalFilter, usePagination)
 
     return (
         <div className="flex justify-center">
@@ -101,7 +80,6 @@ export default function DriverList() {
                 <div className="w-full text-3xl font-medium">My Drivers</div>
                 <CardTemplate>
                     <GlobalFilter
-                        preGlobalFilteredRows={preGlobalFilteredRows}
                         globalFilter={state.globalFilter}
                         setGlobalFilter={setGlobalFilter}
                     />
@@ -141,6 +119,23 @@ export default function DriverList() {
                             })}
                         </tbody>
                     </table>
+                    {
+                        !rows.length ?
+                            <div className={"flex justify-center"}>No data found</div>
+                            :
+                            <Pagination
+                                gotoPage={gotoPage}
+                                canPreviousPage={canPreviousPage}
+                                canNextPage={canNextPage}
+                                previousPage={previousPage}
+                                nextPage={nextPage}
+                                pageCount={pageCount}
+                                pageIndex={pageIndex}
+                                pageOptions={pageOptions}
+                                pageSize={pageSize}
+                                setPageSize={setPageSize}
+                            />
+                    }
                 </CardTemplate>
             </div>
         </div>

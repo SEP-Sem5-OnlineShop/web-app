@@ -1,9 +1,11 @@
 import React from "react"
-import { useTable, useGlobalFilter } from 'react-table'
-import parse from 'html-react-parser'
+import {useTable, useGlobalFilter, usePagination} from 'react-table'
+import {Link} from "react-router-dom"
+
 import {axios, productApi} from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
-import {Link} from "react-router-dom"
+import GlobalFilter from "../../../../components/table/global-filter";
+import Pagination from "../../../../components/table/pagination";
 
 const EditButton = (id) => {
     return (
@@ -84,13 +86,28 @@ export default function ProductList() {
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data })
+        state,
+        setGlobalFilter,
+        gotoPage,
+        canPreviousPage,
+        previousPage,
+        nextPage,
+        canNextPage,
+        pageCount,
+        pageOptions,
+        setPageSize,
+        state: { pageIndex, pageSize },
+    } = useTable({ columns, data }, useGlobalFilter, usePagination)
 
     return (
         <div className="flex justify-center">
             <div className="w-full flex flex-col items-center justify-center p-0 lg:p-8">
                 <div className="w-full text-3xl font-medium">My Products</div>
                 <CardTemplate style={{overFlowX: "auto"}}>
+                    <GlobalFilter
+                        globalFilter={state.globalFilter}
+                        setGlobalFilter={setGlobalFilter}
+                    />
                     <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-cardColor">
                         {headerGroups.map(headerGroup => (
@@ -129,7 +146,19 @@ export default function ProductList() {
                         </tbody>
                     </table>
                     {
-                        rows && !rows.length && <div className="flex justify-center">No items to show</div>
+                        rows && !rows.length ? <div className="flex justify-center">No items to show</div> :
+                            <Pagination
+                                gotoPage={gotoPage}
+                                canPreviousPage={canPreviousPage}
+                                canNextPage={canNextPage}
+                                previousPage={previousPage}
+                                nextPage={nextPage}
+                                pageCount={pageCount}
+                                pageIndex={pageIndex}
+                                pageOptions={pageOptions}
+                                pageSize={pageSize}
+                                setPageSize={setPageSize}
+                            />
                     }
                 </CardTemplate>
             </div>

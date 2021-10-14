@@ -1,10 +1,13 @@
 import React, { useState } from "react"
-import { useTable, useGlobalFilter } from 'react-table'
-import { productApi } from "../../../../api";
-import CardTemplate from "../../../../components/card/template";
 import { useFormik } from 'formik';
-import { stockApi, driverApi } from '../../../../api/index'
 import { useSelector } from "react-redux"
+import { useTable, useGlobalFilter, usePagination } from 'react-table'
+
+import { productApi, stockApi, driverApi } from "../../../../api"
+
+import CardTemplate from "../../../../components/card/template"
+import GlobalFilter from "../../../../components/table/global-filter";
+import Pagination from "../../../../components/table/pagination";
 
 export default function DailyStockLoad() {
     const [data, setData] = React.useState([])
@@ -88,7 +91,18 @@ export default function DailyStockLoad() {
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data })
+        state,
+        setGlobalFilter,
+        gotoPage,
+        canPreviousPage,
+        previousPage,
+        nextPage,
+        canNextPage,
+        pageCount,
+        pageOptions,
+        setPageSize,
+        state: { pageIndex, pageSize },
+    } = useTable({ columns, data }, useGlobalFilter, usePagination)
 
 
     const formik = useFormik({
@@ -144,6 +158,10 @@ export default function DailyStockLoad() {
                 {
                     <form onSubmit={formik.handleSubmit}>
                         <CardTemplate>
+                            <GlobalFilter
+                                globalFilter={state.globalFilter}
+                                setGlobalFilter={setGlobalFilter}
+                            />
                             <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-cardColor">
                                     {headerGroups.map(headerGroup => (
@@ -225,7 +243,20 @@ export default function DailyStockLoad() {
                                     })}
                                 </tbody>
                             </table>
-                            {rows && !rows.length && <div className="flex justify-center">No items to show</div>}
+                            {rows && !rows.length ? <div className="flex justify-center">No items to show</div> :
+                                <Pagination
+                                    gotoPage={gotoPage}
+                                    canPreviousPage={canPreviousPage}
+                                    canNextPage={canNextPage}
+                                    previousPage={previousPage}
+                                    nextPage={nextPage}
+                                    pageCount={pageCount}
+                                    pageIndex={pageIndex}
+                                    pageOptions={pageOptions}
+                                    pageSize={pageSize}
+                                    setPageSize={setPageSize}
+                                />
+                            }
                         </CardTemplate>
                         <div className="flex justify-end mt-4 w-full">
                             <button className="py-2 px-4 text-white bg-textLight rounded-lg" type="submit">
