@@ -1,5 +1,5 @@
 import React from "react"
-import { useTable, useGlobalFilter } from 'react-table'
+import { useTable, useGlobalFilter, useAsyncDebounce } from 'react-table'
 import parse from 'html-react-parser'
 import { driverApi, axios} from "../../../../api";
 import CardTemplate from "../../../../components/card/template";
@@ -32,6 +32,36 @@ export default function DriverList() {
         }
     }, [])
 
+    const GlobalFilter = ({
+                              preGlobalFilteredRows,
+                              globalFilter,
+                              setGlobalFilter,
+                          }) => {
+        const count = preGlobalFilteredRows.length
+        const [value, setValue] = React.useState(globalFilter)
+        const onChange = useAsyncDebounce(value => {
+            setGlobalFilter(value || undefined)
+        }, 200)
+
+        return (
+            <span>
+      Search:{' '}
+                <input
+                    value={value || ""}
+                    onChange={e => {
+                        setValue(e.target.value);
+                        onChange(e.target.value);
+                    }}
+                    placeholder={`${count} records...`}
+                    style={{
+                        fontSize: '1.1rem',
+                        border: '0',
+                    }}
+                />
+    </span>
+        )
+    }
+
     const columns = React.useMemo(
         () => [
             {
@@ -60,13 +90,21 @@ export default function DriverList() {
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data })
+        state,
+        preGlobalFilteredRows,
+        setGlobalFilter,
+    } = useTable({ columns, data }, useGlobalFilter)
 
     return (
         <div className="flex justify-center">
             <div className="w-full flex flex-col items-center justify-center p-0 lg:p-8">
                 <div className="w-full text-3xl font-medium">My Drivers</div>
                 <CardTemplate>
+                    <GlobalFilter
+                        preGlobalFilteredRows={preGlobalFilteredRows}
+                        globalFilter={state.globalFilter}
+                        setGlobalFilter={setGlobalFilter}
+                    />
                     <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-cardColor">
                             {headerGroups.map(headerGroup => (
