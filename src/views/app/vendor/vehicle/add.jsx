@@ -13,7 +13,7 @@ import FileUploaderWithPreview from "../../../../components/file-uploader/with-p
 import { axios, vehicleApi } from "../../../../api"
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import LoadingButton from "../../../../components/loading-button";
+import ModelBody from "../../../../components/modals/modelBody";
 
 export default function AddVehicle() {
     let {id} = useParams()
@@ -33,8 +33,8 @@ export default function AddVehicle() {
         if(id) {
             try {
                 const {data, status} = await vehicleApi.get(id, source)
-                if(data && status === 200 && data.message === "Success" && mounted) {
-                    setFormikInitial(data.data)
+                if(data && status === 200 && data.message === "Success") {
+                    if(mounted) setFormikInitial(data.data)
                 }
             }
             catch (e) {
@@ -43,8 +43,9 @@ export default function AddVehicle() {
         }
         return () => {
             mounted = false
+            source.cancel()
         }
-    })
+    }, [])
 
     // formik instance for the form
     const formik = useFormik({
@@ -53,44 +54,35 @@ export default function AddVehicle() {
         validationSchema: Yup.object({
             plateNumber: Yup.string()
                 .required('Vehicle plate number is required!')
-                .match(/^([a-zA-Z]{1,3}|((?!0*-)[0-9]{1,3}))-[0-9]{4}(?<!0{4})/, "Please enter a valid plate number!"),
+                .matches(/^([a-zA-Z]{1,3}|((?!0*-)[0-9]{1,3}))-[0-9]{4}(?<!0{4})/, "Please enter a valid plate number!"),
             brand: Yup.string()
                 .required('Vehicle brand is required!'),
             model: Yup.string()
                 .required('Vehicle model is required!'),
             imageUrl: Yup.string()
                 .required('Vehicle image is required!'),
-        })
-    })
-
-    const handleSubmit = async (values) => {
-        const tokenId = toast.loading("Please wait...")
-        setLoading(true)
-        try {
-            if (id) {
-                const {data, status} = await vehicleApi.update(values, id)
-                if(data && status === 201 && data.message === "Success") {
-                    toast.update(tokenId, { render: "Vehicle is updated successfully!", type: "success",
-                        isLoading: false, autoClose: true });
-                }
-            }
-            else {
+        }),
+        onSubmit: async values => {
+            const tokenId = toast.loading("Please wait...")
+            setLoading(true)
+            try {
                 const {data, status} = await vehicleApi.create(values)
                 if(data && status === 201 && data.message === "Success") {
                     toast.update(tokenId, { render: "Vehicle is created successfully!", type: "success",
                         isLoading: false, autoClose: true });
                 }
             }
+            catch (e) {
+                console.log(e)
+                toast.update(tokenId,
+                    { render: e.message, type: "error",
+                        isLoading: false, autoClose: true });
+            }
+            finally {
+                setLoading(false)
+            }
         }
-        catch (e) {
-            toast.update(tokenId,
-                { render: e.message, type: "error",
-                    isLoading: false, autoClose: true });
-        }
-        finally {
-            setLoading(false)
-        }
-    }
+    })
 
     const setImageName = async (fieldName, fileName) => {
         await formik.setFieldValue(fieldName, fileName)
@@ -109,6 +101,7 @@ export default function AddVehicle() {
                             label="Plate Number"
                             type="text"
                             className="mb-4"
+                            disabled={!!id}
                         />
                         <InputWithValidation
                             formik={formik}
@@ -134,10 +127,16 @@ export default function AddVehicle() {
                             setFileName={setImageName}
                         />
                         <div className="mt-8 flex justify-end">
-                            <LoadingButton text={"Submit"} loading={loading} onClick={
+                            <ModelBody modalText={"Do you want to proceed?"}
+                                       buttonText={id ? 'Update Vehicle' : 'Add Vehicle'}
+                                       loading={loading} color={'warn'} onClick={
                                 async (e) => {
                                     e.preventDefault()
-                                    await handleSubmit(formik.values)
+                                    let errorMessage = ''
+                                    const result = await formik.validateForm()
+                                    errorMessage = Object.values(result).join('\n')
+                                    if (errorMessage) toast.error(errorMessage)
+                                    await formik.handleSubmit()
                                 }
                             } />
                         </div>

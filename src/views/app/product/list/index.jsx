@@ -2,7 +2,7 @@ import React from "react"
 import {Link} from "react-router-dom"
 
 import {axios, productApi} from "../../../../api";
-import TableWithPaginationGlobalSearch from "../../../../components/table/tableWithPaginationGLobalSearch";
+import TableWithPaginationGlobalSearch from "../../../../components/table/table-with-pagination-global-search";
 
 const EditButton = (id) => {
     return (
@@ -14,10 +14,12 @@ const EditButton = (id) => {
 
 export default function ProductList() {
     const [data, setData] = React.useState([])
+    const [loading, setLoading] = React.useState(false)
     React.useEffect( async () => {
         let mounted = true
         let source = axios.CancelToken.source()
         try {
+            setLoading(true)
             const {data, status} =  await productApi.getList(source)
             const list = []
             if(data && status===200) {
@@ -37,6 +39,9 @@ export default function ProductList() {
         }
         catch (e) {
             if(!axios.isCancel(e)) throw e
+        }
+        finally {
+            setLoading(false)
         }
 
         return () => {
@@ -80,7 +85,7 @@ export default function ProductList() {
     )
 
     return (
-        <TableWithPaginationGlobalSearch columns={columns} data={data} tableName={'My Products'} />
+        <TableWithPaginationGlobalSearch loading={loading} columns={columns} data={data} tableName={'My Products'} type={'Product'} link={'product'} />
     )
 
 }

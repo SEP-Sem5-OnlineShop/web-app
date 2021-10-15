@@ -1,7 +1,7 @@
 import React from "react"
 
 import { driverApi, axios} from "../../../../api";
-import TableWithPaginationGlobalSearch from "../../../../components/table/tableWithPaginationGLobalSearch";
+import TableWithPaginationGlobalSearch from "../../../../components/table/table-with-pagination-global-search";
 
 export default function DriverList() {
     const [data, setData] = React.useState([])
@@ -56,6 +56,6 @@ export default function DriverList() {
     )
 
     return (
-        <TableWithPaginationGlobalSearch columns={columns} data={data} tableName={'My Drivers'} />
+        <TableWithPaginationGlobalSearch columns={columns} data={data} tableName={'My Drivers'} type={'Driver'} link={'driver'} />
     )
 }

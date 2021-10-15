@@ -27,27 +27,31 @@ export default function DashboardLayout(props) {
     // }
 
     useEffect(() => {
+        let mounted = true
         function toggleSideNav() {
-            if (window.innerWidth < 976) {
-                setIsOpen(false)
-                setFreeze(false)
-                setChildStyle({
-                    minHeight: 'calc(100vh - 80px)', marginTop: '80px', width: '100%',
-                    marginLeft: '0px'
-                })
-            }
-            else {
-                setIsOpen(true)
-                setFreeze(true)
-                setChildStyle({
-                    minHeight: 'calc(100vh - 80px)', marginTop: '80px', width: 'calc(100% - 300px)',
-                    marginLeft: '300px'
-                })
+            if(mounted) {
+                if (window.innerWidth < 976) {
+                    setIsOpen(false)
+                    setFreeze(false)
+                    setChildStyle({
+                        minHeight: 'calc(100vh - 80px)', marginTop: '80px', width: '100%',
+                        marginLeft: '0px'
+                    })
+                }
+                else {
+                    setIsOpen(true)
+                    setFreeze(true)
+                    setChildStyle({
+                        minHeight: 'calc(100vh - 80px)', marginTop: '80px', width: 'calc(100% - 300px)',
+                        marginLeft: '300px'
+                    })
+                }
             }
         }
         toggleSideNav()
         window.addEventListener("resize", toggleSideNav)
         return () => {
+            mounted = false
             window.removeEventListener("resize", toggleSideNav)
         }
     }, [])

@@ -8,18 +8,20 @@ export default function LoadingButton(props) {
         type: props.type || "button",
         loading: props.loading || false,
         disabled: props.disabled || false,
-        color: props.color || "bg-textLight",
-        fontColor: props.fontColor || "text-white",
+        color: props.color || "textLight",
+        fontColor: props.fontColor || "white",
         onClick: props.onClick || (() => {}),
-        loaderColor: props.loaderColor || "#fff"
+        loaderColor: props.loaderColor || "#fff",
+        outlined: props.outlined || false,
     }
 
     return (
         <button
             type={comProps.type}
             onClick={async (e) => await comProps.onClick(e)}
-            className={`flex justify-center rounded-lg mr-2 p-2 ${!comProps.disabled ? comProps.color : "text-secondary"}
-        ${comProps.fontColor}`}
+            className={`flex justify-center rounded mr-2 px-2 py-1
+        ${comProps.outlined ? `ring-2 ring-${comProps.color} hover:bg-${comProps.color} hover:text-${comProps.fontColor} text-${comProps.color}` : 
+                `${!comProps.disabled ? `bg-${comProps.color}` : "text-secondary"} text-${comProps.fontColor}` }`}
             style={{minWidth: 96}}>
             {
                 comProps.loading ?
