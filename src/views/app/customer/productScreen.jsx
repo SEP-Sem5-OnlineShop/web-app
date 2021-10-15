@@ -126,7 +126,7 @@ const ProductScreen = () => {
         ) : (error) ? (
             <MessageBox variant="danger">{error}</MessageBox>
         ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-16">
+        <div className="mx-1 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-16">
             <div className="relative">
                 <div  className="w-full h-full bg-center bg-cover rounded-xl" style={{ minHeight: '50vh', backgroundImage: `url(${getFileUrl(product.imageUrl)})` }}>
                 </div>
@@ -160,8 +160,8 @@ const ProductScreen = () => {
             </div>
             <div>
                 <div className="text-xl text-textLight font-medium">{productStrings.reviews}</div>
-                    {(product.reviews.length < 1) && <>
-                        <div className="text-xs text-text">No Reviews</div>
+                    {(product.reviews && product.reviews.length < 1) && <>
+                        <div className="text-xs text-text ml-2 mt-2">No Reviews</div>
                     </>}
                 <div className="mt-4">
                     {product.reviews && <>
