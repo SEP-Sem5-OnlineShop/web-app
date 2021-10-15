@@ -3,6 +3,7 @@ import React, {useEffect, useMemo, useState} from "react"
 import {axios, vehicleApi} from "../../../../api";
 import TableWithPaginationGlobalSearch from "../../../../components/table/table-with-pagination-global-search";
 import ControlButtons from "../../../../components/table/control-buttons";
+import vehicle from "../../../../api/app/vehicle";
 
 export default function VehiclesList() {
 
@@ -60,7 +61,7 @@ export default function VehiclesList() {
             {
                 Header: 'Operations',
                 accessor: 'col4',
-                Cell: ({cell: {value}}) => <ControlButtons id={value} />
+                Cell: ({cell: {value}}) => <ControlButtons id={value} type={'vehicle'} api={vehicleApi} />
             }
         ],
         []

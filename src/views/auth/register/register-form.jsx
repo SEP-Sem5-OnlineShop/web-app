@@ -1,5 +1,5 @@
 import React, {forwardRef, useState} from "react";
-import InputWithValidation from "../../../components/input-with-validation";
+import InputWithValidation from "../../../components/form-components/input-with-validation";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";

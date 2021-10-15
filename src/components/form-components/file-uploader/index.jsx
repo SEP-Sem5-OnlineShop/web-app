@@ -14,7 +14,7 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileRename from 'filepond-plugin-file-rename';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import { uploadFileToBlob, deleteBlobFile } from "../../api/azure-storage-blob"
+import { uploadFileToBlob, deleteBlobFile } from "../../../api/azure-storage-blob"
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileRename);

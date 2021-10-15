@@ -15,8 +15,8 @@ import { actions } from "../../../../store/index"
 
 // importing created components
 import CardTemplate from "../../../../components/card/template";
-import InputWithValidation from "../../../../components/input-with-validation";
-import FileUploaderWithPreview from "../../../../components/file-uploader/with-preview"
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
+import FileUploaderWithPreview from "../../../../components/form-components/file-uploader/with-preview"
 
 // importing api
 import { productApi } from "../../../../api";

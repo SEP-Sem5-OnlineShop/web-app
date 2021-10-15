@@ -2,21 +2,19 @@ import React, {useState} from "react";
 import {toast} from "react-toastify";
 import {Link} from "react-router-dom";
 
-import vehicleApi from "../../api/app/vehicle";
-
 import ModelBody from "../modals/modelBody";
-import LoadingButton from "../loading-button";
+import LoadingButton from "../form-components/loading-button";
 
-export default function ControlButtons ({id}) {
+export default function ControlButtons ({id, type, api}) {
 
     const [loading, setLoading] = useState(false)
 
     const handleClick = async (id) => {
         setLoading(true)
         try {
-            const {data, status} = await vehicleApi.delete(id)
+            const {data, status} = await api.delete(id)
             if(data && data.message==="Success" && status===200) {
-                toast.success("Successfully deleted a vehicle!")
+                toast.success(`Successfully deleted a ${type}!`)
             }
         }
         catch (e) {
@@ -29,7 +27,7 @@ export default function ControlButtons ({id}) {
 
     return (
         <div className={"flex justify-center"}>
-            <Link to={`/app/vehicle/${id}`}>
+            <Link to={`/app/${type}/${id}`}>
                 <LoadingButton outlined={true} color={'warn'} text={'Update'}>Edit</LoadingButton>
             </Link>
             <ModelBody color={'danger'} buttonColor={'danger'} fontColor={'white'} loading={loading}

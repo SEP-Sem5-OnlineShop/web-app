@@ -3,14 +3,7 @@ import {Link} from "react-router-dom"
 
 import {axios, productApi} from "../../../../api";
 import TableWithPaginationGlobalSearch from "../../../../components/table/table-with-pagination-global-search";
-
-const EditButton = (id) => {
-    return (
-        <Link to={`/app/product/${id}`}>
-            <button>Edit</button>
-        </Link>
-    )
-}
+import ControlButtons from "../../../../components/table/control-buttons";
 
 export default function ProductList() {
     const [data, setData] = React.useState([])
@@ -31,7 +24,7 @@ export default function ProductList() {
                         'col4': item.price || "",
                         'col5': item.discount || "Not Set",
                         'col6': item.stock || "0",
-                        'col7': EditButton(item._id)
+                        'col7': item._id
                     })
                 })
             }
@@ -79,6 +72,7 @@ export default function ProductList() {
             {
                 Header: 'Operations',
                 accessor: 'col7',
+                Cell: ({cell: {value}}) => <ControlButtons id={value} type={'product'} api={productApi} />
             },
         ],
         []

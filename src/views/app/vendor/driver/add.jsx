@@ -15,7 +15,7 @@ import { useSelector } from "react-redux"
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 
 import CardTemplate from "../../../../components/card/template";
-import InputWithValidation from "../../../../components/input-with-validation";
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
 import { toast } from "react-toastify";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)

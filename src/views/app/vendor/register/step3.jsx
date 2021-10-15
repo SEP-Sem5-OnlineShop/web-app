@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import InputWithValidation from "../../../../components/input-with-validation";
-import SelectWithValidation from "../../../../components/select-with-validation";
-import FileUploader from "../../../../components/file-uploader"
-import FileUploaderWithPreview from "../../../../components/file-uploader/with-preview";
-import LoadingButton from "../../../../components/loading-button";
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
+import SelectWithValidation from "../../../../components/form-components/select-with-validation";
+import FileUploader from "../../../../components/form-components/file-uploader"
+import FileUploaderWithPreview from "../../../../components/form-components/file-uploader/with-preview";
+import LoadingButton from "../../../../components/form-components/loading-button";
 
 export default function Step3(props) {
 

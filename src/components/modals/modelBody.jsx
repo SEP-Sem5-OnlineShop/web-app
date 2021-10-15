@@ -1,8 +1,8 @@
 import { Dialog, Transition } from '@headlessui/react'
 import {Fragment, useEffect, useState} from 'react'
-import LoadingButton from "../loading-button";
+import LoadingButton from "../form-components/loading-button";
 
-export default function ModelBody({modalText, onClick, loading, color, buttonText, buttonColor, fontColor}) {
+export default function ModelBody({modalText, onClick, loading, color, buttonText, buttonColor, fontColor, buttonOutlined}) {
     let [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -22,18 +22,18 @@ export default function ModelBody({modalText, onClick, loading, color, buttonTex
         <>
             <div>
                 <LoadingButton
-                    outlined={true}
                     color={buttonColor}
                     text={buttonText || 'Update'}
                     onClick={openModal}
                     fontColor={fontColor}
+                    outlined={buttonOutlined || false}
                 />
             </div>
 
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
                     as="div"
-                    className="fixed inset-0 z-10 overflow-y-auto"
+                    className="fixed inset-0 z-50 overflow-y-hidden"
                     onClose={closeModal}
                 >
                     <div className="min-h-screen px-4 text-center">
@@ -54,8 +54,8 @@ export default function ModelBody({modalText, onClick, loading, color, buttonTex
                             className="inline-block h-screen align-middle"
                             aria-hidden="true"
                         >
-              &#8203;
-            </span>
+                          &#8203;
+                        </span>
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"

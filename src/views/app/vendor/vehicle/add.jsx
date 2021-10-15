@@ -7,8 +7,9 @@ import * as Yup from "yup"
 import { toast } from "react-toastify"
 
 import CardTemplate from "../../../../components/card/template";
-import InputWithValidation from "../../../../components/input-with-validation";
-import FileUploaderWithPreview from "../../../../components/file-uploader/with-preview";
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
+import FileUploaderWithPreview from "../../../../components/form-components/file-uploader/with-preview";
+import FormTemplate from "../../../../components/form-components/form-template";
 
 import { axios, vehicleApi } from "../../../../api"
 
@@ -89,60 +90,55 @@ export default function AddVehicle() {
     }
 
     return (
-        <div className="flex justify-center">
-            <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-0 lg:p-8">
-                <div className="w-full text-2xl lg:text-3xl font-medium">Add New Vehicle</div>
-                <CardTemplate>
-                    <form className="h-full" onSubmit={formik.handleSubmit}>
-                        <InputWithValidation
-                            formik={formik}
-                            id="plateNumber"
-                            name="plateNumber"
-                            label="Plate Number"
-                            type="text"
-                            className="mb-4"
-                            disabled={!!id}
-                        />
-                        <InputWithValidation
-                            formik={formik}
-                            id="brand"
-                            name="brand"
-                            label="Brand"
-                            type="text"
-                            className="mb-4"
-                        />
-                        <InputWithValidation
-                            formik={formik}
-                            id="model"
-                            name="model"
-                            label="Model"
-                            type="text"
-                            className="mb-4"
-                        />
-                        <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
-                        <FileUploaderWithPreview
-                            label={'Upload your vehicle image here'}
-                            imageUrl={formik.values.imageUrl || ""}
-                            formikFieldName={'imageUrl'}
-                            setFileName={setImageName}
-                        />
-                        <div className="mt-8 flex justify-end">
-                            <ModelBody modalText={"Do you want to proceed?"}
-                                       buttonText={id ? 'Update Vehicle' : 'Add Vehicle'}
-                                       loading={loading} color={'warn'} onClick={
-                                async (e) => {
-                                    e.preventDefault()
-                                    let errorMessage = ''
-                                    const result = await formik.validateForm()
-                                    errorMessage = Object.values(result).join('\n')
-                                    if (errorMessage) toast.error(errorMessage)
-                                    await formik.handleSubmit()
-                                }
-                            } />
-                        </div>
-                    </form>
-                </CardTemplate>
-            </div>
-        </div>
+        <FormTemplate formName={id ? `Update Vehicle Details ${formik.values['plateNumber'] || ""}` : 'Add New Vehicle'}>
+            <form className="h-full" onSubmit={formik.handleSubmit}>
+                <InputWithValidation
+                    formik={formik}
+                    id="plateNumber"
+                    name="plateNumber"
+                    label="Plate Number"
+                    type="text"
+                    className="mb-4"
+                    disabled={!!id}
+                />
+                <InputWithValidation
+                    formik={formik}
+                    id="brand"
+                    name="brand"
+                    label="Brand"
+                    type="text"
+                    className="mb-4"
+                />
+                <InputWithValidation
+                    formik={formik}
+                    id="model"
+                    name="model"
+                    label="Model"
+                    type="text"
+                    className="mb-4"
+                />
+                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
+                <FileUploaderWithPreview
+                    label={'Upload your vehicle image here'}
+                    imageUrl={formik.values ? formik.values.imageUrl || "" : ""}
+                    formikFieldName={'imageUrl'}
+                    setFileName={setImageName}
+                />
+                <div className="mt-8 flex justify-end">
+                    <ModelBody modalText={"Do you want to proceed?"}
+                               buttonText={id ? 'Update Vehicle' : 'Add Vehicle'}
+                               loading={loading} color={'warn'} onClick={
+                        async (e) => {
+                            e.preventDefault()
+                            let errorMessage = ''
+                            const result = await formik.validateForm()
+                            errorMessage = Object.values(result).join('\n')
+                            if (errorMessage) toast.error(errorMessage)
+                            await formik.handleSubmit()
+                        }
+                    } />
+                </div>
+            </form>
+        </FormTemplate>
     )
 }

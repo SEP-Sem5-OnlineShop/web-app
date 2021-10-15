@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import FileUploaderWithPreview from "../../../../components/file-uploader/with-preview";
-import InputWithValidation from "../../../../components/input-with-validation";
+import FileUploaderWithPreview from "../../../../components/form-components/file-uploader/with-preview";
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
 
 export default function Step2(props) {
 

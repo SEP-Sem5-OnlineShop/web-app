@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import {AnimatePresence, motion} from "framer-motion";
-import InputWithValidation from "../../input-with-validation";
+import InputWithValidation from "../../form-components/input-with-validation";
 
 export default function EditableCardItem(props) {
     const comProps = {

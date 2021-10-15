@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import InputWithValidation from "../../../../components/input-with-validation";
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
 import CardTemplate from "../../../../components/card/template";
 import { useDispatch, useSelector } from "react-redux";
 import { getFileUrl } from "../../../../api/azure-storage-blob";
 import { driverApi, authApi } from "../../../../api"
 import { actions } from "../../../../store/index"
-import FileUploader from "../../../../components/file-uploader"
+import FileUploader from "../../../../components/form-components/file-uploader"
 
 export default function Profile() {
 

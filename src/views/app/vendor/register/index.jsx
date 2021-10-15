@@ -8,7 +8,7 @@ import Step3 from "./step3";
 import CardTemplate from "../../../../components/card/template";
 import { vendorRequestApi } from "../../../../api/index"
 import { useHistory, useParams } from "react-router-dom"
-import InputWithValidation from "../../../../components/input-with-validation";
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
 import { toast } from "react-toastify";
 
 export default function VendorRegistration() {

@@ -5,7 +5,7 @@ import Loader from "react-loader-spinner";
 import CardTemplate from "../card/template";
 import GlobalFilter from "./global-filter";
 import Pagination from "./pagination";
-import LoadingButton from "../loading-button";
+import LoadingButton from "../form-components/loading-button";
 import {Link} from "react-router-dom";
 
 export default function TableWithPaginationGlobalSearch({columns, data, tableName, type, link, loading}) {
