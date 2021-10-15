@@ -25,6 +25,7 @@ import { productApi } from "../../../../api";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { toast } from "react-toastify";
 import ModelBody from "../../../../components/modals/modelBody";
+import FormTemplate from "../../../../components/form-components/form-template";
 
 export default function AddProduct({ edit }) {
 
@@ -136,76 +137,69 @@ export default function AddProduct({ edit }) {
 
     return (
         <React.Fragment>
-            {role === "vendor" ?
-                <div className="flex justify-center">
-                    <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-0 lg:p-8">
-                        <div className="w-full text-2xl lg:text-3xl font-medium">Add New product</div>
-                        <CardTemplate>
-                            <form className="h-full">
-                                <InputWithValidation
-                                    formik={formik}
-                                    id="name"
-                                    name="product_name"
-                                    label="Name"
-                                    type="text"
-                                    className="mb-4"
-                                />
-                                <InputWithValidation
-                                    formik={formik}
-                                    id="price"
-                                    name="price"
-                                    label="Price"
-                                    type="text"
-                                    className="mb-4"
-                                />
-                                <InputWithValidation
-                                    formik={formik}
-                                    id="discount"
-                                    name="discount"
-                                    label="Discount"
-                                    type="text"
-                                    className="mb-4"
-                                />
-                                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Description</label>
-                                <Editor editorState={editorState}
-                                    toolbarClassName="toolbarClassName mt-1 rounded-md"
-                                    wrapperClassName="wrapperClassName"
-                                    editorClassName="bg-white min-h-300 px-2 mb-4 rounded-md"
-                                    placeholder="Add your product description here..."
-                                    onEditorStateChange={setEditorState}
-                                />
-                                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
-                                <FileUploaderWithPreview
-                                    label={'Upload your an image here'}
-                                    imageUrl={formik.values.imageUrl || ""}
-                                    formikFieldName={'imageUrl'}
-                                    setFileName={setImageName}
-                                />
-                                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
-                                <FileUploaderWithPreview
-                                    label={'Upload your main image thumbnail  here'}
-                                    imageUrl={formik.values.imageThumbnailUrl || ""}
-                                    formikFieldName={'imageThumbnailUrl'}
-                                    setFileName={setImageName}
-                                />
-                                <div className="flex justify-end">
-                                    <ModelBody modalText={"Do you want to proceed?"}
-                                               loading={loading}
-                                               buttonText={id ? 'Update Vehicle' : 'Add Vehicle'} color={'warn'}
-                                               onClick={async (e) => {
-                                                   e.preventDefault()
-                                                   const errors = await formik.validateForm()
-                                                   const errorMessage = Object.values(errors).join('\n')
-                                                   if(errorMessage) toast.error(errorMessage)
-                                                   else await formik.handleSubmit()
-                                               }}
-                                    />
-                                </div>
-                            </form>
-                        </CardTemplate>
+            <FormTemplate formName={'Add New Product'} >
+                <form className="h-full">
+                    <InputWithValidation
+                        formik={formik}
+                        id="name"
+                        name="product_name"
+                        label="Name"
+                        type="text"
+                        className="mb-4"
+                    />
+                    <InputWithValidation
+                        formik={formik}
+                        id="price"
+                        name="price"
+                        label="Price"
+                        type="text"
+                        className="mb-4"
+                    />
+                    <InputWithValidation
+                        formik={formik}
+                        id="discount"
+                        name="discount"
+                        label="Discount"
+                        type="text"
+                        className="mb-4"
+                    />
+                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Description</label>
+                    <Editor editorState={editorState}
+                            toolbarClassName="toolbarClassName mt-1 rounded-md"
+                            wrapperClassName="wrapperClassName"
+                            editorClassName="bg-white min-h-300 px-2 mb-4 rounded-md"
+                            placeholder="Add your product description here..."
+                            onEditorStateChange={setEditorState}
+                    />
+                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
+                    <FileUploaderWithPreview
+                        label={'Upload your an image here'}
+                        imageUrl={formik.values.imageUrl || ""}
+                        formikFieldName={'imageUrl'}
+                        setFileName={setImageName}
+                    />
+                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
+                    <FileUploaderWithPreview
+                        label={'Upload your main image thumbnail  here'}
+                        imageUrl={formik.values.imageThumbnailUrl || ""}
+                        formikFieldName={'imageThumbnailUrl'}
+                        setFileName={setImageName}
+                    />
+                    <div className="flex justify-end">
+                        <ModelBody modalText={"Do you want to proceed?"}
+                                   loading={loading}
+                                   buttonText={id ? 'Update Vehicle' : 'Add Vehicle'} color={'warn'}
+                                   onClick={async (e) => {
+                                       e.preventDefault()
+                                       const errors = await formik.validateForm()
+                                       const errorMessage = Object.values(errors).join('\n')
+                                       if(errorMessage) toast.error(errorMessage)
+                                       else await formik.handleSubmit()
+                                   }}
+                        />
                     </div>
-                </div>
-                : <div>Spin</div>}
+                </form>
+            </FormTemplate>
         </React.Fragment>
     )
 }

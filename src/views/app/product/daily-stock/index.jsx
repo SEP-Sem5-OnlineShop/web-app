@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { useSelector } from "react-redux"
 import { useTable, useGlobalFilter, usePagination } from 'react-table'
 
-import { productApi, stockApi, driverApi } from "../../../../api"
+import {productApi, stockApi, driverApi, axios} from "../../../../api"
 
 import CardTemplate from "../../../../components/card/template"
 import GlobalFilter from "../../../../components/table/global-filter";
@@ -14,28 +14,29 @@ export default function DailyStockLoad() {
     const [formikInitial, setFormikInitial] = useState([])
     const [vehicle, setVehicle] = useState("")
     const [driver, setDriver] = useState("")
+    const [area, setArea] = useState("")
     const [vehiclesAndDrivers, setVehiclesAndDrivers] = useState({
         vehicles: [],
         drivers: []
     })
     const vendorId = useSelector(state => state.user.userData._id)
     React.useEffect(async () => {
+        let mounted = true
+        let source = axios.CancelToken.source()
         try {
-            const { data, status } = await productApi.getList()
-            const drivers = await driverApi.getDrivers()
-            const vehicles = await driverApi.getVehicles()
-            console.log(drivers)
-            console.log(vehicles)
+            const products = await productApi.getList(source)
+            const drivers = await driverApi.getDrivers(source)
+            const vehicles = await driverApi.getVehicles(source)
             if (drivers.data && vehicles.data) {
-                setVehiclesAndDrivers({
+                if (mounted) setVehiclesAndDrivers({
                     drivers: drivers.data.data || [],
-                    vehicles: vehicles.data.data || []
+                    vehicles: vehicles.data.data.vendor.vehicles || []
                 })
             }
 
             const list = []
             const testData = []
-            data.data.forEach((item, index) => {
+            products.data.data.forEach((item, index) => {
                 list.push({
                     'col1': index + 1,
                     'col2': item.product_name || "",
@@ -51,11 +52,15 @@ export default function DailyStockLoad() {
                     }
                 })
             })
-            setData(list)
-            setFormikInitial(testData)
+            if (mounted) setData(list)
+            if (mounted) setFormikInitial(testData)
         }
         catch (e) {
-
+            if(!axios.isCancel(e)) throw e
+        }
+        return () => {
+            mounted = false
+            source.cancel()
         }
     }, [])
 
@@ -120,7 +125,13 @@ export default function DailyStockLoad() {
                             ...item[productId], productId: productId
                         })
                 })
-                const { data, status } = await stockApi.update({ vendorId: vendorId, vehicleId: "Vehicle 1", dailyStock: stock })
+                const { data, status } = await stockApi.create({
+                    vendorId: vendorId,
+                    dailyStock: stock,
+                    driverId: driver,
+                    vehicleId: vehicle,
+                    region: area
+                })
                 if (status === 200 && data && data.message === 'Success') {
                     console.log(data.data)
                 }
@@ -137,12 +148,12 @@ export default function DailyStockLoad() {
                 <div className="w-full text-3xl font-medium">Load Daily Stock to Mobile Shops</div>
                 <div className="mt-4 flex flex-col items-start w-full">
                     <label className="font-medium mt-4">Select the mobile shop for loading stock</label>
-                    <select defaultValue={"default"} onChange={e => {setVehicle(e.target.value); console.log(vehicle)}}>
+                    <select defaultValue={"default"} onChange={e => setVehicle(e.target.value)}>
                             <option disabled value={"default"}>Select a vehicle</option>
                         {
                             vehiclesAndDrivers.vehicles.map(item => {
                                 console.log(item)
-                                return <option value={item._id} key={item._id} >{`${item.brand} ${item.model}`}</option>
+                                return <option value={item._id} key={item._id} >{`${item.plateNumber} - ${item.brand} ${item.model}`}</option>
 })
                         }
                     </select>
@@ -152,6 +163,15 @@ export default function DailyStockLoad() {
                         {
                             vehiclesAndDrivers.drivers.map(item => (
                                 <option value={item._id} key={item._id}>{`${item.firstName} ${item.lastName}`}</option>
+                            ))
+                        }
+                    </select>
+                    <label className="font-medium mt-4">Assign an area to the mobile shop</label>
+                    <select defaultValue={"default"} onChange={e => setArea(e.target.value)}>\
+                        <option disabled value={"default"}>Select an area</option>
+                        {
+                            ["Wellawaya", "Buttala", "Monaragala"].map(item => (
+                                <option value={item} key={item}>{item}</option>
                             ))
                         }
                     </select>
@@ -196,6 +216,7 @@ export default function DailyStockLoad() {
                                                                     type="number"
                                                                     onChange={formik.handleChange}
                                                                     onBlur={formik.handleBlur}
+                                                                    disabled={true}
                                                                     id={`stockDetails.${rowIndex}.${cell.value[1]}.price`} name={`stockDetails.${rowIndex}.${cell.value[1]}.price`}
                                                                     className="bg-cardColor rounded-sm p-2" /> : ""}
                                                         </td>
@@ -210,6 +231,7 @@ export default function DailyStockLoad() {
                                                                     value={formik.values.stockDetails[rowIndex][cell.value[1]]['discount']}
                                                                     type="number"
                                                                     onChange={formik.handleChange}
+                                                                    disabled={true}
                                                                     onBlur={formik.handleBlur}
                                                                     id={`stockDetails.${rowIndex}.${cell.value[1]}.discount`} name={`stockDetails.${rowIndex}.${cell.value[1]}.discount`}
                                                                     className="bg-cardColor rounded-sm p-2" /> : ""}
