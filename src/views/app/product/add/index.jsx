@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 
@@ -24,12 +24,14 @@ import { productApi } from "../../../../api";
 // importing css files
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { toast } from "react-toastify";
+import ModelBody from "../../../../components/modals/modelBody";
 
 export default function AddProduct({ edit }) {
 
     let { id } = useParams()
     const role = useSelector(state => state.user.role)
     const userData = useSelector(state => state.user.userData)
+    const [loading, setLoading] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -56,11 +58,15 @@ export default function AddProduct({ edit }) {
             price: Yup.number('Must be a number')
                 .required('Required'),
             discount: Yup.number('Must be a number'),
+            imageUrl: Yup.string()
+                .required("Image is required"),
+            imageThumbnailUrl: Yup.string()
+                .required("Image thumbnail is required"),
         }),
         onSubmit: async values => {
             const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
             await formik.setFieldValue("description", description)
-            const tokenId = toast.loading("Please wait...")
+            setLoading(true)
             try {
                 if(!id) {
                     const { data, status } = await productApi.create(values)
@@ -69,25 +75,25 @@ export default function AddProduct({ edit }) {
                         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
                         const editorState = EditorState.createWithContent(contentState);
                         setEditorState(editorState)
-                        toast.update(tokenId, { render: "Product is created successfully!", type: "success", isLoading: false, autoClose: true });
+                        toast.success("Product is successfully created!")
                         dispatch(actions.user.setUserData(data.data || userData))
                         formik.resetForm()
-                    }
-                    else {
-                        toast.update(tokenId, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
                     }
                 }
                 else {
                     const { data, status } = await productApi.update(values, id)
                     if (status === 201 && data.message === "Success") {
-                        toast.update(tokenId, { render: "Product is updated successfully!", type: "success", isLoading: false, autoClose: true });
+                        toast.success("Product is successfully updated!")
                         dispatch(actions.user.setUserData(data.data || userData))
                     }
                 }
             }
             catch (e) {
                 console.log(e)
-                toast.update(tokenId, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
+                toast.error("Something went wrong!")
+            }
+            finally {
+                setLoading(false)
             }
         },
     });
@@ -135,7 +141,7 @@ export default function AddProduct({ edit }) {
                     <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-0 lg:p-8">
                         <div className="w-full text-2xl lg:text-3xl font-medium">Add New product</div>
                         <CardTemplate>
-                            <form className="h-full" onSubmit={formik.handleSubmit}>
+                            <form className="h-full">
                                 <InputWithValidation
                                     formik={formik}
                                     id="name"
@@ -170,20 +176,30 @@ export default function AddProduct({ edit }) {
                                 />
                                 <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
                                 <FileUploaderWithPreview
-                                    label={'Upload your an image thumbnail here'}
+                                    label={'Upload your an image here'}
                                     imageUrl={formik.values.imageUrl || ""}
                                     formikFieldName={'imageUrl'}
                                     setFileName={setImageName}
                                 />
                                 <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
                                 <FileUploaderWithPreview
-                                    label={'Upload your main image here'}
+                                    label={'Upload your main image thumbnail  here'}
                                     imageUrl={formik.values.imageThumbnailUrl || ""}
                                     formikFieldName={'imageThumbnailUrl'}
                                     setFileName={setImageName}
                                 />
                                 <div className="flex justify-end">
-                                    <button type="submit" className="p-2 text-white rounded bg-textLight">Submit</button>
+                                    <ModelBody modalText={"Do you want to proceed?"}
+                                               loading={loading}
+                                               buttonText={id ? 'Update Vehicle' : 'Add Vehicle'} color={'warn'}
+                                               onClick={async (e) => {
+                                                   e.preventDefault()
+                                                   const errors = await formik.validateForm()
+                                                   const errorMessage = Object.values(errors).join('\n')
+                                                   if(errorMessage) toast.error(errorMessage)
+                                                   else await formik.handleSubmit()
+                                               }}
+                                    />
                                 </div>
                             </form>
                         </CardTemplate>

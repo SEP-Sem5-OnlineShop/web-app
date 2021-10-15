@@ -31,6 +31,7 @@ export default function ControlButtons ({id, type, api}) {
                 <LoadingButton outlined={true} color={'warn'} text={'Update'}>Edit</LoadingButton>
             </Link>
             <ModelBody color={'danger'} buttonColor={'danger'} fontColor={'white'} loading={loading}
+                       buttonOutlined={true}
                        onClick={async () => await handleClick(id)}
                        modalText={'Do you want to continue with the deletion?'}
                        buttonText={'Delete'}
