@@ -1,9 +1,7 @@
 import React from "react"
-import {useTable, useGlobalFilter, usePagination} from 'react-table'
+
 import { driverApi, axios} from "../../../../api";
-import CardTemplate from "../../../../components/card/template";
-import GlobalFilter from "../../../../components/table/global-filter";
-import Pagination from "../../../../components/table/pagination";
+import TableWithPaginationGlobalSearch from "../../../../components/table/table-with-pagination-global-search";
 
 export default function DriverList() {
     const [data, setData] = React.useState([])
@@ -13,14 +11,16 @@ export default function DriverList() {
         try {
             const {data, status} = await driverApi.getDrivers(source)
             const list = []
-            data.data.forEach((item, index) => {
-                list.push({
-                    'col1': index + 1,
-                    'col2': `${item.firstName} ${item.lastName}` || "",
-                    'col3': item.telephone || "Not Set",
-                    'col4': item.email || "",
+            if(data && status===200) {
+                data.data.forEach((item, index) => {
+                    list.push({
+                        'col1': index + 1,
+                        'col2': `${item.firstName} ${item.lastName}` || "",
+                        'col3': item.telephone || "Not Set",
+                        'col4': item.email || "",
+                    })
                 })
-            })
+            }
             if (mounted) setData(list)
         }
         catch (e) {
@@ -55,90 +55,7 @@ export default function DriverList() {
         []
     )
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        state,
-        setGlobalFilter,
-        gotoPage,
-        canPreviousPage,
-        previousPage,
-        nextPage,
-        canNextPage,
-        pageCount,
-        pageOptions,
-        setPageSize,
-        state: { pageIndex, pageSize },
-    } = useTable({ columns, data }, useGlobalFilter, usePagination)
-
     return (
-        <div className="flex justify-center">
-            <div className="w-full flex flex-col items-center justify-center p-0 lg:p-8">
-                <div className="w-full text-3xl font-medium">My Drivers</div>
-                <CardTemplate>
-                    <GlobalFilter
-                        globalFilter={state.globalFilter}
-                        setGlobalFilter={setGlobalFilter}
-                    />
-                    <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-cardColor">
-                            {headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    {headerGroup.headers.map(column => (
-                                        <th
-                                            {...column.getHeaderProps()}
-                                            scope="col"
-                                            className="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider"
-                                        >
-                                            {column.render('Header')}
-                                        </th>
-                                    ))}
-                                </tr>
-                            ))}
-                        </thead>
-                        <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
-                            {rows.map(row => {
-                                prepareRow(row)
-                                return (
-                                    <tr {...row.getRowProps()}>
-                                        {row.cells.map(cell => {
-                                            return (
-                                                <td
-                                                    {...cell.getCellProps()}
-                                                    className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
-                                                >
-                                                    {cell.render('Cell')}
-                                                </td>
-                                            )
-                                        })}
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
-                    {
-                        !rows.length ?
-                            <div className={"flex justify-center"}>No data found</div>
-                            :
-                            <Pagination
-                                gotoPage={gotoPage}
-                                canPreviousPage={canPreviousPage}
-                                canNextPage={canNextPage}
-                                previousPage={previousPage}
-                                nextPage={nextPage}
-                                pageCount={pageCount}
-                                pageIndex={pageIndex}
-                                pageOptions={pageOptions}
-                                pageSize={pageSize}
-                                setPageSize={setPageSize}
-                            />
-                    }
-                </CardTemplate>
-            </div>
-        </div>
-
+        <TableWithPaginationGlobalSearch columns={columns} data={data} tableName={'My Drivers'} type={'Driver'} link={'driver'} />
     )
 }

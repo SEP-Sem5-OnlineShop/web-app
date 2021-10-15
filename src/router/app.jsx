@@ -26,6 +26,9 @@ import DailyStockLoad from "../views/app/product/daily-stock"
 
 import AddDriver from '../views/app/vendor/driver/add'
 import DriversList from '../views/app/vendor/driver/list'
+
+import VehiclesList from "../views/app/vendor/vehicle/list";
+
 import InnerPageLayout from "../layout/inner-page-layout";
 import VendorProfile from "../views/app/vendor/profile/index"
 import DriverProfile from '../views/app/driver/profile'
@@ -34,6 +37,7 @@ import Cart from "../views/app/driver/cart";
 import DashboardLayout from "../layout/dashboard-layout";
 import SellingCart from "../views/app/driver/sell/sellingCart";
 import BuyingCart from "../views/app/customer/buyingCart";
+import AddVehicle from "../views/app/vendor/vehicle/add";
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -74,20 +78,28 @@ export default function AppRouter() {
                         <Route exact={true} path={`${match.path}/products`}>
                             <ProductList />
                         </Route>
-
-                <Route exact={true} path={`${match.path}/driver`}>
-                    <AddDriver />
-                </Route>
-                <Route exact={true} path={`${match.path}/drivers`}>
-                    <DriversList />
-                </Route>
-                <Route exact={true} path={`${match.path}/driver/:id`}>
-                    <AddDriver />
-                </Route>
-                <Route path={`${match.path}/profile`}>
-                    <VendorProfile />
-                </Route>
-            </DashboardLayout> :
+                        <Route exact={true} path={`${match.path}/driver`}>
+                            <AddDriver />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/drivers`}>
+                            <DriversList />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/driver/:id`}>
+                            <AddDriver />
+                        </Route>
+                        <Route path={`${match.path}/profile`}>
+                            <VendorProfile />
+                        </Route>
+                        <Route path={`${match.path}/vehicles`}>
+                            <VehiclesList />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/vehicle`} >
+                            <AddVehicle />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/vehicle/:id`} >
+                            <AddVehicle />
+                        </Route>
+                    </DashboardLayout> :
             role === "customer" ?
             <>
             <InnerPageLayout>

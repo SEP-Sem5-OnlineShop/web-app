@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 
@@ -15,9 +15,8 @@ import { actions } from "../../../../store/index"
 
 // importing created components
 import CardTemplate from "../../../../components/card/template";
-import InputWithValidation from "../../../../components/input-with-validation";
-import FileUploader from "../../../../components/file-uploader"
-import FileUploaderWithPreview from "../../../../components/file-uploader/with-preview"
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
+import FileUploaderWithPreview from "../../../../components/form-components/file-uploader/with-preview"
 
 // importing api
 import { productApi } from "../../../../api";
@@ -25,12 +24,15 @@ import { productApi } from "../../../../api";
 // importing css files
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { toast } from "react-toastify";
+import ModelBody from "../../../../components/modals/modelBody";
+import FormTemplate from "../../../../components/form-components/form-template";
 
 export default function AddProduct({ edit }) {
 
     let { id } = useParams()
     const role = useSelector(state => state.user.role)
     const userData = useSelector(state => state.user.userData)
+    const [loading, setLoading] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -57,11 +59,15 @@ export default function AddProduct({ edit }) {
             price: Yup.number('Must be a number')
                 .required('Required'),
             discount: Yup.number('Must be a number'),
+            imageUrl: Yup.string()
+                .required("Image is required"),
+            imageThumbnailUrl: Yup.string()
+                .required("Image thumbnail is required"),
         }),
         onSubmit: async values => {
             const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
             await formik.setFieldValue("description", description)
-            const tokenId = toast.loading("Please wait...")
+            setLoading(true)
             try {
                 if(!id) {
                     const { data, status } = await productApi.create(values)
@@ -70,25 +76,25 @@ export default function AddProduct({ edit }) {
                         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
                         const editorState = EditorState.createWithContent(contentState);
                         setEditorState(editorState)
-                        toast.update(tokenId, { render: "Product is created successfully!", type: "success", isLoading: false, autoClose: true });
+                        toast.success("Product is successfully created!")
                         dispatch(actions.user.setUserData(data.data || userData))
                         formik.resetForm()
-                    }
-                    else {
-                        toast.update(tokenId, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
                     }
                 }
                 else {
                     const { data, status } = await productApi.update(values, id)
                     if (status === 201 && data.message === "Success") {
-                        toast.update(tokenId, { render: "Product is updated successfully!", type: "success", isLoading: false, autoClose: true });
+                        toast.success("Product is successfully updated!")
                         dispatch(actions.user.setUserData(data.data || userData))
                     }
                 }
             }
             catch (e) {
                 console.log(e)
-                toast.update(tokenId, { render: "Something went wrong!", type: "error", isLoading: false, autoClose: true });
+                toast.error("Something went wrong!")
+            }
+            finally {
+                setLoading(false)
             }
         },
     });
@@ -131,66 +137,69 @@ export default function AddProduct({ edit }) {
 
     return (
         <React.Fragment>
-            {role === "vendor" ?
-                <div className="flex justify-center">
-                    <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-0 lg:p-8">
-                        <div className="w-full text-2xl lg:text-3xl font-medium">Add New product</div>
-                        <CardTemplate>
-                            <form className="h-full" onSubmit={formik.handleSubmit}>
-                                <InputWithValidation
-                                    formik={formik}
-                                    id="name"
-                                    name="product_name"
-                                    label="Name"
-                                    type="text"
-                                    className="mb-4"
-                                />
-                                <InputWithValidation
-                                    formik={formik}
-                                    id="price"
-                                    name="price"
-                                    label="Price"
-                                    type="text"
-                                    className="mb-4"
-                                />
-                                <InputWithValidation
-                                    formik={formik}
-                                    id="discount"
-                                    name="discount"
-                                    label="Discount"
-                                    type="text"
-                                    className="mb-4"
-                                />
-                                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Description</label>
-                                <Editor editorState={editorState}
-                                    toolbarClassName="toolbarClassName mt-1 rounded-md"
-                                    wrapperClassName="wrapperClassName"
-                                    editorClassName="bg-white min-h-300 px-2 mb-4 rounded-md"
-                                    placeholder="Add your product description here..."
-                                    onEditorStateChange={setEditorState}
-                                />
-                                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
-                                <FileUploaderWithPreview
-                                    label={'Upload your an image thumbnail here'}
-                                    imageUrl={formik.values.imageUrl || ""}
-                                    formikFieldName={'imageUrl'}
-                                    setFileName={setImageName}
-                                />
-                                <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
-                                <FileUploaderWithPreview
-                                    label={'Upload your main image here'}
-                                    imageUrl={formik.values.imageThumbnailUrl || ""}
-                                    formikFieldName={'imageThumbnailUrl'}
-                                    setFileName={setImageName}
-                                />
-                                <div className="flex justify-end">
-                                    <button type="submit" className="p-2 text-white rounded bg-textLight">Submit</button>
-                                </div>
-                            </form>
-                        </CardTemplate>
+            <FormTemplate formName={'Add New Product'} >
+                <form className="h-full">
+                    <InputWithValidation
+                        formik={formik}
+                        id="name"
+                        name="product_name"
+                        label="Name"
+                        type="text"
+                        className="mb-4"
+                    />
+                    <InputWithValidation
+                        formik={formik}
+                        id="price"
+                        name="price"
+                        label="Price"
+                        type="text"
+                        className="mb-4"
+                    />
+                    <InputWithValidation
+                        formik={formik}
+                        id="discount"
+                        name="discount"
+                        label="Discount"
+                        type="text"
+                        className="mb-4"
+                    />
+                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Description</label>
+                    <Editor editorState={editorState}
+                            toolbarClassName="toolbarClassName mt-1 rounded-md"
+                            wrapperClassName="wrapperClassName"
+                            editorClassName="bg-white min-h-300 px-2 mb-4 rounded-md"
+                            placeholder="Add your product description here..."
+                            onEditorStateChange={setEditorState}
+                    />
+                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Product Page Image</label>
+                    <FileUploaderWithPreview
+                        label={'Upload your an image here'}
+                        imageUrl={formik.values.imageUrl || ""}
+                        formikFieldName={'imageUrl'}
+                        setFileName={setImageName}
+                    />
+                    <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
+                    <FileUploaderWithPreview
+                        label={'Upload your main image thumbnail  here'}
+                        imageUrl={formik.values.imageThumbnailUrl || ""}
+                        formikFieldName={'imageThumbnailUrl'}
+                        setFileName={setImageName}
+                    />
+                    <div className="flex justify-end">
+                        <ModelBody modalText={"Do you want to proceed?"}
+                                   loading={loading}
+                                   buttonText={id ? 'Update Vehicle' : 'Add Vehicle'} color={'warn'}
+                                   onClick={async (e) => {
+                                       e.preventDefault()
+                                       const errors = await formik.validateForm()
+                                       const errorMessage = Object.values(errors).join('\n')
+                                       if(errorMessage) toast.error(errorMessage)
+                                       else await formik.handleSubmit()
+                                   }}
+                        />
                     </div>
-                </div>
-                : <div>Spin</div>}
+                </form>
+            </FormTemplate>
         </React.Fragment>
     )
 }
