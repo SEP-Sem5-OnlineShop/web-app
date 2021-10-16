@@ -210,6 +210,7 @@ export default function DailyStockLoad({vehicleId}) {
                             || []
                     })
                 }
+                setDriver("")
                 toast.success("Assigned drivers were removed from the vehicles. Please reassign drivers and submit again!")
             }
         }
@@ -232,7 +233,7 @@ export default function DailyStockLoad({vehicleId}) {
                                     onChange={e => {setDriver(e.target.value)}}
                                     className={'rounded p-1 mb-2'}
                             >
-                                <option disabled value={"default"}>Select a driver</option>
+                                <option value={""}>Select a driver</option>
                                 {
                                     collection.drivers.map(item => (
                                         <option value={item._id} key={item._id}>{`${item.firstName} ${item.lastName}`}</option>
@@ -247,7 +248,7 @@ export default function DailyStockLoad({vehicleId}) {
                                     onChange={e => setArea(e.target.value)}
                                     className={'rounded p-1 mb-2'}
                             >
-                                <option disabled value={"default"}>Select an area</option>
+                                <option value={""}>Select an area</option>
                                 {
                                     collection.areas.map(item => (
                                         <option value={item} key={item}>{item}</option>
@@ -366,7 +367,11 @@ export default function DailyStockLoad({vehicleId}) {
                             />
                             <ModelBody buttonText={'Submit'}
                                        modalText={'Do you want to proceed with this data?'}
-                                       onClick={async () => await formik.handleSubmit()}
+                                       onClick={async () => {
+                                           if(!driver) toast.info("Please assign a driver!")
+                                           if(!area) toast.info("Please assign an area!")
+                                           if(driver && area) await formik.handleSubmit()
+                                       }}
                                        loading={submitLoading}
                             />
                         </div>
