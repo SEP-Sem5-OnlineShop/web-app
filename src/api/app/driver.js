@@ -22,6 +22,9 @@ const driver = {
     getImage: async function () {
         return await axios.get('/app/driver/image')
     },
+    removeDrivers: async (id) => {
+        return await axios.put(`/app/driver/remove-vehicle/${id}`)
+    }
 }
 
 export default driver

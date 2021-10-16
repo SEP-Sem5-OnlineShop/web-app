@@ -9,17 +9,23 @@ import GlobalFilter from "../../../../components/table/global-filter";
 import Pagination from "../../../../components/table/pagination";
 import {toast} from "react-toastify";
 import Loader from "react-loader-spinner";
+import LoadingButton from "../../../../components/form-components/loading-button";
+import {Tab} from "@headlessui/react";
+import CardTemplate from "../../../../components/card/template";
+import ModelBody from "../../../../components/modals/modelBody";
 
 export default function DailyStockLoad({vehicleId}) {
 
     const [loading, setLoading] = useState(false)
+    const [submitLoading, setSubmitLoading] = useState(false)
+    const [assignDriverLoading, setAssignDriverLoading] = useState(false)
 
     const [data, setData] = React.useState([])
     const [formikInitial, setFormikInitial] = useState([])
     const [isStockThere, setIsStockThere] = useState(false)
 
-    const [driver, setDriver] = useState("")
-    const [area, setArea] = useState("")
+    const [driver, setDriver] = useState("default")
+    const [area, setArea] = useState("default")
     const [collection, setCollection] = useState({
         vehicles: [],
         drivers: [],
@@ -143,6 +149,7 @@ export default function DailyStockLoad({vehicleId}) {
             stockDetails: formikInitial,
         },
         onSubmit: async values => {
+            setSubmitLoading(true)
             try {
                 const stock = []
                 values.stockDetails.forEach(item => {
@@ -178,13 +185,44 @@ export default function DailyStockLoad({vehicleId}) {
                 }
             }
             catch (e) {
-
+                toast.error("Something went wrong!")
+            }
+            finally {
+                setSubmitLoading(false)
             }
         },
     });
 
+    const reAssignDrivers = async (vendorId) => {
+        setAssignDriverLoading(true)
+        const source = axios.CancelToken.source()
+        try {
+            const result = await driverApi.removeDrivers(vendorId)
+            if(result && result.data && result.status===200) {
+                const drivers = await driverApi.getDrivers(source)
+                if(
+                    drivers && drivers.data && drivers.status===200
+                ) {
+                    setCollection({
+                        ...collection,
+                        drivers: drivers.data.data.filter(driver =>
+                            !driver.driver.vehicleId || driver.driver.vehicleId === vehicleId)
+                            || []
+                    })
+                }
+                toast.success("Assigned drivers were removed from the vehicles. Please reassign drivers and submit again!")
+            }
+        }
+        catch (e) {
+            toast.error('Something went wrong!')
+        }
+        finally {
+            setAssignDriverLoading(false)
+        }
+    }
+
     return (
-        <form onSubmit={formik.handleSubmit} className={'mt-8'}>
+        <form className={'mt-8'}>
             {
                 !loading ?
                     <>
@@ -192,6 +230,7 @@ export default function DailyStockLoad({vehicleId}) {
                             <label className="font-medium">Assign a driver to mobile shop</label>
                             <select value={driver}
                                     onChange={e => {setDriver(e.target.value)}}
+                                    className={'rounded p-1 mb-2'}
                             >
                                 <option disabled value={"default"}>Select a driver</option>
                                 {
@@ -205,7 +244,9 @@ export default function DailyStockLoad({vehicleId}) {
                         <div className={'flex flex-col w-full lg:w-1/2 mt-4 mb-8'}>
                             <label className="font-medium">Assign an area to the mobile shop</label>
                             <select value={area}
-                                    onChange={e => setArea(e.target.value)}>\
+                                    onChange={e => setArea(e.target.value)}
+                                    className={'rounded p-1 mb-2'}
+                            >
                                 <option disabled value={"default"}>Select an area</option>
                                 {
                                     collection.areas.map(item => (
@@ -316,10 +357,18 @@ export default function DailyStockLoad({vehicleId}) {
                                 setPageSize={setPageSize}
                             />
                         }
-                        <div className="flex justify-end mt-4 w-full">
-                            <button className="py-2 px-4 text-white bg-textLight rounded-lg" type="submit">
-                                Submit
-                            </button>
+                        <div className={'flex justify-end'}>
+                            <ModelBody buttonText={'Reassign Drivers'}
+                                       modalText={'Do you really want to reassign drivers?'}
+                                       onClick={async  () => await reAssignDrivers(vendorId)}
+                                       loading={assignDriverLoading}
+                                       buttonOutlined={true}
+                            />
+                            <ModelBody buttonText={'Submit'}
+                                       modalText={'Do you want to proceed with this data?'}
+                                       onClick={async () => await formik.handleSubmit()}
+                                       loading={submitLoading}
+                            />
                         </div>
                     </>
                     :
