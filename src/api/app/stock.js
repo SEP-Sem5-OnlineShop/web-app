@@ -7,8 +7,8 @@ const stock = {
     update: async (formData) => {
         return await axios.put('/app/daily-stock', formData)
     },
-    get: async (formData) => {
-        return await axios.get('/app/daily-stock')
+    get: async (id, source) => {
+        return await axios.get(`/app/daily-stock/${id}`, {cancelToken: source.token})
     },
 }
 
