@@ -22,7 +22,6 @@ import History from '../views/app/customer/history'
 import AddProduct from '../views/app/product/add'
 import Profile from '../views/app/profile'
 import ProductList from "../views/app/product/list";
-import DailyStockLoad from "../views/app/product/daily-stock"
 
 import AddDriver from '../views/app/vendor/driver/add'
 import DriversList from '../views/app/vendor/driver/list'
@@ -38,6 +37,7 @@ import DashboardLayout from "../layout/dashboard-layout";
 import SellingCart from "../views/app/driver/sell/sellingCart";
 import BuyingCart from "../views/app/customer/buyingCart";
 import AddVehicle from "../views/app/vendor/vehicle/add";
+import DailyWork from "../views/app/vendor/daily-work";
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -73,7 +73,7 @@ export default function AppRouter() {
                             <AddProduct />
                         </Route>
                         <Route exact={true} path={`${match.path}/products/stock/daily`}>
-                            <DailyStockLoad />
+                            <DailyWork />
                         </Route>
                         <Route exact={true} path={`${match.path}/products`}>
                             <ProductList />

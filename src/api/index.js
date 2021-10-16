@@ -35,7 +35,10 @@ Axios.interceptors.response.use(async response => {
     },
     async function (error) {
         const originalRequest = error.config;
-        if(error.response.status === 401 && error.response.data.message === "Token Expired!") {
+        if(
+            error && error.response &&
+            error.response.status === 401 &&
+            error.response.data.message === "Token Expired!") {
             // Force logout and login again
             store.dispatch(actions.user.setUserData({}))
             store.dispatch(actions.user.setAuthToken(""))
@@ -45,7 +48,8 @@ Axios.interceptors.response.use(async response => {
             window.localStorage.removeItem("token")
             window.localStorage.setItem("role", "guest")
         }
-        else if(error.response.status === 401 && error.response.data.message === "Session is invalid!") {
+        else if(
+            error && error.response && error.response.status === 401 && error.response.data.message === "Session is invalid!") {
             const data = await auth.token()
             if(data && data.data) {
                 setAuthToken(data.data.accessToken)
