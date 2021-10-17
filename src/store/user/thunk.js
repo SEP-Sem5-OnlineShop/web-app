@@ -1,7 +1,8 @@
 import userSlice from "./index"
 import {authApi} from "../../api/index"
 
-import {alertSocket} from "../../socket/index"
+import {driverSocket} from "../../socket/index"
+import driver from "../../api/app/driver";
 
 /**
  * Thunk action
@@ -20,13 +21,17 @@ export function localSignIn(username, password) {
                 dispatch(userSlice.actions.setRole(data.data.role))
                 dispatch(userSlice.actions.setIsLogin("yes"))
                 const role = data.data.role || ""
-                alertSocket.auth = {role}
-                alertSocket.connect();
-                alertSocket.emit("join", {userId: data.data._id})
-                console.log(data.data._id)
-                alertSocket.on("connect", () => {
-                    dispatch(userSlice.actions.setSocketId(alertSocket.id))
-                })
+                const userID = data.data._id || ""
+                const username = data.data.telephone || ""
+                if(role === "driver" || role === "customer") {
+                    driverSocket.auth = {role, userID, username}
+                    driverSocket.connect()
+                    driverSocket.on("driver:session", ({sessionID}) => {
+                        window.localStorage.setItem("sessionID", sessionID)
+                    })
+                    driverSocket.emit("join", {userId: userID})
+                    driverSocket.emit("driver:login", {userId: data.data._id})
+                }
             }
             return {status, data}
         }
@@ -40,12 +45,15 @@ export function signOUt() {
     return async (dispatch, getState) => {
         try {
             const {status, data} = await authApi.logout()
-            alertSocket.emit("remove-user", getState().user.socketId)
-            alertSocket.disconnect()
+            if(getState().user.role === "driver"){
+                driverSocket.emit("driver:logout", {userId: getState().user.userData._id})
+                window.localStorage.removeItem("sessionID")
+                driverSocket.disconnect()
+            }
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
             dispatch(userSlice.actions.setRole("guest"))
-            dispatch(userSlice.actions.setIsLogin("no"))
+            dispatch(userSlice.actions. setIsLogin("no"))
             window.localStorage.removeItem("userData")
             window.localStorage.setUserData("token", "")
             window.localStorage.setItem("role", "guest")

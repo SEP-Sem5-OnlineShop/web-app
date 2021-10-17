@@ -1,5 +1,6 @@
 import React, { useEffect } from "react"
 import { Loader } from '@googlemaps/js-api-loader';
+import {useSelector} from "react-redux";
 
 export default function CustomerMap() {
     const loader = new Loader({
@@ -7,50 +8,43 @@ export default function CustomerMap() {
         version: "weekly",
         libraries: ["places"]
     });
+    const onlineDrivers = useSelector(state => state.map.onlineDrivers)
 
     useEffect(() => {
         // Initialize and add the map
-        let map, infoWindow;
+        let map
+        const latitudeLongitude = { lat: 6.7324, lng: 81.1345 }
 
         const mapOptions = {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 6,
+            center: latitudeLongitude,
+            zoom: 15,
         }
+
 
         loader.load()
             .then(google => {
                 map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                infoWindow = new google.maps.InfoWindow();
 
-                const locationButton = document.createElement("button");
+                new google.maps.Marker({
+                    position: latitudeLongitude,
+                    map: map
+                })
 
-                locationButton.textContent = "Pan to Current Location";
-                locationButton.classList.add("custom-map-control-button");
-                map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-                locationButton.addEventListener("click", () => {
-                    // Try HTML5 geolocation.
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(
-                            (position) => {
-                                const pos = {
-                                    lat: position.coords.latitude,
-                                    lng: position.coords.longitude,
-                                };
+                Object.values(onlineDrivers).forEach(driver => {
+                    const driverLatLng = driver.driver.location['coordinates']
+                    console.log(driverLatLng)
+                    new google.maps.Marker({
+                        position: {lat: parseFloat(driverLatLng[0]), lng: parseFloat(driverLatLng[1])},
+                        map: map
+                    })
+                })
 
-                                infoWindow.setPosition(pos);
-                                infoWindow.setContent("Location found.");
-                                infoWindow.open(map);
-                                map.setCenter(pos);
-                            },
-                            () => {
-                                handleLocationError(true, infoWindow, map.getCenter());
-                            }
-                        );
-                    } else {
-                        // Browser doesn't support Geolocation
-                        handleLocationError(false, infoWindow, map.getCenter());
-                    }
-                });
+                const geocoder = new google.maps.Geocoder()
+                geocoder.geocode({location: latitudeLongitude})
+                    .then(response => {
+                        console.log(response.results)
+                    })
+
             })
             .catch(e => {
                 console.log(e)
@@ -66,7 +60,7 @@ export default function CustomerMap() {
             infoWindow.open(map);
         }
 
-    })
+    }, [onlineDrivers])
 
     return (
         <div id='map' className="w-full" style={{ minHeight: 'calc(100vh - 7rem)' }} />

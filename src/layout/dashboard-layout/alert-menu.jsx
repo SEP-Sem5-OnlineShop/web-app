@@ -3,18 +3,18 @@ import React, {Fragment, useEffect, useState} from 'react'
 
 import { IconContext } from "react-icons";
 import { MdNotifications, MdNotificationsActive } from "react-icons/md";
-import {alertSocket} from "../../socket";
+import {driverSocket} from "../../socket";
 
 export default function AlertMenu() {
     const [alerts, setAlerts] = useState([])
 
     useEffect(() => {
-        alertSocket.on("alert:set", (data) => {
+        driverSocket.on("alert:set", (data) => {
             setAlerts(prevAlerts => [...prevAlerts, {key: `set-${data.productId}`, text: `Set alert for ${data.productName}`}])
         })
     }, [])
     useEffect(() => {
-        alertSocket.on("alert:unset", (data) => {
+        driverSocket.on("alert:unset", (data) => {
             setAlerts(prevAlerts => [...prevAlerts, {key: `unset-${data.productId}`, text: `Unset alert for ${data.productName}`}])
         })
     }, [])
