@@ -31,8 +31,6 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.get(`app/customer/${customer_id}/alerts/${product_id}`);
                 // const data = false;
-                console.log('alert details');
-                console.log(data);
                 if (data._id){
                     setAlert(true);
                 } else {
@@ -42,7 +40,6 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 setEr(null);
             } catch (err) {
                 setLoading(false);
-                console.log(err);
                 setEr(err);
             };
         };

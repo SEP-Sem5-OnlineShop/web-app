@@ -6,9 +6,11 @@ import ProductComponent from '../../../components/customer/productComponent';
 import RatingComponent from '../../../components/customer/ratingComponent';
 import LoadingBox from '../../../components/customer/loadingBox';
 import MessageBox from '../../../components/customer/messageBox';
-import {axios} from "../../../api/index";
+import {axios, driverApi} from "../../../api/index";
 import { useSelector } from 'react-redux';
 import { getFileUrl } from '../../../api/azure-storage-blob';
+import {driverSocket} from "../../../socket";
+import DriverCard from "../../../components/card/driver-card";
 
 
 const VendorScreen = () => {
@@ -19,7 +21,6 @@ const VendorScreen = () => {
   if (userData){
       customer_id = userData._id;
   }
-  console.log(customer_id)
 
   const [vendor, setVendor] = useState({})
   const [products, setProducts] = useState([]);
@@ -27,16 +28,14 @@ const VendorScreen = () => {
   const [error, setError] = useState(null);
   const [loading1, setLoading1] = useState(true);
   const [error1, setError1] = useState(null);
+  const [drivers, setDrivers] = useState({})
 
   const [width, height] = useWindowSize();
-  console.log(width);
 
   useEffect(() => {
     async function detailsVendor(vendor_id){
       try {
         const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
-        console.log('vendor screen vendor details');
-        console.log(data);
         setVendor(data);
         setLoading(false);
       } catch (error) {
@@ -52,12 +51,9 @@ const VendorScreen = () => {
     async function listProducts(vendor_id){
       try {
         const { data } = await axios.get(`gen/customer/products/${vendor_id}`);
-        console.log('vendor screen vendor product list');
-        console.log(data);
         setProducts(data);
         setLoading1(false);
       } catch (error) {
-        console.log("product felch error");
         setError1("product felch error");
         setLoading1(false);
       };
@@ -66,6 +62,45 @@ const VendorScreen = () => {
       listProducts(vendor_id);
     };
   }, [error, loading, vendor_id]);
+
+  useEffect(async () => {
+      let mounted = true
+      const socket = axios.CancelToken.source()
+
+      try {
+          const drivers = await driverApi.getLoggedDrivers(socket, vendor_id)
+          const driversObj = {}
+          if(drivers && drivers.data && drivers.status===200) {
+              drivers.data.data.forEach(item => {
+                  driversObj[item._id] = item
+              })
+          }
+          if(mounted) setDrivers(driversObj)
+      }
+      catch (e) {
+          if(!axios.isCancel(e)) throw e
+      }
+
+    driverSocket.on("driver:showLogin", async (data) => {
+        const driver = await driverApi.getDriver(socket, data)
+        if(driver && driver.data && driver.status===200)
+            setDrivers(prevState => {
+                return {...prevState, [data]: driver.data.data}
+            })
+    })
+    driverSocket.on("driver:showLogout", (data) => {
+        setDrivers(prevState => {
+            const newDriverObj = {...prevState}
+            delete newDriverObj[data]
+            return newDriverObj
+        })
+    })
+
+      return () => {
+        socket.cancel()
+          mounted = false
+      }
+  }, [])
 
   return (
       <div>
@@ -88,6 +123,17 @@ const VendorScreen = () => {
                       <RatingComponent rating={vendor.rating} size={width>600?25:width>480?22:width>400?18:16} />
                       <span className="text-xs xs:text-sm sm:text-base">{vendor.rating} ({vendor.ratingCount}+)</span>
                       <p className="mt-2 text-xs xs:text-sm sm:text-base">{vendor.vendor_description}</p>
+                  </div>
+
+                  <div className={'grid grid-cols-4 gap-4 mt-8'}>
+                      {
+                          Object.values(drivers).map(item => {
+                              console.log(drivers)
+                              return (
+                                  <DriverCard key={item._id} data={item} />
+                              )
+                          })
+                      }
                   </div>
 
                   <div className="px-2 py-4 sm:px-12 sm:py-8">
