@@ -1,5 +1,6 @@
 import React, { useEffect } from "react"
 import { Loader } from '@googlemaps/js-api-loader';
+import {useSelector} from "react-redux";
 
 export default function CustomerMap() {
     const loader = new Loader({
@@ -7,6 +8,7 @@ export default function CustomerMap() {
         version: "weekly",
         libraries: ["places"]
     });
+    const onlineDrivers = useSelector(state => state.map.onlineDrivers)
 
     useEffect(() => {
         // Initialize and add the map
@@ -18,12 +20,23 @@ export default function CustomerMap() {
             zoom: 15,
         }
 
+
         loader.load()
             .then(google => {
                 map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                const marker = new google.maps.Marker({
+
+                new google.maps.Marker({
                     position: latitudeLongitude,
                     map: map
+                })
+
+                Object.values(onlineDrivers).forEach(driver => {
+                    const driverLatLng = driver.driver.location['coordinates']
+                    console.log(driverLatLng)
+                    new google.maps.Marker({
+                        position: {lat: parseFloat(driverLatLng[0]), lng: parseFloat(driverLatLng[1])},
+                        map: map
+                    })
                 })
 
                 const geocoder = new google.maps.Geocoder()
@@ -47,7 +60,7 @@ export default function CustomerMap() {
             infoWindow.open(map);
         }
 
-    })
+    }, [onlineDrivers])
 
     return (
         <div id='map' className="w-full" style={{ minHeight: 'calc(100vh - 7rem)' }} />

@@ -1,7 +1,7 @@
 import userSlice from "./index"
 import {authApi} from "../../api/index"
 
-import {alertSocket, driverSocket} from "../../socket/index"
+import socket, {alertSocket, driverSocket} from "../../socket/index"
 import driver from "../../api/app/driver";
 
 /**
@@ -21,16 +21,20 @@ export function localSignIn(username, password) {
                 dispatch(userSlice.actions.setRole(data.data.role))
                 dispatch(userSlice.actions.setIsLogin("yes"))
                 const role = data.data.role || ""
-                alertSocket.auth = {role}
-                alertSocket.connect();
+                const userID = data.data._id || ""
+                const username = data.data.telephone || ""
+                socket.auth = {role, userID, username}
+                socket.connect();
                 alertSocket.emit("join", {userId: data.data._id})
-                console.log(data.data._id)
                 alertSocket.on("connect", () => {
                     dispatch(userSlice.actions.setSocketId(alertSocket.id))
                 })
                 if(role === "driver" || role === "customer") {
-                    driverSocket.auth = {role}
+                    driverSocket.auth = {role, userID, username}
                     driverSocket.connect()
+                    driverSocket.on("driver:session", ({sessionID}) => {
+                        window.localStorage.setItem("sessionID", sessionID)
+                    })
                     driverSocket.emit("driver:login", {userId: data.data._id})
                 }
             }
@@ -48,10 +52,9 @@ export function signOUt() {
             const {status, data} = await authApi.logout()
             if(getState().user.role === "driver"){
                 driverSocket.emit("driver:logout", {userId: getState().user.userData._id})
-                driverSocket.disconnect()
+                window.localStorage.removeItem("sessionID")
             }
-            alertSocket.emit("remove-user", getState().user.socketId)
-            alertSocket.disconnect()
+            socket.disconnect()
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
             dispatch(userSlice.actions.setRole("guest"))
