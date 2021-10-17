@@ -12,7 +12,6 @@ export default function MainLayout(props) {
     const [isOpen, toggleOpen] = useCycle(false, true);
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
-    const dashboardStrings = useSelector(state => state.language.languageFile.dashboard)
     const [isMobile, setIsMobile] = useState(false)
     const isLogin = useSelector(state => state.user.isLogin)
     const dispatch = useDispatch()
@@ -29,8 +28,10 @@ export default function MainLayout(props) {
             }
         }
         verifyScreen()
+        console.log("outside")
         window.addEventListener("resize", verifyScreen)
         return () => {
+            console.log("unmounted")
             window.removeEventListener("resize", verifyScreen)
         }
     }, [])
@@ -82,6 +83,7 @@ export default function MainLayout(props) {
                 <div className="w-full mt-28 bg-white rounded-t-3xl lg:rounded-t-6xl"
                     style={{ minHeight: 'calc(100vh - 7rem)' }}>
                     {props.children}
+                    {/* <CustomerMap /> */}
                 </div>
 
             </div>

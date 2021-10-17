@@ -1,39 +1,45 @@
 import React from "react"
-import { useTable, useGlobalFilter } from 'react-table'
-import parse from 'html-react-parser'
-import {productApi} from "../../../../api";
-import CardTemplate from "../../../../components/card/template";
 import {Link} from "react-router-dom"
 
-const EditButton = (id) => {
-    return (
-        <Link to={`/app/product/${id}`}>
-            <button>Edit</button>
-        </Link>
-    )
-}
+import {axios, productApi} from "../../../../api";
+import TableWithPaginationGlobalSearch from "../../../../components/table/table-with-pagination-global-search";
+import ControlButtons from "../../../../components/table/control-buttons";
 
 export default function ProductList() {
     const [data, setData] = React.useState([])
+    const [loading, setLoading] = React.useState(false)
     React.useEffect( async () => {
+        let mounted = true
+        let source = axios.CancelToken.source()
         try {
-            const {data, status} =  await productApi.getList()
+            setLoading(true)
+            const {data, status} =  await productApi.getList(source)
             const list = []
-            data.data.forEach((item, index) => {
-                list.push({
-                    'col1': index+1,
-                    'col2': item.product_name || "",
-                    'col3': item.rating || "Not Set",
-                    'col4': item.price || "",
-                    'col5': item.discount || "Not Set",
-                    'col6': item.stock || "0",
-                    'col7': EditButton(item._id)
+            if(data && status===200) {
+                data.data.forEach((item, index) => {
+                    list.push({
+                        'col1': index+1,
+                        'col2': item.product_name || "",
+                        'col3': item.rating || "Not Set",
+                        'col4': item.price || "",
+                        'col5': item.discount || "Not Set",
+                        'col6': item.stock || "0",
+                        'col7': item._id
+                    })
                 })
-            })
-            setData(list)
+            }
+            if (mounted) setData(list)
         }
         catch (e) {
+            if(!axios.isCancel(e)) throw e
+        }
+        finally {
+            setLoading(false)
+        }
 
+        return () => {
+            mounted = false
+            source.cancel()
         }
     }, [])
 
@@ -66,63 +72,14 @@ export default function ProductList() {
             {
                 Header: 'Operations',
                 accessor: 'col7',
+                Cell: ({cell: {value}}) => <ControlButtons id={value} type={'product'} api={productApi} />
             },
         ],
         []
     )
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({ columns, data })
-
     return (
-        <div className="flex justify-center">
-            <div className="w-full flex flex-col items-center justify-center p-0 lg:p-8">
-                <div className="w-full text-3xl font-medium">My Products</div>
-                <CardTemplate style={{overFlowX: "auto"}}>
-                    <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-cardColor">
-                        {headerGroups.map(headerGroup => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map(column => (
-                                    <th
-                                        {...column.getHeaderProps()}
-                                        scope="col"
-                                        className="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        {column.render('Header')}
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
-                        </thead>
-                        <tbody {...getTableBodyProps()} className="bg-white divide-y divide-buttonColor">
-                        {rows.map(row => {
-                            prepareRow(row)
-                            return (
-                                <tr {...row.getRowProps()}>
-                                    {row.cells.map(cell => {
-                                        return (
-                                            <td
-                                                {...cell.getCellProps()}
-                                                className="px-6 py-4 whitespace-nowrap text-center text-sm text-text"
-                                            >
-                                                {cell.render('Cell')}
-                                            </td>
-                                        )
-                                    })}
-                                </tr>
-                            )
-                        })}
-                        </tbody>
-                    </table>
-                </CardTemplate>
-            </div>
-        </div>
-
+        <TableWithPaginationGlobalSearch loading={loading} columns={columns} data={data} tableName={'My Products'} type={'Product'} link={'product'} />
     )
+
 }

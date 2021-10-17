@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useParams, useHistory } from "react-router-dom"
 import CardTemplate from "../../components/card/template";
-import InputWithValidation from "../../components/input-with-validation";
+import InputWithValidation from "../../components/form-components/input-with-validation";
 import { driverApi } from "../../api";
 
 export default function CreatePassword() {

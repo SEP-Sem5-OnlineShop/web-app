@@ -15,10 +15,11 @@ import ProductScreen from "../views/app/customer/productScreen";
 import VendorScreen from "../views/app/customer/vendorScreen";
 import Page404 from "../views/404"
 import { actions } from "../store"
-import DashboardLayout from "../layout/dashboard-layour";
+import DashboardLayout from "../layout/dashboard-layout";
 import Dashboard from "../views/app/driver/dashboard";
 import VendorDashboard from "../views/app/vendor/dashboard/index"
 import CreatePassword from "../views/other/create-password";
+import {alertSocket} from "../socket";
 
 export default function MainRouter() {
 
@@ -38,6 +39,11 @@ export default function MainRouter() {
         dispatch(actions.user.setAuthToken(token))
         dispatch(actions.user.setRole(role))
         dispatch(actions.user.setIsLogin(isLogin))
+        if(userData) {
+            alertSocket.auth = {role}
+            alertSocket.connect();
+            alertSocket.emit("join", {userId: userData._id || ""})
+        }
 
     }, [dispatch])
     const role = useSelector(state => state.user.role)

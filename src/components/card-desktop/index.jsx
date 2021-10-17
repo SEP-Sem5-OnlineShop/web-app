@@ -4,8 +4,8 @@ export default function CardDesktop(props) {
     return (
         <div>
 
-            <div class="px-4 mt-16">
-                <div class="bg-primary p-6 rounded-lg shadow-lg font-semibold">
+            <div className="px-4">
+                <div className="bg-primary p-6 rounded-lg shadow-lg font-semibold">
                     <div>{props.content}</div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import React, {forwardRef} from "react";
-import InputWithValidation from "../../../components/input-with-validation";
+import InputWithValidation from "../../../components/form-components/input-with-validation";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {thunks} from "../../../store/index";

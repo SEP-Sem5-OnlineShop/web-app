@@ -2,12 +2,6 @@ import React from "react"
 import HomeItem from "./home-item";
 import { useSelector } from "react-redux"
 
-import pizza from "../../assets/img/pizza.jpg"
-import bread from "../../assets/img/bread.jpg"
-import cherry from "../../assets/img/cherry.jpg"
-import plants from "../../assets/img/plants.jpg"
-import vegetables from "../../assets/img/vegetables.jpg"
-
 import IconPanel from "./icon-panel"
 import SwiperSliderContainer from "./swiper-slider-container";
 import { SwiperSlide } from "swiper/react";
@@ -23,64 +17,25 @@ export default function HomeDsand() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-    async function listVendors(){
-        setLoading(true);
-        try {
-        const { data } = await axios.get(`gen/customer/vendorlist`);
-        console.log('home screen vendor list');
-        console.log(data);
-        // const data = [
-        //     {
-        //         _id: "613eb365af0d5b2c142fa326",
-        //         vendor_name: "Yummy Backers",
-        //         vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
-        //         image:"/img/vendor.jpg",
-        //         rating: '4.0',
-        //         ratingCount: 2,
-        //     },
-        //     {
-        //         _id: "2",
-        //         vendor_name: "Yummy Backers",
-        //         vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
-        //         image:"/img/vendor.jpg",
-        //         rating: '4.0',
-        //         ratingCount: 2,
-        //     },
-        //     {
-        //         _id: "3",
-        //         vendor_name: "Yummy Backers",
-        //         vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
-        //         image:"/img/vendor.jpg",
-        //         rating: '4.0',
-        //         ratingCount: 2,
-        //     },
-        //     {
-        //         _id: "4",
-        //         vendor_name: "Yummy Backers",
-        //         vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
-        //         image:"/img/vendor.jpg",
-        //         rating: '4.0',
-        //         ratingCount: 2,
-        //     },
-        //     {
-        //         _id: "5",
-        //         vendor_name: "Yummy Backers",
-        //         vendor_description: "Healthy eating means eating a variety of foods that give you the nutrients you need to maintain your health, feel good, and have energy.",
-        //         image:"/img/vendor.jpg",
-        //         rating: '4.0',
-        //         ratingCount: 2,
-        //     },
-        // ];
-        setVendors(data);
-        setLoading(false);
-        setError(null);
-        } catch (err) {
-        setLoading(false);
-        console.log(err);
-        setError(err);
-        };
-    };
-    listVendors();
+        let mounted = true;
+        (async function listVendors(){
+            setLoading(true);
+            try {
+                const { data } = await axios.get(`gen/customer/vendorlist`);
+                console.log('home screen vendor list');
+                console.log(data);
+                if(mounted) setVendors(data);
+                if(mounted) setLoading(false);
+                if(mounted) setError(null);
+            } catch (err) {
+                setLoading(false);
+                console.log(err);
+                setError(err);
+            }
+        })()
+        return () => {
+            mounted = false
+        }
     }, []);
 
     return (

@@ -1,4 +1,4 @@
-import { BlobServiceClient, ContainerClient } from '@azure/storage-blob'
+import { BlobServiceClient } from '@azure/storage-blob'
 
 const SASS_TOKEN = process.env.REACT_APP_BLOB_STORAGE_ACCESS_TOKEN || ""
 const STORAGE_ACCOUNT_NAME = process.env.REACT_APP_BLOB_STORAGE_ACCOUNT_NAME || ""
@@ -51,14 +51,18 @@ const createBlobInContainer = async (containerClient, file) => {
 }
 
 export const deleteBlobFile = async (fileName) => {
+  try {
+    // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
+    const blobService = new BlobServiceClient(azure_url);
 
-  // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
-  const blobService = new BlobServiceClient(azure_url);
+    // get Container - full public read access
+    const containerClient = blobService.getContainerClient(CONTAINER_NAME);
+    const blobClient = containerClient.getBlockBlobClient(fileName);
+    return await blobClient.delete();
+  }
+  catch (e) {
 
-  // get Container - full public read access
-  const containerClient = blobService.getContainerClient(CONTAINER_NAME);
-  const blobClient = containerClient.getBlockBlobClient(fileName);
-  return await blobClient.delete();
+  }
 }
 
 // return list of blobs in container to display
@@ -97,5 +101,5 @@ export const getFile = async (fileName) => {
   const blobClient = containerClient.getBlobClient(fileName)
   const downloadBlockBlobResponse = await blobClient.download()
   return downloadBlockBlobResponse
-  
+
 }
