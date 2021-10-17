@@ -21,6 +21,7 @@ const VendorScreen = () => {
   if (userData){
       customer_id = userData._id;
   }
+  const onlineDrivers = useSelector(state => state.map.onlineDrivers)
 
   const [vendor, setVendor] = useState({})
   const [products, setProducts] = useState([]);
@@ -31,6 +32,10 @@ const VendorScreen = () => {
   const [drivers, setDrivers] = useState({})
 
   const [width, height] = useWindowSize();
+
+  useEffect(() => {
+      setDrivers(onlineDrivers)
+  }, [onlineDrivers])
 
   useEffect(() => {
     async function detailsVendor(vendor_id){
@@ -80,21 +85,6 @@ const VendorScreen = () => {
       catch (e) {
           if(!axios.isCancel(e)) throw e
       }
-
-    driverSocket.on("driver:showLogin", async (data) => {
-        const driver = await driverApi.getDriver(socket, data)
-        if(driver && driver.data && driver.status===200)
-            setDrivers(prevState => {
-                return {...prevState, [data]: driver.data.data}
-            })
-    })
-    driverSocket.on("driver:showLogout", (data) => {
-        setDrivers(prevState => {
-            const newDriverObj = {...prevState}
-            delete newDriverObj[data]
-            return newDriverObj
-        })
-    })
 
       return () => {
         socket.cancel()
