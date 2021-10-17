@@ -1,7 +1,7 @@
 import userSlice from "./index"
 import {authApi} from "../../api/index"
 
-import socket, {alertSocket, driverSocket} from "../../socket/index"
+import {driverSocket} from "../../socket/index"
 import driver from "../../api/app/driver";
 
 /**
@@ -23,18 +23,13 @@ export function localSignIn(username, password) {
                 const role = data.data.role || ""
                 const userID = data.data._id || ""
                 const username = data.data.telephone || ""
-                socket.auth = {role, userID, username}
-                socket.connect();
-                alertSocket.emit("join", {userId: data.data._id})
-                alertSocket.on("connect", () => {
-                    dispatch(userSlice.actions.setSocketId(alertSocket.id))
-                })
                 if(role === "driver" || role === "customer") {
                     driverSocket.auth = {role, userID, username}
                     driverSocket.connect()
                     driverSocket.on("driver:session", ({sessionID}) => {
                         window.localStorage.setItem("sessionID", sessionID)
                     })
+                    driverSocket.emit("join", {userId: userID})
                     driverSocket.emit("driver:login", {userId: data.data._id})
                 }
             }
@@ -53,8 +48,8 @@ export function signOUt() {
             if(getState().user.role === "driver"){
                 driverSocket.emit("driver:logout", {userId: getState().user.userData._id})
                 window.localStorage.removeItem("sessionID")
+                driverSocket.disconnect()
             }
-            socket.disconnect()
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
             dispatch(userSlice.actions.setRole("guest"))
