@@ -89,8 +89,8 @@ const SellingCart = () => {
         <div>
             <div>
                 {!orderId ? (
-                    <div className="">
-                        <div className="my-2 sm:mx-2 sm:my-4">
+                    <div className="sm:mx-2 my-2 sm:my-8">
+                        <div className="block w-full overflow-x-auto">
                             {/* <div className="m-2  flex justify-between">
                                     <span className="m-2 text-sm sm:text-lg">product</span>
                                     <span className="m-2 text-sm sm:text-lg">price</span>
@@ -105,22 +105,22 @@ const SellingCart = () => {
                                     <input className="bg-cardColor text-sm sm:text-lg rounded-sm p-2 w-16" id={product._id} type="number" min={0} max={product.stock} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/>
                                 </div>
                             ))} */}
-                            <table className="m-2">
+                            <table className="items-center bg-transparent w-full border-collapse ">
                                 <thead>
                                 <tr>
-                                    <th className="m-2 text-sm sm:text-lg w-60 text-center">product</th>
-                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">price</th>
-                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">stock</th>
-                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">items</th>
+                                    <th className="px-1 xs:px-4 sm:px-6 py-2 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-xs xxs:text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">product</th>
+                                    <th className="px-1 xs:px-4 sm:px-6 py-2 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-xs xxs:text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">price</th>
+                                    <th className="px-1 xs:px-4 sm:px-6 py-2 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-xs xxs:text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left w-12 xxs:w-16 xs:w-20 sm:w-28 md:32">stock</th>
+                                    <th className="px-1 xs:px-4 sm:px-6 py-2 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-xs xxs:text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left w-12 xxs:w-16 xs:w-20 sm:w-28 md:32">items</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {products.map((product) => (
                                     <tr key={product._id}>
-                                        <td className="m-2 text-sm sm:text-lg w-60 text-center">{product.product_name}</td>
-                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.price}</td>
-                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.stock}</td>
-                                        <td><input className="bg-cardColor text-sm sm:text-lg rounded-sm p-2 w-40 text-center" id={product._id} type="number" min={0} max={product.stock} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/></td>
+                                        <td className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap text-left text-textLight">{product.product_name}</td>
+                                        <td className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap">{product.price}</td>
+                                        <td className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap w-12 xxs:w-16 xs:w-20 sm:w-28 md:32">{product.stock}</td>
+                                        <td><input className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap bg-textLight bg-opacity-10 w-12 xxs:w-16 xs:w-20 sm:w-28 md:32" id={product._id} type="number" min={0} max={product.stock} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/></td>
                                     </tr>
                                 ))}
                                 </tbody>
