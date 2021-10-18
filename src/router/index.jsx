@@ -22,6 +22,7 @@ import CreatePassword from "../views/other/create-password";
 import {alertSocket, driverSocket} from "../socket";
 import {axios} from "../api";
 import driverApi from "../api/app/driver";
+import DriverScreen from "../views/app/customer/driverScreen";
 
 export default function MainRouter() {
 
@@ -119,6 +120,9 @@ export default function MainRouter() {
                         </Route>
                         <Route path={`/vendor_:id/product_:pid`} exact>
                             <ProductScreen />
+                        </Route>
+                        <Route path={`/vendor_:id/driver_:did`} exact>
+                            <DriverScreen />
                         </Route>
                     </Switch>
                 </InnerPageLayout>
