@@ -19,8 +19,8 @@ import DashboardLayout from "../layout/dashboard-layout";
 import Dashboard from "../views/app/driver/dashboard";
 import VendorDashboard from "../views/app/vendor/dashboard/index"
 import CreatePassword from "../views/other/create-password";
-import {alertSocket, driverSocket} from "../socket";
-import {axios} from "../api";
+import {driverSocket} from "../socket";
+import {alertApi, axios} from "../api";
 import driverApi from "../api/app/driver";
 
 export default function MainRouter() {
@@ -33,29 +33,28 @@ export default function MainRouter() {
         dispatch(actions.language.setLanguage(selectedLanguage))
 
         // Set user data, token and role when page refreshing
-        const userData = JSON.parse(window.localStorage.getItem("userData"))
-        const token = window.localStorage.getItem("token")
-        const role = window.localStorage.getItem("role")
+        const userData = JSON.parse(window.localStorage.getItem("userData")) || {}
+        const token = window.localStorage.getItem("token") || ""
+        const role = window.localStorage.getItem("role") || ""
         const isLogin = window.localStorage.getItem("isLogin")
         dispatch(actions.user.setUserData(userData))
         dispatch(actions.user.setAuthToken(token))
         dispatch(actions.user.setRole(role))
         dispatch(actions.user.setIsLogin(isLogin))
-        if(userData) {
-            alertSocket.auth = {role}
-            alertSocket.connect();
-            alertSocket.emit("join", {userId: userData._id || ""})
-        }
         const sessionID = window.localStorage.getItem("sessionID")
         if(sessionID) {
-            driverSocket.auth = {sessionID}
+            const userID = userData._id
+            driverSocket.auth = {role, userID, sessionID}
             driverSocket.connect()
+            driverSocket.emit("join", {userId: userID})
         }
 
 
-    }, [dispatch])
+    }, [])
 
     useEffect(async () => {
+        const userData = JSON.parse(window.localStorage.getItem("userData")) || {}
+        const role = window.localStorage.getItem("role")
         let mounted = true
         const socket = axios.CancelToken.source()
         driverSocket.on("driver:showLogin", async (data) => {
@@ -67,6 +66,13 @@ export default function MainRouter() {
         driverSocket.on("driver:showLogout", (data) => {
             dispatch(actions.map.removeOnlineDriver(data))
         })
+        if(role === "driver") {
+            const driverAlerts = await alertApi.getDriverAlerts(userData._id, socket)
+            if(driverAlerts && driverAlerts.data && driverAlerts.status === 200) {
+                console.log(driverAlerts.data.data)
+                dispatch(actions.map.setAlertedCustomers(driverAlerts.data.data))
+            }
+        }
         return () => {
             socket.cancel()
             mounted = false

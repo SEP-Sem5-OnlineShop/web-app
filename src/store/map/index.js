@@ -29,6 +29,11 @@ const mapSlice = createSlice({
             if(action.payload && action.payload._id)
                 state.alertedCustomers = {...state.alertedCustomers, [action.payload._id]: action.payload}
         },
+        setAlertedCustomers(state, action) {
+            action.payload.forEach(customer => {
+                state.alertedCustomers = {...state.alertedCustomers, [customer._id]: customer}
+            })
+        },
         removeAlertedCustomer(state, action) {
             const customers = {...state.alertedCustomers}
             delete customers[action.payload]

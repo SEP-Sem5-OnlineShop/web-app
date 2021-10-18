@@ -8,6 +8,7 @@ import vehicle from "./app/vehicle";
 import vendorRequest from "./general/vendorRequest";
 import store, {actions} from "../store/index"
 import customer from './general/customer';
+import alert from "./app/alert";
 
 /*
  * Setup axios  
@@ -81,3 +82,4 @@ export const stockApi = stock
 export const vendorRequestApi = vendorRequest
 export const customerApi = customer
 export const vehicleApi = vehicle
+export const alertApi = alert

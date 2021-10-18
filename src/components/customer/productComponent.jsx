@@ -54,13 +54,20 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
-                const payload = {productId: product_id, productName: product.product_name, customer: customer}
-                const timeoutId = setTimeout(async () => {
-                    await driverSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
-                    setTimoutInitiated(true)
-                }, 2000)
-                setTimeoutId(timeoutId)
-                console.log(timeoutId)
+                if(data) {
+                    const payload = {
+                        alertId: data._id,
+                        productId: product_id,
+                        productName: product.product_name,
+                        vendor_id:vendor_id,
+                        customer: customer
+                    }
+                    const timeoutId = setTimeout(async () => {
+                        await driverSocket.emit("alert:create", {payload: payload})
+                        setTimoutInitiated(true)
+                    }, 0)
+                    setTimeoutId(timeoutId)
+                }
                 // alert('added alert');
             } catch (err) {
                 setError(err);
@@ -71,9 +78,16 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
-                const payload = {productId: product_id, productName: product.product_name, customer: customer}
-                clearTimeout(timeoutId)
-                if(timeoutInitiated) driverSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
+                if(data) {
+                    const payload = {
+                        productId: product_id,
+                        productName: product.product_name,
+                        customer: customer,
+                        driver_id: data.driver_id
+                    }
+                    clearTimeout(timeoutId)
+                    if(timeoutInitiated) driverSocket.emit("alert:remove", {payload: payload})
+                }
                 // alert('removed alert');
             } catch (err) {
                 setError1(err);
