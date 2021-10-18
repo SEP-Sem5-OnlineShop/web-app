@@ -3,6 +3,7 @@ import QrReader from 'react-qr-reader';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { axios } from '../../../api';
+import PaymentModal from './paymentModel';
 
 const BuyingCart = () => {
     const [scanResultWebCam, setScanResultWebCam] = useState('')
@@ -39,10 +40,11 @@ const BuyingCart = () => {
         console.log(error);
     }
     const handleScanWebCam = (result) => {
-        if(result){
-            console.log(result);
-            setScanResultWebCam(result);
-        }
+        // if(result){
+        //     console.log(result);
+        //     setScanResultWebCam(result);
+        // }
+        setScanResultWebCam("6167a9b1197dbe1e944b6272");
     }
 
     const handlePay = () => {
@@ -80,9 +82,9 @@ const BuyingCart = () => {
         
             <div>
                 {scanResultWebCam ? (
-                    <div className="">
-                        <div className="my-2 sm:mx-2 sm:my-4">
-                            <div className="m-2  flex justify-between">
+                    <div className="mx-1 my-2 sm:mx-12 sm:my-8">
+                        <div className="block w-full overflow-x-auto">
+                            {/* <div className="m-2  flex justify-between">
                                     <span className="m-2 text-sm sm:text-lg">product</span>
                                     <span className="m-2 text-sm sm:text-lg">price</span>
                                     <span className="m-2 text-sm sm:text-lg">items</span>
@@ -97,35 +99,38 @@ const BuyingCart = () => {
                                     </div>
                                 ))}
                             </>
-                            }
-                            {/* <table className="m-2">
-                                <thead>
+                            } */}
+                            <table className="items-center bg-transparent w-full border-collapse ">
+                                <thead className="">
                                 <tr>
-                                    <th className="m-2 text-sm sm:text-lg w-60 text-center">product</th>
-                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">price</th>
-                                    <th className="m-2 text-sm sm:text-lg w-40 text-center">items</th>
+                                    <th className="px-2 py-2 sm:px-6 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Product Name</th>
+                                    <th className="px-2 py-2 sm:px-6 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Price</th>
+                                    <th className="px-2 py-2 sm:px-6 sm:py-3 bg-cardColor text-textLight align-middle border border-solid border-textLight text-sm sm:text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Items</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {order.products && <>
                                     {order.products.map((product) => (
                                     <tr key={product._id}>
-                                        <td className="m-2 text-sm sm:text-lg w-60 text-center"><ProductName product_id={product.product_id} /></td>
-                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.price}</td>
-                                        <td className="m-2 text-sm sm:text-lg w-40 text-center">{product.items}</td>
+                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap text-left text-textLight"><ProductName product_id={product.product_id} /></td>
+                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap ">{product.price}</td>
+                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-center border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap ">{product.items}</td>
                                     </tr>
                                 ))}
                                 </>
                                 }
                                 </tbody>
-                            </table> */}
+                            </table>
                         </div>
                         <div className="flex justify-center mt-4 sm:mt-6">
-                            <span className="m-2 text-sm sm:text-lg">Total Items: {order.totalItems}</span>
-                            <span className="m-2 text-sm sm:text-lg">Total Cost: {order.totalCost}</span>
+                            <span className="m-2 text-sm sm:text-base">Total Items: {order.totalItems}</span>
+                            <span className="m-2 text-sm sm:text-base">Total Cost: {order.totalCost}</span>
                         </div>
+                        {/* <div className="flex justify-center mt-2 sm:mt-4">
+                            <button className="py-1 px-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button>
+                        </div> */}
                         <div className="flex justify-center mt-2 sm:mt-4">
-                            <button className="p-2 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={handlePay}>Pay</button>
+                            <PaymentModal orderId={"6161a54a775ede2cecd8a6dfhfdfggd"} name="something" amount={order.totalCost} customer={userData} handlePay={handlePay} />
                         </div>
                     </div>
                 ) : null}
@@ -163,6 +168,9 @@ const ProductName = ({product_id}) => {
     }, [product_id]);
   
     return (
-        <span className="m-2 text-sm sm:text-lg">{ productDetails.product_name }</span>
+        <span className="">{ productDetails.product_name }</span>
     );
   }
+
+// testing card
+//   MasterCard : 5307732125531191

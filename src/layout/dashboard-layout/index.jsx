@@ -109,7 +109,7 @@ export default function DashboardLayout(props) {
                         </div>
                     </div>
 
-                    <div className="w-full bg-white relative p-8"
+                    <div className="w-full bg-white relative p-4 sm:p-8"
                         style={childStyle}>
                         {
                             showMap ?
