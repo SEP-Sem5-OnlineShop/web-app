@@ -19,58 +19,41 @@ const DriverScreen = () => {
   if (userData){
       customer_id = userData._id;
   }
-  const onlineDrivers = useSelector(state => state.map.onlineDrivers)
 
-  const [vendor, setVendor] = useState({})
+  const [driver, setDriver] = useState({})
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [products, setProducts] = useState([]);
+  const [dailyStock, setDailyStock] = useState([]);
   const [loading1, setLoading1] = useState(true);
   const [error1, setError1] = useState(null);
-  const [driver, setDriver] = useState({})
+  const [vendor, setVendor] = useState({})
   const [loading2, setLoading2] = useState(true);
   const [error2, setError2] = useState(null);
-  
-  const [width, height] = useWindowSize();
-
-  useEffect(() => {
-    async function detailsVendor(vendor_id){
-      try {
-        const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
-        setVendor(data);
-        setLoading(false);
-      } catch (error) {
-        console.log("vendor felch error");
-        setError("vendor felch error");
-        setLoading(false);
-      };
-    };
-    detailsVendor(vendor_id);
-  }, [vendor_id]);
   
   useEffect(() => {
     async function detailsDriver(driver_id){
       try {
-        // const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
-        const { data } = (await axios.get(`/app/driver/${driver_id}`)).data;
+        const { data } = (await axios.get(`/gen/customer/driver/${driver_id}`)).data;
         console.log("driver felch");
         console.log(data);
         setDriver(data);
-        setLoading2(false);
+        setLoading(false);
       } catch (error) {
         console.log("driver felch error");
-        setError2("driver felch error");
-        setLoading2(false);
+        setError("driver felch error");
+        setLoading(false);
       };
     };
     detailsDriver(driver_id);
   }, [driver_id]);
 
   useEffect(() => {
-    async function listProducts(vendor_id){
+    async function listProducts(driver_id){
       try {
-        const { data } = await axios.get(`gen/customer/products/${vendor_id}`);
-        setProducts(data);
+        const { data } = await axios.get(`gen/customer/driverstock/${driver_id}`);
+        console.log("dailyStock");
+        console.log(data.data.dailyStock);
+        setDailyStock(data.data.dailyStock);
         setLoading1(false);
       } catch (error) {
         setError1("product felch error");
@@ -78,27 +61,47 @@ const DriverScreen = () => {
       };
     };
     if (loading && !error) {
-      listProducts(vendor_id);
+      listProducts(driver_id);
     };
-  }, [error, loading, vendor_id]);
+  }, [error, loading, driver_id]);
+
+  //   useEffect(() => {
+//     async function detailsVendor(vendor_id){
+//       try {
+//         const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
+//         setVendor(data);
+//         setLoading2(false);
+//       } catch (error) {
+//         console.log("vendor felch error");
+//         setError2("vendor felch error");
+//         setLoading2(false);
+//       };
+//     };
+//     detailsVendor(vendor_id);
+//   }, [vendor_id]);
 
 
   return (
       <div>
-      {loading2 ? (
+      {loading ? (
           <LoadingBox></LoadingBox>
-      ) : error2 ? (
-          <MessageBox variant="danger">{error2}</MessageBox>
+      ) : error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
       ) : (
           <div className="w-full min-h-screen overflow-x-hidden bg-contain bg-center relative">
               {/* <div style={{ backgroundImage: `url(${getFileUrl(vendor.imageUrl)})` }} className="rounded-t-3xl lg:rounded-t-6xl opacity-100 w-full h-full object-center absolute top-0 left-0 z-0"/> */}
-              <div className="h-24 xs:h-32 sm:h-40 md:h-52 w-full flex sm:px-10 items-end relative">
+              {/* <div className="h-24 xs:h-32 sm:h-40 md:h-52 w-full flex sm:px-10 items-end relative"> */}
+              <div className="h-24 w-full flex sm:px-10 items-end relative">
               <Link to={`/vendor_${vendor_id}/driver_${driver_id}`}>
-                  <span style={{'WebkitTextFillColor': 'white', 'WebkitTextStrokeWidth': '1px', 'WebkitTextStrokeColor': '#000000', 'textShadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-2 my-2 xs:ml-4 xs:my-4 sm:ml-6 sm:my-6 text-lg xss:text-xl xs:text-3xl sm:text-4xl md:text-5xl text-white font-semibold relative">{driver.firstName || "driver"} {driver.lastName || "name"}</span>
+                  <span style={{'WebkitTextFillColor': 'white', 'WebkitTextStrokeWidth': '1px', 'WebkitTextStrokeColor': '#000000', 'textShadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-2 my-2 xs:ml-4 xs:my-4 sm:ml-6 sm:my-6 text-base xss:text-lg xs:text-xl sm:text-2xl md:text-3xl text-white font-semibold relative">{driver.firstName || "driver"} {driver.lastName || "name"}</span>
               </Link>
-              <Link to={`/vendor_${vendor_id}`}>
+              {/* <Link to={`/vendor_${vendor_id}`}>
                   <span style={{'WebkitTextFillColor': 'white', 'WebkitTextStrokeWidth': '1px', 'WebkitTextStrokeColor': '#000000', 'textShadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-2 my-2 xs:ml-4 xs:my-4 sm:ml-6 sm:my-6 text-sm xss:text-base xs:text-xl sm:text-2xl md:text-3xl text-white font-semibold relative">{vendor.vendor_name || "vendor name"}</span>
-              </Link>
+                </Link> */}
+              </div>
+              <div className="w-full flex-row sm:px-10">
+                <p className="ml-2 xs:ml-4 sm:ml-6 my-1 xs:my-2 sm:my-3 text-xs xss:text-sm xs:text-base sm:text-lg md:text-xl text-text font-semibold ">{driver.telephone || "telephone"} </p>
+                <p className="ml-2 xs:ml-4 sm:ml-6 my-1 xs:my-2 sm:my-3 text-xs xss:text-sm xs:text-base sm:text-lg md:text-xl text-text font-semibold ">{driver.email || "email"} </p>
               </div>
 
               <div className="w-full bg-white relative" style={{minHeight: 'calc(100vh - 11rem)'}}>
@@ -116,8 +119,8 @@ const DriverScreen = () => {
                           <MessageBox variant="danger">{error}</MessageBox>
                         ) : (
                           <>
-                            {products.map((product) => (
-                                <DriverProductComponent product={product} vendor_id={vendor_id} customer_id={customer_id} key={product._id} />
+                            {dailyStock.map((stockproduct) => (
+                                <DriverProductComponent stockproduct={stockproduct} vendor_id={vendor_id} customer_id={customer_id} key={stockproduct.productId} />
                             ))}
                             </>
                         )}
@@ -132,16 +135,3 @@ const DriverScreen = () => {
 }
 
 export default DriverScreen;
-
-function useWindowSize() {
-  const [size, setSize] = useState([0, 0]);
-  useLayoutEffect(() => {
-    function updateSize() {
-      setSize([window.innerWidth, window.innerHeight]);
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
-  return size;
-};
