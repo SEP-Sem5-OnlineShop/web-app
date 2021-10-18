@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { getFileUrl } from "../../api/azure-storage-blob";
 import {driverSocket} from "../../socket/index"
 
-const DriverProductComponent = ({ product, vendor_id, customer_id }) => {
+const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
     
     // customer_id 613eba8b94acbe3710fed690
     
@@ -20,11 +20,36 @@ const DriverProductComponent = ({ product, vendor_id, customer_id }) => {
     const [er, setEr] = useState(null);
     const [error, setError] = useState(null);
     const [error1, setError1] = useState(null);
+    const [product, setProduct] = useState({});
+    const [loading3, setLoading3] = useState(true);
+    const [error3, setError3] = useState(null);
 
     const [timeoutId, setTimeoutId] = useState(0)
     const [timeoutInitiated, setTimoutInitiated] = useState(false)
 
     const [width, height] = useWindowSize();
+
+    useEffect( () => {
+        async function detailsProduct(product_id){
+            try {
+                const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
+                console.log('driver screen product details');
+                console.log(data);
+                console.log("stockproduct");
+                console.log(stockproduct);
+                setProduct(data);
+                setLoading3(false);
+                setError3(null);
+            } catch (err) {
+                setLoading3(false);
+                console.log(err);
+                setError3(err);
+            };
+        };
+        if (stockproduct.productId) {
+            detailsProduct(stockproduct.productId);
+        };
+    }, [stockproduct.productId]);
 
     useEffect(async () => {
         async function detailsAlert(customer_id, product_id){
@@ -45,9 +70,9 @@ const DriverProductComponent = ({ product, vendor_id, customer_id }) => {
             };
         };
         if (customer_id) {
-            await detailsAlert(customer_id, product._id);
+            await detailsAlert(customer_id, stockproduct.productId);
         };
-    }, [customer_id, product._id]);
+    }, [customer_id, stockproduct.productId]);
 
     const handleRemove = (product_id) => {
         async function addAlert(customer_id,product_id){
@@ -100,8 +125,8 @@ const DriverProductComponent = ({ product, vendor_id, customer_id }) => {
             </Link>
             <div className="mx-2 my-1 xs:mx-4 xs:my-2 flex flex-col justify-between items-start">
                 <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
-                <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.available}: { product.stock }</span>
-                <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.currency} { product.price }</span>
+                <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.available}: { stockproduct.stock }</span>
+                <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.currency} { stockproduct.price }</span>
             </div>
             <div className="mr-1 my:4 sm:mx-4 flex flex-col justify-center items-end">
                 <button className="rounded-xl shadow w-6 h-6 xs:w-8 xs:h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(product._id)}>

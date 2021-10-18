@@ -115,7 +115,7 @@ const VendorScreen = () => {
                       <p className="mt-2 text-xs xs:text-sm sm:text-base">{vendor.vendor_description}</p>
                   </div>
 
-                  <div className={'grid grid-cols-4 gap-4 mt-8'}>
+                  <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8 mx-1 sm:mx-4 md:mx-8'}>
                       {
                           Object.values(drivers).map(item => {
                               console.log(drivers)
