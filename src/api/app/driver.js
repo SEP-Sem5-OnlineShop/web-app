@@ -22,6 +22,12 @@ const driver = {
     getDrivers: async function(source) {
         return await axios.get('/app/drivers', {cancelToken: source.token})
     },
+    getNearbyDrivers: async function(source, location) {
+        return await axios.get('/app/drivers-nearby', {
+            cancelToken: source.token,
+            params: location
+        })
+    },
     getVehicles: async function(source) {
         return await axios.get('/app/vehicles', {cancelToken: source.token})
     },
