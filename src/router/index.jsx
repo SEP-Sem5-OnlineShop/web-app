@@ -19,7 +19,9 @@ import DashboardLayout from "../layout/dashboard-layout";
 import Dashboard from "../views/app/driver/dashboard";
 import VendorDashboard from "../views/app/vendor/dashboard/index"
 import CreatePassword from "../views/other/create-password";
-import {alertSocket} from "../socket";
+import {alertSocket, driverSocket} from "../socket";
+import {axios} from "../api";
+import driverApi from "../api/app/driver";
 
 export default function MainRouter() {
 
@@ -44,8 +46,35 @@ export default function MainRouter() {
             alertSocket.connect();
             alertSocket.emit("join", {userId: userData._id || ""})
         }
+        const sessionID = window.localStorage.getItem("sessionID")
+        if(sessionID) {
+            driverSocket.auth = {sessionID}
+            driverSocket.connect()
+        }
+
 
     }, [dispatch])
+
+    useEffect(async () => {
+        let mounted = true
+        const socket = axios.CancelToken.source()
+        driverSocket.on("driver:showLogin", async (data) => {
+            console.log(data)
+            const driver = await driverApi.getDriver(socket, data)
+            if(driver && driver.data && driver.status===200)
+                dispatch(actions.map.setOnlineDriver(driver.data.data))
+        })
+        driverSocket.on("driver:showLogout", (data) => {
+            dispatch(actions.map.removeOnlineDriver(data))
+        })
+        return () => {
+            socket.cancel()
+            mounted = false
+        }
+    }, [])
+
+
+
     const role = useSelector(state => state.user.role)
     return (
         <Router>

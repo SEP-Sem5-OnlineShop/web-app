@@ -1,22 +1,20 @@
-import React, {useEffect, useState} from "react"
-import { Loader } from '@googlemaps/js-api-loader';
-import {useDispatch, useSelector} from "react-redux";
-import {axios, driverApi} from "../api";
-import {actions} from "../store";
+import React, {useEffect} from "react"
+import {Loader} from "@googlemaps/js-api-loader";
+import {useSelector} from "react-redux";
 
-export default function CustomerMap() {
+export default function DriverMap() {
     const loader = new Loader({
         apiKey: "AIzaSyBo-7VdOVmwdviU_GNBfkmEN63Wfn1dvvs",
         version: "weekly",
         libraries: ["places"]
     });
-    const onlineDrivers = useSelector(state => state.map.onlineDrivers)
-    const dispatch = useDispatch()
+    const location = useSelector(state => state.user.userData.location)
+    const customers = useSelector(state => state.map.alertedCustomers)
 
-    let map
-    let latitudeLongitude = { lat: 6.7324, lng: 81.1345 }
-
-    const initMap = (drivers) => {
+    useEffect(async () => {
+        // Initialize and add the map
+        let map
+        let latitudeLongitude = {lat: parseFloat(location['coordinates'][0]), lng: parseFloat(location['coordinates'][1])}
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -42,19 +40,20 @@ export default function CustomerMap() {
                     map: map
                 })
 
-                Object.values(drivers).forEach(driver => {
+                Object.values(customers).forEach(driver => {
                     const driverLatLng = driver.location['coordinates']
+                    console.log(driverLatLng)
                     new google.maps.Marker({
                         position: {lat: parseFloat(driverLatLng[0]), lng: parseFloat(driverLatLng[1])},
                         map: map
                     })
                 })
-
-                const geocoder = new google.maps.Geocoder()
-                geocoder.geocode({location: latitudeLongitude})
-                    .then(response => {
-                        console.log(response.results)
-                    })
+                //
+                // const geocoder = new google.maps.Geocoder()
+                // geocoder.geocode({location: latitudeLongitude})
+                //     .then(response => {
+                //         console.log(response.results)
+                //     })
 
             })
             .catch(e => {
@@ -70,38 +69,12 @@ export default function CustomerMap() {
             );
             infoWindow.open(map);
         }
-    }
 
-    useEffect(async () => {
-        const source = axios.CancelToken.source()
-        let mounted = true
-
-        try {
-            const nearbyDrivers = await driverApi.getNearbyDrivers(source, latitudeLongitude)
-            const drivers = []
-            if(nearbyDrivers && nearbyDrivers.data && nearbyDrivers.status===200) {
-                const fetchedDrivers = nearbyDrivers.data.data || []
-                fetchedDrivers.forEach(driver => {
-                    drivers[driver['user_id']] = driver
-                })
-                if (mounted) {
-                    dispatch(actions.map.setOnlineDrivers(drivers))
-                }
-            }
-        }
-        catch (e) {
-
-        }
         return () => {
-            source.cancel()
-            mounted = false
-        }
-    }, [])
 
-    useEffect(() => {
-        console.log(onlineDrivers)
-        initMap(onlineDrivers)
-    }, [onlineDrivers])
+        }
+
+    }, [customers])
 
     return (
         <div id='map' className="w-full" style={{ minHeight: 'calc(100vh - 7rem)' }} />

@@ -5,13 +5,14 @@ import {axios} from "../../api/index";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getFileUrl } from "../../api/azure-storage-blob";
-import {alertSocket} from "../../socket/index"
+import {driverSocket} from "../../socket/index"
 
 const ProductComponent = ({ product, vendor_id, customer_id }) => {
     
     // customer_id 613eba8b94acbe3710fed690
     
     const productStrings = useSelector(state => state.language.languageFile.productpage)
+    const customer = useSelector(state => state.user.userData)
     const history = useHistory();
     const [alert, setAlert] = useState(false);
 
@@ -31,8 +32,6 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.get(`app/customer/${customer_id}/alerts/${product_id}`);
                 // const data = false;
-                console.log('alert details');
-                console.log(data);
                 if (data._id){
                     setAlert(true);
                 } else {
@@ -42,7 +41,6 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 setEr(null);
             } catch (err) {
                 setLoading(false);
-                console.log(err);
                 setEr(err);
             };
         };
@@ -56,9 +54,9 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
-                const payload = {productId: product_id, productName: product.product_name}
+                const payload = {productId: product_id, productName: product.product_name, customer: customer}
                 const timeoutId = setTimeout(async () => {
-                    await alertSocket.emit("alert:create", {room: vendor_id, payload: payload})
+                    await driverSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
                     setTimoutInitiated(true)
                 }, 2000)
                 setTimeoutId(timeoutId)
@@ -73,9 +71,9 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
-                const payload = {productId: product_id, productName: product.product_name}
+                const payload = {productId: product_id, productName: product.product_name, customer: customer}
                 clearTimeout(timeoutId)
-                if(timeoutInitiated) alertSocket.emit("alert:remove", {room: vendor_id, payload: payload})
+                if(timeoutInitiated) driverSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
                 // alert('removed alert');
             } catch (err) {
                 setError1(err);

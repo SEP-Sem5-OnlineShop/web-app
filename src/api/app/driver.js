@@ -13,8 +13,20 @@ const driver = {
     updateImage: async function (formData) {
         return await axios.put('/app/driver/image', formData)
     },
+    getDriver: async function(source, id) {
+        return await axios.get(`/app/driver/${id}`, {cancelToken: source.token})
+    },
+    getLoggedDrivers: async function(source, id) {
+        return await axios.get(`/app/drivers/${id}`, {cancelToken: source.token})
+    },
     getDrivers: async function(source) {
         return await axios.get('/app/drivers', {cancelToken: source.token})
+    },
+    getNearbyDrivers: async function(source, location) {
+        return await axios.get('/app/drivers-nearby', {
+            cancelToken: source.token,
+            params: location
+        })
     },
     getVehicles: async function(source) {
         return await axios.get('/app/vehicles', {cancelToken: source.token})
