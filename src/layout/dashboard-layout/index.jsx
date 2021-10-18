@@ -7,6 +7,9 @@ import { actions } from "../../store"
 import SideNavigation from "../mobile-navigation"
 import LoginRegister from "../home-layout/login-register"
 import AlertMenu from "./alert-menu";
+import {IconContext} from "react-icons";
+import {FaMapMarkerAlt} from "react-icons/fa";
+import DriverMap from "../../geo-location/driver-map";
 
 
 export default function DashboardLayout(props) {
@@ -14,6 +17,7 @@ export default function DashboardLayout(props) {
     let history = useHistory()
     const dispatch = useDispatch()
     const selectedLanguage = useSelector(state => state.language.language)
+    const showMap = useSelector(state => state.map.showMap)
     const isLogin = useSelector(state => state.user.isLogin)
     const [freeze, setFreeze] = useState(false)
     const [childStyle, setChildStyle] = useState({
@@ -86,6 +90,13 @@ export default function DashboardLayout(props) {
                         </select>
 
                         <div className="flex items-center">
+
+                            <IconContext.Provider value={{ color: "#264A75", size: "1.5rem"}} >
+                                <div className="mr-2" onClick={() => dispatch(actions.map.setLanguage(!showMap))}>
+                                    <FaMapMarkerAlt />
+                                </div>
+                            </IconContext.Provider>
+
                             <div className="flex items-center">
                                 <AlertMenu />
                                 {
@@ -100,7 +111,12 @@ export default function DashboardLayout(props) {
 
                     <div className="w-full bg-white relative p-8"
                         style={childStyle}>
-                        {props.children}
+                        {
+                            showMap ?
+                                <DriverMap />
+                                :
+                                props.children
+                        }
                     </div>
 
                 </div>

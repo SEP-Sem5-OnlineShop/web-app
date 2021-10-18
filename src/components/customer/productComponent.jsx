@@ -12,6 +12,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     // customer_id 613eba8b94acbe3710fed690
     
     const productStrings = useSelector(state => state.language.languageFile.productpage)
+    const customer = useSelector(state => state.user.userData)
     const history = useHistory();
     const [alert, setAlert] = useState(false);
 
@@ -53,7 +54,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
-                const payload = {productId: product_id, productName: product.product_name}
+                const payload = {productId: product_id, productName: product.product_name, customer: customer}
                 const timeoutId = setTimeout(async () => {
                     await driverSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
                     setTimoutInitiated(true)
@@ -70,7 +71,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
-                const payload = {productId: product_id, productName: product.product_name}
+                const payload = {productId: product_id, productName: product.product_name, customer: customer}
                 clearTimeout(timeoutId)
                 if(timeoutInitiated) driverSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
                 // alert('removed alert');

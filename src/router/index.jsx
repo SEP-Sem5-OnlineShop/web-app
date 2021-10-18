@@ -59,9 +59,10 @@ export default function MainRouter() {
         let mounted = true
         const socket = axios.CancelToken.source()
         driverSocket.on("driver:showLogin", async (data) => {
+            console.log(data)
             const driver = await driverApi.getDriver(socket, data)
             if(driver && driver.data && driver.status===200)
-                dispatch(actions.map.setOnlineDrivers(driver.data.data))
+                dispatch(actions.map.setOnlineDriver(driver.data.data))
         })
         driverSocket.on("driver:showLogout", (data) => {
             dispatch(actions.map.removeOnlineDriver(data))
