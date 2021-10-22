@@ -8,6 +8,7 @@ import { getFileUrl } from "../../../../api/azure-storage-blob";
 import { driverApi, authApi } from "../../../../api"
 import { actions } from "../../../../store/index"
 import FileUploader from "../../../../components/form-components/file-uploader"
+import LoadingButton from "../../../../components/form-components/loading-button";
 
 export default function Profile() {
 
@@ -28,7 +29,10 @@ export default function Profile() {
             lastName: '',
             telephone: '',
             email: '',
-            licenseNumber: ''
+            vendor: {
+                shopName: 'abcd',
+                permitNumber: ''
+            }
         },
         validationSchema: Yup.object({
             firstName: Yup.string()
@@ -39,27 +43,30 @@ export default function Profile() {
                 .required('Required'),
             email: Yup.string()
                 .required('Required'),
-            licenseNumber: Yup.string()
-                .required('Required'),
+            vendor: Yup.object({
+                shopName: Yup.string().required('Required'),
+                permitNumber: Yup.string().required('Required')
+            })
         }),
         onSubmit: async values => {
-            try {
-                const { data, status } = await driverApi.update(values)
-                if (status === 200 && data && data.message === "Success") {
-                    console.log(data.data)
-                }
-            }
-            catch (e) {
-                try {
-                    const { data, status } = await authApi.updatePassword({ password: values.password })
-                    if (status === 200 && data && data.message === "Success") {
-                        console.log(data.data)
-                    }
-                }
-                catch (e) {
-                    console.log(e.message)
-                }
-            }
+            console.log(values)
+            // try {
+            //     const { data, status } = await driverApi.update(values)
+            //     if (status === 200 && data && data.message === "Success") {
+            //         console.log(data.data)
+            //     }
+            // }
+            // catch (e) {
+            //     try {
+            //         const { data, status } = await authApi.updatePassword({ password: values.password })
+            //         if (status === 200 && data && data.message === "Success") {
+            //             console.log(data.data)
+            //         }
+            //     }
+            //     catch (e) {
+            //         console.log(e.message)
+            //     }
+            // }
             // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
         },
     });
@@ -99,7 +106,7 @@ export default function Profile() {
     })
 
     useEffect(async () => {
-        formik.setFieldValue("licenseNumber", userData.driver.licenseNumber)
+        formik.setFieldValue("licenseNumber", userData.vendor.permitNumber)
         try {
             const { data, status } = await driverApi.getImage()
             if (data.data && status === 200 && data.message == "Success") {
@@ -161,6 +168,14 @@ export default function Profile() {
                             />
                             <InputWithValidation
                                 formik={formik}
+                                label="Shop Name"
+                                id="shopName"
+                                name="vendor.shopName"
+                                disabled={disabled}
+                                value={userData.vendor.shopName}
+                            />
+                            <InputWithValidation
+                                formik={formik}
                                 label="Telephone"
                                 id="telephone"
                                 name="telephone"
@@ -175,17 +190,28 @@ export default function Profile() {
                             />
                             <InputWithValidation
                                 formik={formik}
-                                label="License Number"
-                                id="licenseNumber"
-                                name="licenseNumber"
+                                label="Permit Number"
+                                id="permitNumber"
+                                name="vendor.permitNumber"
                                 disabled={true}
+                                value={userData.vendor.permitNumber}
                             />
                             <div className="mt-8 flex justify-end">
+                                {
+                                    !disabled ?
+                                        <LoadingButton text={'Cancel'} outlined={true}
+                                                       onClick={() => setDisabled(true)} /> :
+                                        null
+                                }
                                 {
                                     disabled ?
                                         <button onClick={(e) => { e.preventDefault(); setDisabled(false) }} type="button"
                                             className="rounded-lg p-2 text-white bg-textLight">Update Details</button> :
-                                        <button onClick={(e) => { e.preventDefault(); formik.handleSubmit(); setDisabled(true) }} type="submit"
+                                        <button
+                                            disabled={!formik.touched.firstName || !formik.touched.lastName || !formik.touched.vendor.shopName ||
+                                            !formik.values.firstName || !formik.values.lastName || !formik.values.vendor.shopName ||
+                                            formik.errors.firstName || formik.errors.lastName || formik.errors.vendor.shopName}
+                                            onClick={(e) => { e.preventDefault(); formik.handleSubmit(); setDisabled(true) }} type="submit"
                                             className="rounded-lg p-2 text-white bg-textLight">Submit</button>
                                 }
                             </div>

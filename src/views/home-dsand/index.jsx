@@ -21,12 +21,12 @@ export default function HomeDsand() {
         (async function listVendors(){
             setLoading(true);
             try {
-                const { data } = await axios.get(`gen/customer/vendorlist`);
-                console.log('home screen vendor list');
-                console.log(data);
-                if(mounted) setVendors(data);
-                if(mounted) setLoading(false);
-                if(mounted) setError(null);
+                const { data, status } = await axios.get(`gen/customer/vendorlist`);
+                if(status === 200) {
+                    if(mounted && Array.isArray(data)) setVendors(data);
+                    if(mounted) setLoading(false);
+                    if(mounted) setError(null);
+                }
             } catch (err) {
                 setLoading(false);
                 console.log(err);

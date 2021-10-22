@@ -64,7 +64,12 @@ const LoginForm = (props, ref) => {
                 formik={formik}
                 className='w-full'
             />
-            <button type="submit" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
+            <button
+                disabled={
+                    (formik.errors.telephone || formik.errors.password) ||
+                    (!formik.values.telephone || !formik.values.password)
+                }
+                data-testid="login-form-submit" type="submit" className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold">
                 {loading ? 'Loading...' : 'Submit'}
             </button>
         </motion.form>
