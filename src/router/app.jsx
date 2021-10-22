@@ -11,13 +11,8 @@ import { useDispatch } from "react-redux"
 
 import { actions } from "../store"
 
-// import VendorScreen from "../views/app/customer/vendorScreen";
 import AlertScreen from "../views/app/customer/alertScreen";
-// import ProductScreen from "../views/app/customer/productScreen";
 import OrderHistoryScreen from "../views/app/customer/orderHistoryScreen";
-import CustomerProfileScreen from "../views/app/customer/customerProfileScreen";
-import CustomerNotificationScreen from "../views/app/customer/customerNotificationScreen";
-import History from '../views/app/customer/history'
 
 import AddProduct from '../views/app/product/add'
 import Profile from '../views/app/profile'
@@ -104,30 +99,14 @@ export default function AppRouter() {
             <>
             <InnerPageLayout>
                 <Switch>
-                    <Route path={`${match.path}/history`}>
-                        <History />
-                    </Route>
                     <Route path={`${match.path}/profile`}>
                         <Profile />
                     </Route>
-
-                                    {/* <Route path={`${match.path}/vendor_:id`} exact>
-                    <VendorScreen />
-                </Route>
-                <Route path={`${match.path}/vendor_:id/product_:pid`} exact>
-                    <ProductScreen />
-                </Route> */}
                     <Route path={`${match.path}/alert`}>
                         <AlertScreen />
                     </Route>
                     <Route path={`${match.path}/order_history`}>
                         <OrderHistoryScreen />
-                    </Route>
-                    <Route path={`${match.path}/customer_profile`}>
-                        <CustomerProfileScreen />
-                    </Route>
-                    <Route path={`${match.path}/customer_notification`}>
-                        <CustomerNotificationScreen />
                     </Route>
                     <Route path={`${match.path}/buying_cart`}>
                         <BuyingCart />

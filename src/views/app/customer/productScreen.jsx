@@ -31,7 +31,7 @@ const ProductScreen = () => {
     const [error1, setError1] = useState(null);
     const [error2, setError2] = useState(null);
 
-    const [width, height] = useWindowSize();
+    const [width, ] = useWindowSize();
 
 
     useEffect(() => {

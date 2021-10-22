@@ -19,7 +19,7 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
 
-    const [width, height] = useWindowSize();
+    const [width, ] = useWindowSize();
     
     useEffect(() => {
       async function detailsVendor(vendor_id){

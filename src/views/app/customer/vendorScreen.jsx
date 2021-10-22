@@ -9,7 +9,7 @@ import MessageBox from '../../../components/customer/messageBox';
 import {axios, driverApi} from "../../../api/index";
 import { useSelector } from 'react-redux';
 import { getFileUrl } from '../../../api/azure-storage-blob';
-import {driverSocket} from "../../../socket";
+// import {driverSocket} from "../../../socket";
 import DriverCard from "../../../components/card/driver-card";
 
 
@@ -31,7 +31,7 @@ const VendorScreen = () => {
   const [error1, setError1] = useState(null);
   const [drivers, setDrivers] = useState({})
 
-  const [width, height] = useWindowSize();
+  const [width, ] = useWindowSize();
 
   useEffect(() => {
       setDrivers(onlineDrivers)

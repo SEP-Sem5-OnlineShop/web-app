@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
 import {axios} from "../../../api/index";
 import OrderComponent from '../../../components/customer/orderComponent';
 import LoadingBox from "../../../components/customer/loadingBox";
@@ -7,7 +6,6 @@ import MessageBox from "../../../components/customer/messageBox";
 import { useSelector } from "react-redux";
 
 const OrderHistoryScreen = () => {
-    const history = useHistory();
 
     // const isLogged = useSelector(state => state.user.isLogin)
     // if (!isLogged) {

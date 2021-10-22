@@ -1,5 +1,5 @@
-import { render, screen, cleanup } from '@testing-library/react';
-import RatingComponent from '../components/customer/ratingComponent';
+import { render, screen } from '@testing-library/react';
+import RatingComponent from './ratingComponent';
 
 test('should render rating component with 3 stars filled', () => {
     render(<RatingComponent rating={3} size={20}/>);
