@@ -94,6 +94,8 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     };
 
     return (
+        <div>
+        {(product._id && product.imageUrl && product.product_name && product.stock && product.price) ?
         <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-full xs:h-24 sm:h-28 md:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${vendor_id}/product_${product._id}`}>
             <img src={`${getFileUrl(product.imageUrl)}` } alt="" className="h-full w-20 sm:w-28 md:w-36 object-cover"/>
@@ -108,6 +110,9 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                     <FaBell color={alert ? "#ffc107" : "#e4e5e9" } size={width>600?24:width>480?20:width>380?18:14} />
                 </button>
             </div>
+        </div>
+        : null
+        }
         </div>
 
     );
