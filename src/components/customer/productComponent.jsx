@@ -16,17 +16,17 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     const history = useHistory();
     const [alert, setAlert] = useState(false);
 
-    const [loading, setLoading] = useState(true);
-    const [er, setEr] = useState(null);
-    const [error, setError] = useState(null);
-    const [error1, setError1] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
+    // const [error1, setError1] = useState(null);
+    // const [error2, setError2] = useState(null);
 
     const [timeoutId, setTimeoutId] = useState(0)
     const [timeoutInitiated, setTimoutInitiated] = useState(false)
 
     const [width, ] = useWindowSize();
 
-    useEffect(async () => {
+    useEffect(() => {
         async function detailsAlert(customer_id, product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
@@ -37,15 +37,14 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 } else {
                     setAlert(false);
                 }
-                setLoading(false);
-                setEr(null);
+                // setError(null);
             } catch (err) {
-                setLoading(false);
-                setEr(err);
+                // setError(err);
+                console.log(err)
             };
         };
         if (customer_id) {
-            await detailsAlert(customer_id, product._id);
+            detailsAlert(customer_id, product._id);
         };
     }, [customer_id, product._id]);
 
@@ -61,10 +60,9 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 }, 2000)
                 setTimeoutId(timeoutId)
                 console.log(timeoutId)
-                // alert('added alert');
             } catch (err) {
-                setError(err);
-                console.log(error);
+                // setError1(err);
+                console.log(err);
             };
         };
         async function removeAlert(customer_id,product_id){
@@ -74,10 +72,9 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
                 clearTimeout(timeoutId)
                 if(timeoutInitiated) driverSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
-                // alert('removed alert');
             } catch (err) {
-                setError1(err);
-                console.log(error1);
+                // setError2(err);
+                console.log(err);
             };
         };
         if (alert) {
@@ -101,8 +98,8 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             <img src={`${getFileUrl(product.imageUrl)}` } alt="" className="h-full w-20 sm:w-28 md:w-36 object-cover"/>
             </Link>
             <div className="mx-2 my-1 xs:mx-4 xs:my-2 flex flex-col justify-between items-start">
-                <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold mt-1 xs:mt-2" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
-                <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary mb-1 xs:mb-2">{productStrings.currency} { product.price }</span>
+                <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold mt-1 xs:mt-2 sm:mt-3" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
+                <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary mb-1 xs:mb-2 sm:mb-3">{productStrings.currency} { product.price }</span>
                 {/* <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.available}: { product.stock }</span> */}
             </div>
             <div className="mr-1 my:4 sm:mx-4 flex flex-col justify-center items-end">
