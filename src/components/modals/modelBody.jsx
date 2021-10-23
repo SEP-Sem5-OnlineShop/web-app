@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import {Fragment, useEffect, useState} from 'react'
 import LoadingButton from "../form-components/loading-button";
 
-export default function ModelBody({modalText, onClick, loading, color, buttonText, buttonColor, fontColor, buttonOutlined}) {
+export default function ModelBody({modalText, onClick, loading, color, buttonText, buttonColor, fontColor, buttonOutlined, disabled}) {
     let [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -27,6 +27,7 @@ export default function ModelBody({modalText, onClick, loading, color, buttonTex
                     onClick={openModal}
                     fontColor={fontColor}
                     outlined={buttonOutlined || false}
+                    disabled={disabled || false}
                 />
             </div>
 

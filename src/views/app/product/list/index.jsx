@@ -15,7 +15,7 @@ export default function ProductList() {
             setLoading(true)
             const {data, status} =  await productApi.getList(source)
             const list = []
-            if(data && status===200) {
+            if(data && data.data && status===200) {
                 data.data.forEach((item, index) => {
                     list.push({
                         'col1': index+1,

@@ -21,7 +21,7 @@ export default function DailyWork() {
             const vehicles = await driverApi.getVehicles(source)
 
             if(
-                vehicles && vehicles.data && vehicles.status===200
+                vehicles && vehicles.data && vehicles.data.data && vehicles.status===200
             ) {
                 if(mount) setVehicles(vehicles.data.data.vendor.vehicles || [])
             }

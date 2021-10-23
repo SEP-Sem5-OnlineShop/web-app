@@ -364,6 +364,7 @@ export default function DailyStockLoad({vehicleId}) {
                                        onClick={async  () => await reAssignDrivers(vendorId)}
                                        loading={assignDriverLoading}
                                        buttonOutlined={true}
+                                       disabled={!driver || !area}
                             />
                             <ModelBody buttonText={'Submit'}
                                        modalText={'Do you want to proceed with this data?'}

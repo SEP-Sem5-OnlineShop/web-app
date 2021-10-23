@@ -19,7 +19,7 @@ export default function LoadingButton(props) {
         <button
             type={comProps.type}
             onClick={async (e) => await comProps.onClick(e)}
-            className={`flex justify-center rounded mr-2 px-2 py-1
+            className={`flex justify-center items-center rounded mr-2 px-2 py-1
         ${comProps.outlined ? `ring-2 ring-${comProps.color} hover:bg-${comProps.color} hover:text-${comProps.fontColor} text-${comProps.color}` : 
                 `${!comProps.disabled ? `bg-${comProps.color}` : "text-secondary"} text-${comProps.fontColor}` }`}
             style={{minWidth: 96}}>

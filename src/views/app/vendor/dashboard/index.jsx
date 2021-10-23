@@ -21,7 +21,7 @@ export default function VendorDashboard() {
             if (mounted) {
                 setNumberOfProducts((products && products.data && products.data.data) ? products.data.data.length : 0)
                 setNumberOfDrivers((drivers && drivers.data && drivers.data.data) ? drivers.data.data.length : 0)
-                setNumberOfVehicles((vehicles && vehicles.data && vehicles.data.data.vendor) ? vehicles.data.data.vendor.vehicles.length : 0)
+                setNumberOfVehicles((vehicles && vehicles.data && vehicles.data.data && vehicles.data.data.vendor) ? vehicles.data.data.vendor.vehicles.length : 0)
             }
         }
         catch (e) {
