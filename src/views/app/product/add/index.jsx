@@ -165,6 +165,7 @@ export default function AddProduct({ edit }) {
                     />
                     <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Description</label>
                     <Editor editorState={editorState}
+                            webDriverTestID={'description'}
                             toolbarClassName="toolbarClassName mt-1 rounded-md"
                             wrapperClassName="wrapperClassName"
                             editorClassName="bg-white min-h-300 px-2 mb-4 rounded-md"
@@ -177,6 +178,7 @@ export default function AddProduct({ edit }) {
                         imageUrl={formik.values.imageUrl || ""}
                         formikFieldName={'imageUrl'}
                         setFileName={setImageName}
+                        name={'imageFile'}
                     />
                     <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Thumbnail Image</label>
                     <FileUploaderWithPreview
@@ -184,9 +186,11 @@ export default function AddProduct({ edit }) {
                         imageUrl={formik.values.imageThumbnailUrl || ""}
                         formikFieldName={'imageThumbnailUrl'}
                         setFileName={setImageName}
+                        name={'imageThumbnailFile'}
                     />
                     <div className="flex justify-end">
                         <ModelBody modalText={"Do you want to proceed?"}
+                                   dataTestId={'add-new-product'}
                                    loading={loading}
                                    buttonText={id ? 'Update Vehicle' : 'Add Vehicle'} color={'warn'}
                                    onClick={async (e) => {
