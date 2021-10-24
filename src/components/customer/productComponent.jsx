@@ -103,7 +103,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 {/* <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.available}: { product.stock }</span> */}
             </div>
             <div className="mr-1 my:4 sm:mx-4 flex flex-col justify-center items-end">
-                <button className="rounded-xl shadow w-6 h-6 xs:w-8 xs:h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(product._id)}>
+                <button data-testid={`vendor-productcomp-Bell-${product._id}`} className="rounded-xl shadow w-6 h-6 xs:w-8 xs:h-8 sm:w-10 sm:h-10 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(product._id)}>
                     <FaBell color={alert ? "#ffc107" : "#e4e5e9" } size={width>600?24:width>480?20:width>380?18:14} />
                 </button>
             </div>
