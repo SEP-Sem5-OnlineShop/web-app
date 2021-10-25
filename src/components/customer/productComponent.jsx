@@ -98,7 +98,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
             <img src={`${getFileUrl(product.imageUrl)}` } alt="" className="h-full w-20 sm:w-28 md:w-36 object-cover"/>
             </Link>
             <div className="mx-2 my-1 xs:mx-4 xs:my-2 flex flex-col justify-between items-start">
-                <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold mt-1 xs:mt-2 sm:mt-3" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
+                <Link data-testid={`vendor-productcomp-${product._id}`} className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold mt-1 xs:mt-2 sm:mt-3" to={`/vendor_${vendor_id}/product_${product._id}`}>{ product.product_name }</Link>
                 <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary mb-1 xs:mb-2 sm:mb-3">{productStrings.currency} { product.price }</span>
                 {/* <span className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary">{productStrings.available}: { product.stock }</span> */}
             </div>

@@ -52,7 +52,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "cypress open",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
