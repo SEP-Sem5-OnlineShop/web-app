@@ -27,7 +27,7 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
     const [timeoutId, setTimeoutId] = useState(0)
     const [timeoutInitiated, setTimoutInitiated] = useState(false)
 
-    const [width, height] = useWindowSize();
+    const [width, ] = useWindowSize();
 
     useEffect( () => {
         async function detailsProduct(product_id){
@@ -35,8 +35,6 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
                 const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
                 console.log('driver screen product details');
                 console.log(data);
-                console.log("stockproduct");
-                console.log(stockproduct);
                 setProduct(data);
                 setLoading3(false);
                 setError3(null);
@@ -78,7 +76,7 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
         async function addAlert(customer_id,product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-                const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
+                await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
                 const timeoutId = setTimeout(async () => {
                     await driverSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
@@ -95,7 +93,7 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
         async function removeAlert(customer_id,product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-                const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
+                await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
                 clearTimeout(timeoutId)
                 if(timeoutInitiated) driverSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
@@ -119,6 +117,8 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
     };
 
     return (
+        <div>
+        {(stockproduct.productId && stockproduct.stock && stockproduct.price) ?
         <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-full xs:h-24 sm:h-28 md:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
             <Link to={`/vendor_${vendor_id}/product_${product._id}`}>
             <img src={`${getFileUrl(product.imageUrl)}` } alt="" className="h-full w-20 sm:w-28 md:w-36 object-cover"/>
@@ -133,6 +133,9 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
                     <FaBell color={alert ? "#ffc107" : "#e4e5e9" } size={width>600?24:width>480?20:width>380?18:14} />
                 </button>
             </div>
+        </div>
+        : null
+        }
         </div>
 
     );

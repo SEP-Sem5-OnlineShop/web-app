@@ -31,7 +31,7 @@ const ProductScreen = () => {
     const [error1, setError1] = useState(null);
     const [error2, setError2] = useState(null);
 
-    const [width, height] = useWindowSize();
+    const [width, ] = useWindowSize();
 
 
     useEffect(() => {
@@ -155,7 +155,7 @@ const ProductScreen = () => {
                     <span className="text-sm sm:text-lg text-secondary">{productStrings.price}: {productStrings.currency} { product.price }</span>
                 </div>
                 <div className="mt-4 sm:mt-8">
-                    <span className="text-secondary">{parse(`${product.description}`)}</span>
+                    <span className="text-sm sm:text-lg text-secondary">{parse(`${product.description}`)}</span>
                 </div>
             </div>
             <div>
@@ -163,7 +163,7 @@ const ProductScreen = () => {
                     {(product.reviews && product.reviews.length < 1) && <>
                         <div className="text-xs text-text ml-2 mt-2">No Reviews</div>
                     </>}
-                <div className="mt-4">
+                <div className="mt-4 sm:mt-6">
                     {product.reviews && <>
                         {product.reviews.map((review) => (
                             <ReviewComponent key={review._id} review={review} width={width} />
@@ -187,7 +187,7 @@ const VendorName = ({vendor_id}) => {
         async function detailsVendor(vendor_id){
           try {
             const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
-            console.log('vendor screen vendor details');
+            console.log('product screen vendor details');
             console.log(data);
             setVendorDetails(data);
             setLoading3(false);

@@ -7,6 +7,8 @@ import SwiperSliderContainer from "./swiper-slider-container";
 import { SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 import { axios } from "../../api";
+import LoadingBox from "../../components/customer/loadingBox";
+import MessageBox from "../../components/customer/messageBox";
 
 
 export default function HomeDsand() {
@@ -49,6 +51,11 @@ export default function HomeDsand() {
                 <div className="w-11/12 mb-10 mt-8">
                     <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.todaysDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full relative z-0">
+                    {loading ? (
+                        <LoadingBox></LoadingBox>
+                    ) : error ? (
+                        <MessageBox variant="danger">{error}</MessageBox>
+                    ) : (
                         <SwiperSliderContainer className="relative z-0">
                             {vendors && <>
                                 {vendors.map((vendor) => (
@@ -58,12 +65,18 @@ export default function HomeDsand() {
                                 ))}
                             </>}
                         </SwiperSliderContainer>
+                    )}
                     </div>
                 </div>
 
                 <div className="w-11/12 mb-10">
                     <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.hotDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full">
+                    {loading ? (
+                        <LoadingBox></LoadingBox>
+                    ) : error ? (
+                        <MessageBox variant="danger">{error}</MessageBox>
+                    ) : (
                         <SwiperSliderContainer>
                             {vendors && <>
                                 {vendors.map((vendor) => (
@@ -73,6 +86,7 @@ export default function HomeDsand() {
                                 ))}
                             </>}
                         </SwiperSliderContainer>
+                    )}
                     </div>
                 </div>
 

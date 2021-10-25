@@ -1,14 +1,12 @@
-import { useEffect, useState, useLayoutEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 // import Axios from 'axios';
 import DriverProductComponent from '../../../components/customer/driverProductComponent';
-import RatingComponent from '../../../components/customer/ratingComponent';
 import LoadingBox from '../../../components/customer/loadingBox';
 import MessageBox from '../../../components/customer/messageBox';
-import {axios, driverApi} from "../../../api/index";
+import {axios} from "../../../api/index";
 import { useSelector } from 'react-redux';
-import { getFileUrl } from '../../../api/azure-storage-blob';
 
 
 const DriverScreen = () => {
@@ -26,9 +24,9 @@ const DriverScreen = () => {
   const [dailyStock, setDailyStock] = useState([]);
   const [loading1, setLoading1] = useState(true);
   const [error1, setError1] = useState(null);
-  const [vendor, setVendor] = useState({})
-  const [loading2, setLoading2] = useState(true);
-  const [error2, setError2] = useState(null);
+  // const [vendor, setVendor] = useState({})
+  // const [loading2, setLoading2] = useState(true);
+  // const [error2, setError2] = useState(null);
   
   useEffect(() => {
     async function detailsDriver(driver_id){

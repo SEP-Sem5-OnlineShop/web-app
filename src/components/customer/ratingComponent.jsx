@@ -6,7 +6,7 @@ const RatingComponent = ({rating,size}) => {
             {[...Array(5)].map((star, i) => {
                 const ratingValue = i + 1;
 
-                return <FaStar key={ratingValue} color={ratingValue <= rating ? "#ffc107" : "#e4e5e9" } size={size} />;
+                return <FaStar data-testid={`ratingstar-${ratingValue}`} key={ratingValue} color={ratingValue <= rating ? "#ffc107" : "#e4e5e9" } size={size} />;
             })}
         </div>
     );

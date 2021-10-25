@@ -84,7 +84,7 @@ export default function MainLayout(props) {
                             {
                                 isLogin === "yes" ?
                                     <LoginRegister className="mr-4" freeze={!isMobile} /> :
-                                    <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
+                                    <button data-testid={'login-register-button'} onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                         Login | Register</button>
                             }
                         </div>
