@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 describe('Homepage', () => {
     it('redender correctly', () => {
         //go to home page

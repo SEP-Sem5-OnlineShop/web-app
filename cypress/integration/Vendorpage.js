@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 describe('Vendorpage', () => {
     
     it('redender correctly', () => {
