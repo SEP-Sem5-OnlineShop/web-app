@@ -30,45 +30,63 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
     const [width, ] = useWindowSize();
 
     useEffect( () => {
+        let mounted = true;
         async function detailsProduct(product_id){
             try {
                 const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
                 console.log('driver screen product details');
                 console.log(data);
-                setProduct(data);
-                setLoading3(false);
-                setError3(null);
+                if (mounted) {
+                    setProduct(data);
+                    setLoading3(false);
+                    setError3(null);
+                };
             } catch (err) {
-                setLoading3(false);
-                console.log(err);
-                setError3(err);
+                if (mounted) {
+                    setLoading3(false);
+                    console.log(err);
+                    setError3(err);
+                };
             };
         };
         if (stockproduct.productId) {
             detailsProduct(stockproduct.productId);
         };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
     }, [stockproduct.productId]);
 
-    useEffect(async () => {
+    useEffect(() => {
+        let mounted = true;
         async function detailsAlert(customer_id, product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.get(`app/customer/${customer_id}/alerts/${product_id}`);
                 // const data = false;
-                if (data._id){
-                    setAlert(true);
-                } else {
-                    setAlert(false);
-                }
-                setLoading(false);
-                setEr(null);
+                if (mounted) {
+                    if (data._id){
+                        setAlert(true);
+                    } else {
+                        setAlert(false);
+                    }
+                    setLoading(false);
+                    setEr(null);
+                };
             } catch (err) {
-                setLoading(false);
-                setEr(err);
+                if (mounted) {
+                    setLoading(false);
+                    setEr(err);
+                };
             };
         };
         if (customer_id) {
-            await detailsAlert(customer_id, stockproduct.productId);
+            detailsAlert(customer_id, stockproduct.productId);
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
         };
     }, [customer_id, stockproduct.productId]);
 

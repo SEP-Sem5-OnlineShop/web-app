@@ -35,15 +35,18 @@ const ProductScreen = () => {
 
 
     useEffect(() => {
+        let mounted = true;
         async function detailsProduct(product_id){
             setLoading(true);
             try {
                 const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
                 console.log('product screen product details');
                 console.log(data);
-                setProduct(data);
-                setLoading(false);
-                setError(null);
+                if (mounted) {
+                    setProduct(data);
+                    setLoading(false);
+                    setError(null);
+                };
             } catch (err) {
                 setLoading(false);
                 console.log(err);
@@ -53,9 +56,14 @@ const ProductScreen = () => {
         if (vendor_id && product_id) {
             detailsProduct(product_id);
         };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
     }, [vendor_id, product_id]);
 
     useEffect(() => {
+        let mounted = true;
         async function detailsAlert(customer_id, product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
@@ -63,13 +71,15 @@ const ProductScreen = () => {
                 // const data = false;
                 console.log('alert details');
                 console.log(data);
-                if (data._id){
-                    setAlert(true);
-                } else {
-                    setAlert(false);
-                }
-                setLoading(false);
-                setEr(null);
+                if (mounted) {
+                    if (data._id){
+                        setAlert(true);
+                    } else {
+                        setAlert(false);
+                    }
+                    setLoading(false);
+                    setEr(null);
+                };
             } catch (err) {
                 setLoading(false);
                 console.log(err);
@@ -78,6 +88,10 @@ const ProductScreen = () => {
         };
         if (customer_id) {
             detailsAlert(customer_id, product_id);
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
         };
     }, [customer_id, product_id]);
 
@@ -184,22 +198,31 @@ const VendorName = ({vendor_id}) => {
     const [loading3, setLoading3] = useState(true);
     const [error3, setError3] = useState(null);
     useEffect(() => {
+        let mounted = true;
         async function detailsVendor(vendor_id){
           try {
             const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
             console.log('product screen vendor details');
             console.log(data);
-            setVendorDetails(data);
-            setLoading3(false);
-            setError3(null);
+            if (mounted) {
+                setVendorDetails(data);
+                setLoading3(false);
+                setError3(null);
+            };
           } catch (err) {
-            setLoading3(false);
-            console.log(err);
-            setError3(err);
+            if (mounted) {
+                setLoading3(false);
+                console.log(err);
+                setError3(err);
+            };
           };
         };
         if (vendor_id) {
             detailsVendor(vendor_id);
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
         };
       }, [vendor_id]);
   
