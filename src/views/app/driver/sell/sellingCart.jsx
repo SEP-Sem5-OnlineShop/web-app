@@ -39,20 +39,29 @@ const SellingCart = () => {
     // }, [vendor_id]);
     
     useEffect(() => {
+        let mounted = true;
         async function listProducts(driver_id){
             try {
               const { data } = (await axios.get(`gen/customer/stock/sell/${driver_id}`)).data;
               console.log('sellcart screen sell product list');
-              console.log(data.dailyStock);
-              setProducts(data.dailyStock);
+              if (mounted) {
+                  console.log(data.dailyStock);
+                  setProducts(data.dailyStock);
+              };
             } catch (error) {
-              console.log(error);
-              console.log("product felch error");
+                if (mounted) {
+                    console.log(error);
+                    console.log("product felch error");
+                };
             };
-          };
-          if (driver_id) {
+        };
+        if (driver_id) {
             listProducts(driver_id);
-          };
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
     }, [driver_id]);
 
     const handleSubmit = () => {
@@ -179,23 +188,32 @@ const ProductName = ({product_id}) => {
     const [loading3, setLoading3] = useState(true);
     const [error3, setError3] = useState(null);
     useEffect(() => {
+        let mounted = true;
         async function detailsProduct(product_id){
-          try {
-              const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
-              console.log('order history screen product details');
-              console.log(data);
-              setProductDetails(data);
-              setLoading3(false);
-              setError3(null);
-          } catch (err) {
-              setLoading3(false);
-              console.log(err);
-              setError3(err);
-          };
-      };
-      if (product_id) {
-          detailsProduct(product_id);
-      };
+            try {
+                const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
+                console.log('order history screen product details');
+                console.log(data);
+                if (mounted) {
+                    setProductDetails(data);
+                    setLoading3(false);
+                    setError3(null);
+                };
+            } catch (err) {
+                if (mounted) {
+                    setLoading3(false);
+                    console.log(err);
+                    setError3(err);
+                };
+            };
+        };
+        if (product_id) {
+            detailsProduct(product_id);
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
     }, [product_id]);
 
     return (
