@@ -24,14 +24,17 @@ const ReviewComponent = ({ review, width }) => {
     // const [error, setError] = useState(null);
 
     useEffect(() => {
+        let mounted = true;
         async function detailsCustomer(customer_id){
           try {
             const { data } = await axios.get(`gen/customer/details/${customer_id}`);
             // const data = {name:"aaaaa", imageUrl:"b07915a3-66f3-409d-8350-24b804c04dca.jfif"};
             // data.imageUrl = "b07915a3-66f3-409d-8350-24b804c04dca.jfif";
             console.log('product screen customer details');
-            console.log(data);
-            setCustomer(data);
+            // console.log(data);
+            if (mounted) {
+                setCustomer(data);
+            };
             // setLoading(false);
           } catch (err) {
             console.log("customer felch error");
@@ -42,6 +45,10 @@ const ReviewComponent = ({ review, width }) => {
         if(review.customer){
             detailsCustomer(review.customer);
         }
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
       }, [review.customer]);
 
 

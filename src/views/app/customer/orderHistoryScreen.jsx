@@ -26,23 +26,32 @@ const OrderHistoryScreen = () => {
     const [reviewed, setReviewed] = useState(false);
     
     useEffect(() => {
+        let mounted = true;
         async function listOrders(customer_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.get(`app/customer/purchases/${customer_id}`);
                 console.log('order history screen customer order list');
                 console.log(data);
-                setOrders(data);
-                setLoading(false);
-                setError(null);
+                if (mounted) {
+                    setOrders(data);
+                    setLoading(false);
+                    setError(null);
+                };
             } catch (err) {
-                setLoading(false);
-                console.log(err);
-                setError(err);
+                if (mounted) {
+                    setLoading(false);
+                    console.log(err);
+                    setError(err);
+                };
             };
         };
         if (customer_id) {
             listOrders(customer_id);
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
         };
     }, [customer_id, reviewed]);
 

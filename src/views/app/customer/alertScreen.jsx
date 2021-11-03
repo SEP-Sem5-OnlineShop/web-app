@@ -29,22 +29,31 @@ const AlertScreen = () => {
 
   
   useEffect(() => {
+    let mounted = true;
     async function listAlerts(customer_id){
       try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
         const { data } = await axios.get(`app/customer/alerts/${customer_id}`);
         console.log('alert screen customer alert list');
         console.log(data);
-        setAlerts(data);
-        setLoading(false);
+        if (mounted) {
+          setAlerts(data);
+          setLoading(false);
+        };
       } catch (err) {
-        console.log(err);
-        setError(err);
-        setLoading(false);
+        if (mounted) {
+          console.log(err);
+          setError(err);
+          setLoading(false);
+        };
       };
     };
     if (customer_id) {
       listAlerts(customer_id);
+    };
+    return () => {
+      mounted = false;
+      // console.log("cleanup")
     };
   }, [customer_id, deleted]);
 

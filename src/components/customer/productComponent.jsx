@@ -27,16 +27,19 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     const [width, ] = useWindowSize();
 
     useEffect(() => {
+        let mounted = true
         async function detailsAlert(customer_id, product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.get(`app/customer/${customer_id}/alerts/${product_id}`);
                 // const data = false;
-                if (data._id){
-                    setAlert(true);
-                } else {
-                    setAlert(false);
-                }
+                if (mounted) {
+                    if (data._id){
+                        setAlert(true);
+                    } else {
+                        setAlert(false);
+                    }
+                };
                 // setError(null);
             } catch (err) {
                 // setError(err);
@@ -45,6 +48,10 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
         };
         if (customer_id) {
             detailsAlert(customer_id, product._id);
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
         };
     }, [customer_id, product._id]);
 

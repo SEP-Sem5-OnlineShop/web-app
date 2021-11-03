@@ -9,30 +9,60 @@ const SellingCart = () => {
     // const vendor_id = "613eb365af0d5b2c142fa326";
     const userData = useSelector(state => state.user.userData);
     let vendor_id = '';
+    let driver_id = '';
     if (userData){
         vendor_id = userData.driver.vendorId;
+        driver_id = userData._id;
     }
     console.log("vendor_id")
     console.log(vendor_id)
+    console.log("driver_id")
+    console.log(driver_id)
 
     const [orderId, setOrderId] = useState(null);
     const [products, setProducts] = useState([]);
 
+    // useEffect(() => {
+    //     async function listProducts(vendor_id){
+    //         try {
+    //           const { data } = await axios.get(`gen/customer/products/sell/${vendor_id}`);
+    //           console.log('sellcart screen sell product list');
+    //           console.log(data);
+    //           setProducts(data);
+    //         } catch (error) {
+    //           console.log("product felch error");
+    //         };
+    //       };
+    //       if (vendor_id) {
+    //         listProducts(vendor_id);
+    //       };
+    // }, [vendor_id]);
+    
     useEffect(() => {
-        async function listProducts(vendor_id){
+        let mounted = true;
+        async function listProducts(driver_id){
             try {
-              const { data } = await axios.get(`gen/customer/products/sell/${vendor_id}`);
+              const { data } = (await axios.get(`gen/customer/stock/sell/${driver_id}`)).data;
               console.log('sellcart screen sell product list');
-              console.log(data);
-              setProducts(data);
+              if (mounted) {
+                  console.log(data.dailyStock);
+                  setProducts(data.dailyStock);
+              };
             } catch (error) {
-              console.log("product felch error");
+                if (mounted) {
+                    console.log(error);
+                    console.log("product felch error");
+                };
             };
-          };
-          if (vendor_id) {
-            listProducts(vendor_id);
-          };
-    }, [vendor_id]);
+        };
+        if (driver_id) {
+            listProducts(driver_id);
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
+    }, [driver_id]);
 
     const handleSubmit = () => {
         async function saveOrder(vendor_id,pro){
@@ -55,6 +85,7 @@ const SellingCart = () => {
             c += 1;
         }
         if (pro.length>0) {
+            console.log("pro");
             console.log(pro);
             saveOrder(vendor_id,pro)
         }
@@ -117,7 +148,10 @@ const SellingCart = () => {
                                 <tbody>
                                 {products.map((product) => (
                                     <tr key={product._id}>
-                                        <td className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap text-left text-textLight">{product.product_name}</td>
+                                        {/* <td className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap text-left text-textLight">{product.product_name}</td> */}
+                                        <td className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap text-left text-textLight">
+                                        <ProductName product_id={product.productId} />
+                                        </td>
                                         <td className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap">{product.price}</td>
                                         <td className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap w-12 xxs:w-16 xs:w-20 sm:w-28 md:32">{product.stock}</td>
                                         <td><input className="border-t-0 px-1 xs:px-4 sm:px-6 py-2 sm:py-3 align-middle border-l-0 border-r-0 text-xs xxs:text-sm sm:text-base whitespace-nowrap bg-textLight bg-opacity-10 w-12 xxs:w-16 xs:w-20 sm:w-28 md:32" id={product._id} type="number" min={0} max={product.stock} onChange={(e) => {handleChange(e.target.id,e.target.value)}}/></td>
@@ -147,3 +181,42 @@ const SellingCart = () => {
 }
 
 export default SellingCart;
+
+
+const ProductName = ({product_id}) => {
+    const [productDetails, setProductDetails] = useState({})
+    const [loading3, setLoading3] = useState(true);
+    const [error3, setError3] = useState(null);
+    useEffect(() => {
+        let mounted = true;
+        async function detailsProduct(product_id){
+            try {
+                const { data } = (await axios.get(`gen/customer/product/${product_id}`)).data;
+                console.log('order history screen product details');
+                console.log(data);
+                if (mounted) {
+                    setProductDetails(data);
+                    setLoading3(false);
+                    setError3(null);
+                };
+            } catch (err) {
+                if (mounted) {
+                    setLoading3(false);
+                    console.log(err);
+                    setError3(err);
+                };
+            };
+        };
+        if (product_id) {
+            detailsProduct(product_id);
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
+    }, [product_id]);
+
+    return (
+        <>{productDetails.product_name}</>
+    );
+  }

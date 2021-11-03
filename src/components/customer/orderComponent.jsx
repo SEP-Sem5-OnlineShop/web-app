@@ -12,8 +12,6 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
     const [showModal, setShowModal] = useState(false);
     const [reviewProduct, setReviewProduct] = useState('');
     // const [isAlert, setIsAlert] = useState(false);
-    console.log("order order order");
-    console.log(order);
 
     const [vendor, setVendor] = useState({})
     // const [loading, setLoading] = useState(true);
@@ -24,17 +22,22 @@ export default function OrderComponent({ order, customer_id, handleReview }) {
     const [width, ] = useWindowSize();
     
     useEffect(() => {
+      let mounted = true;
       async function detailsVendor(vendor_id){
         try {
           const { data } = await axios.get(`app/customer/vendors/${vendor_id}`);
-          console.log('order history screen vendor details');
-          console.log(data);
-          setVendor(data);
-          // setLoading(false);
+          // console.log('order history screen vendor details');
+          // console.log(data);
+          if (mounted) {
+            setVendor(data);
+            // setLoading(false);
+          };
         } catch (error) {
-          console.log("vendor felch error");
-          // setError("vendor felch error");
-          // setLoading(false);
+          if (mounted) {
+            console.log("vendor felch error");
+            // setError("vendor felch error");
+            // setLoading(false);
+          };
         };
       };
       if(order.vendor_id){

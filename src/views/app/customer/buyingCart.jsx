@@ -40,11 +40,11 @@ const BuyingCart = () => {
         console.log(error);
     }
     const handleScanWebCam = (result) => {
-        // if(result){
-        //     console.log(result);
-        //     setScanResultWebCam(result);
-        // }
-        setScanResultWebCam("6167a9b1197dbe1e944b6272");
+        if(result){
+            console.log(result);
+            setScanResultWebCam(result);
+        }
+        // setScanResultWebCam("6167a9b1197dbe1e944b6272");
     }
 
     const handlePay = () => {

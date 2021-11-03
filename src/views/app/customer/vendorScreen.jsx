@@ -1,7 +1,6 @@
 import { useEffect, useState, useLayoutEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
-// import Axios from 'axios';
 import ProductComponent from '../../../components/customer/productComponent';
 import RatingComponent from '../../../components/customer/ratingComponent';
 import LoadingBox from '../../../components/customer/loadingBox';
@@ -38,18 +37,29 @@ const VendorScreen = () => {
   }, [onlineDrivers])
 
   useEffect(() => {
+    let mounted = true;
+    const source = axios.CancelToken.source();
     async function detailsVendor(vendor_id){
       try {
-        const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
-        setVendor(data);
-        setLoading(false);
+        const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`,{cancelToken: source.token});
+        if (mounted) {
+          setVendor(data);
+          setLoading(false);
+        };
       } catch (error) {
-        console.log("vendor felch error");
-        setError("vendor felch error");
-        setLoading(false);
+        if (mounted) {
+          console.log("vendor felch error");
+          setError("vendor felch error");
+          setLoading(false);
+        };
       };
     };
     detailsVendor(vendor_id);
+    return () => {
+      mounted = false;
+      source.cancel();
+      // console.log("cleanup")
+    };
   }, [vendor_id]);
 
   useEffect(() => {
@@ -68,28 +78,30 @@ const VendorScreen = () => {
     };
   }, [error, loading, vendor_id]);
 
-  useEffect(async () => {
-      let mounted = true
-      const socket = axios.CancelToken.source()
-
+  useEffect(() => {
+    let mounted = true;
+    const socket = axios.CancelToken.source()
+    
+    async function listLogedDrivers(vendor_id){
       try {
-          const drivers = await driverApi.getLoggedDrivers(socket, vendor_id)
-          const driversObj = {}
-          if(drivers && drivers.data && drivers.status===200) {
-              drivers.data.data.forEach(item => {
-                  driversObj[item._id] = item
-              })
-          }
-          if(mounted) setDrivers(driversObj)
+        const drivers = await driverApi.getLoggedDrivers(socket, vendor_id)
+        const driversObj = {}
+        if(drivers && drivers.data && drivers.status===200) {
+            drivers.data.data.forEach(item => {
+                driversObj[item._id] = item
+            })
+        };
+        if(mounted) setDrivers(driversObj)
       }
       catch (e) {
           if(!axios.isCancel(e)) throw e
       }
-
-      return () => {
-        socket.cancel()
-          mounted = false
-      }
+    };
+    listLogedDrivers(vendor_id);
+    return () => {
+      socket.cancel()
+      mounted = false
+    };
   }, [vendor_id])
 
   return (
@@ -127,6 +139,9 @@ const VendorScreen = () => {
                   </div>
 
                   <div className="px-2 py-4 sm:px-12 sm:py-8">
+                      {(!loading1 && products && products.length < 1) && <>
+                          <div className="text-xs sm:text-sm text-text ml-2 mt-2">No Products</div>
+                      </>}
                       <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
                         {(loading1 ) ? (
                           <LoadingBox></LoadingBox>

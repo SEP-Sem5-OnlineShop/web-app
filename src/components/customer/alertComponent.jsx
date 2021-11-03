@@ -16,42 +16,60 @@ const AlertComponent = ({ alert, handleRemove }) => {
     // const [error1, setError1] = useState(null);
 
     useEffect(() => {
+        let mounted = true;
         async function detailsProduct(product_id){
             try {
                 const { data } = (await axios.get(`app/customer/product/${product_id}`)).data;
-                console.log('alert screen product details');
-                console.log(data);
-                setProduct(data);
-                // setLoading(false);
-                // setError(null);
+                // console.log('alert screen product details');
+                // console.log(data);
+                if (mounted) {
+                    setProduct(data);
+                    // setLoading(false);
+                    // setError(null);
+                };
             } catch (err) {
-                console.log(err);
-                // setError(err);
-                // setLoading(false);
+                if (mounted) {
+                    console.log(err);
+                    // setError(err);
+                    // setLoading(false);
+                };
             };
         };
         if (alert.product_id) {
             detailsProduct(alert.product_id);
         };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
     }, [alert.product_id]);
 
     useEffect(() => {
+        let mounted = true;
         async function detailsVendor(vendor_id){
             try {
                 const { data } = await axios.get(`app/customer/vendors/${vendor_id}`);
-                console.log('alert screen vendor details');
-                console.log(data);
-                setVendor(data);
-                // setLoading1(false);
+                // console.log('alert screen vendor details');
+                // console.log(data);
+                if (mounted) {
+                    setVendor(data);
+                    // setLoading1(false);
+                };
               } catch (error) {
-                console.log("vendor felch error");
-                // setError1("vendor felch error");
-                // setLoading1(false);
+                if (mounted) {
+                    console.log("vendor felch error");
+                    // setError1("vendor felch error");
+                    // setLoading1(false);
+                };
               };
         };
         if(product.seller){
             detailsVendor(product.seller);
-        }
+        };
+        return () => {
+            mounted = false;
+            // console.log("cleanup")
+        };
     }, [product.seller]);
 
     return (
