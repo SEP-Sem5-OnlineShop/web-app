@@ -21,6 +21,8 @@ const SellingCart = () => {
 
     const [orderId, setOrderId] = useState(null);
     const [products, setProducts] = useState([]);
+    
+    const [dailystock_id, setDailystock_id] = useState(null);
 
     // useEffect(() => {
     //     async function listProducts(vendor_id){
@@ -45,6 +47,8 @@ const SellingCart = () => {
               const { data } = (await axios.get(`gen/customer/stock/sell/${driver_id}`)).data;
               console.log('sellcart screen sell product list');
               if (mounted) {
+                  console.log(data._id)
+                  setDailystock_id(data._id)
                   console.log(data.dailyStock);
                   setProducts(data.dailyStock);
               };
@@ -68,7 +72,7 @@ const SellingCart = () => {
         async function saveOrder(vendor_id,pro){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
-                const { data } = await axios.post(`app/customer/purchase/${vendor_id}`,pro);
+                const { data } = await axios.post(`app/customer/purchase/${vendor_id}`,{pro,dailystock_id});
                 console.log('new order id');
                 console.log(data);
                 setOrderId(data);
