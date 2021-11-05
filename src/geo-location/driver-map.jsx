@@ -1,6 +1,8 @@
 import React, {useEffect} from "react"
+import {driverApi} from "../api";
 import {Loader} from "@googlemaps/js-api-loader";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {actions} from "../store";
 
 export default function DriverMap() {
     const loader = new Loader({
@@ -8,6 +10,8 @@ export default function DriverMap() {
         version: "weekly",
         libraries: ["places"]
     });
+    const dispatch = useDispatch()
+    const userData = useSelector(state => state.user.userData)
     const location = useSelector(state => state.user.userData.location)
     const customers = useSelector(state => state.map.alertedCustomers)
 
@@ -35,9 +39,24 @@ export default function DriverMap() {
             .then(google => {
                 map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-                new google.maps.Marker({
+                const marker = new google.maps.Marker({
                     position: latitudeLongitude,
                     map: map
+                })
+
+                map.addListener("click", async mapsMouseEvent => {
+                    const latLng = mapsMouseEvent.latLng.toJSON()
+                    dispatch(actions.user.setUserData({...userData, location: {type: "Point", coordinates: [latLng.lat, latLng.lng]}}))
+                    try {
+                        const result = await driverApi.updateDriverLocation({coordinates: [latLng.lat, latLng.lng]})
+                        if(result.data && result.status === 200) {
+                            const position = new google.maps.LatLng(latLng.lat, latLng.lng)
+                            marker.setPosition(position)
+                        }
+                    }
+                    catch (e) {
+
+                    }
                 })
 
                 Object.values(customers).forEach(driver => {

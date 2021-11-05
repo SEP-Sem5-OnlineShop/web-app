@@ -13,10 +13,15 @@ const driver = {
     updateImage: async function (formData) {
         return await axios.put('/app/driver/image', formData)
     },
+    updateDriverLocation: async function (formData) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
+        return await axios.put('/app/driver/location', formData)
+    },
     getDriver: async function(source, id) {
         return await axios.get(`/app/driver/${id}`, {cancelToken: source.token})
     },
     getLoggedDrivers: async function(source, id) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
         return await axios.get(`/app/drivers/${id}`, {cancelToken: source.token})
     },
     getDrivers: async function(source) {

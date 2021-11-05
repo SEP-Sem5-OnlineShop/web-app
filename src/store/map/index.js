@@ -18,7 +18,7 @@ const mapSlice = createSlice({
                 state.onlineDrivers = {...state.onlineDrivers, [action.payload._id]: action.payload}
         },
         setOnlineDrivers(state, action) {
-            state.onlineDrivers = {...state.onlineDrivers, ...action.payload}
+            Object.assign(state.onlineDrivers, {...state.onlineDrivers, ...action.payload})
         },
         removeOnlineDriver(state, action) {
             const drivers = {...state.onlineDrivers}

@@ -19,7 +19,7 @@ import DashboardLayout from "../layout/dashboard-layout";
 import Dashboard from "../views/app/driver/dashboard";
 import VendorDashboard from "../views/app/vendor/dashboard/index"
 import CreatePassword from "../views/other/create-password";
-import {alertSocket, driverSocket} from "../socket";
+import {alertSocket, driverCustomerSocket} from "../socket";
 import {axios} from "../api";
 import driverApi from "../api/app/driver";
 import DriverScreen from "../views/app/customer/driverScreen";
@@ -49,8 +49,8 @@ export default function MainRouter() {
         }
         const sessionID = window.localStorage.getItem("sessionID")
         if(sessionID) {
-            driverSocket.auth = {sessionID}
-            driverSocket.connect()
+            driverCustomerSocket.auth = {sessionID, role}
+            driverCustomerSocket.connect()
         }
 
 
@@ -59,13 +59,12 @@ export default function MainRouter() {
     useEffect(async () => {
         let mounted = true
         const socket = axios.CancelToken.source()
-        driverSocket.on("driver:showLogin", async (data) => {
-            console.log(data)
+        driverCustomerSocket.on("driver:showLogin", async (data) => {
             const driver = await driverApi.getDriver(socket, data)
             if(driver && driver.data && driver.status===200)
                 dispatch(actions.map.setOnlineDriver(driver.data.data))
         })
-        driverSocket.on("driver:showLogout", (data) => {
+        driverCustomerSocket.on("driver:showLogout", (data) => {
             dispatch(actions.map.removeOnlineDriver(data))
         })
         return () => {
