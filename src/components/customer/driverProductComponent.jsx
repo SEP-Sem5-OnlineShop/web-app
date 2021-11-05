@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { getFileUrl } from "../../api/azure-storage-blob";
 import {driverCustomerSocket} from "../../socket/index"
 
-const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
+const DriverProductComponent = ({ stockproduct, vendor_id, customer_id, driver_id }) => {
     
     // customer_id 613eba8b94acbe3710fed690
     
@@ -23,9 +23,6 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
     const [product, setProduct] = useState({});
     const [loading3, setLoading3] = useState(true);
     const [error3, setError3] = useState(null);
-
-    const [timeoutId, setTimeoutId] = useState(0)
-    const [timeoutInitiated, setTimoutInitiated] = useState(false)
 
     const [width, height] = useWindowSize();
 
@@ -80,12 +77,7 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
-                const timeoutId = setTimeout(async () => {
-                    await driverCustomerSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
-                    setTimoutInitiated(true)
-                }, 2000)
-                setTimeoutId(timeoutId)
-                console.log(timeoutId)
+                driverCustomerSocket.emit("alert:create", {room: driver_id, payload: payload})
                 // alert('added alert');
             } catch (err) {
                 setError(err);
@@ -97,8 +89,7 @@ const DriverProductComponent = ({ stockproduct, vendor_id, customer_id }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
-                clearTimeout(timeoutId)
-                if(timeoutInitiated) driverCustomerSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
+                driverCustomerSocket.emit("alert:remove", {room: driver_id, payload: payload})
                 // alert('removed alert');
             } catch (err) {
                 setError1(err);

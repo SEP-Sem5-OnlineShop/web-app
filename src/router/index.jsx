@@ -43,9 +43,7 @@ export default function MainRouter() {
         dispatch(actions.user.setRole(role))
         dispatch(actions.user.setIsLogin(isLogin))
         if(userData) {
-            alertSocket.auth = {role}
-            alertSocket.connect();
-            alertSocket.emit("join", {userId: userData._id || ""})
+            driverCustomerSocket.emit("join", {userId: userData._id})
         }
         const sessionID = window.localStorage.getItem("sessionID")
         if(sessionID) {

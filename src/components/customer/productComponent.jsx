@@ -21,9 +21,6 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     const [error, setError] = useState(null);
     const [error1, setError1] = useState(null);
 
-    const [timeoutId, setTimeoutId] = useState(0)
-    const [timeoutInitiated, setTimoutInitiated] = useState(false)
-
     const [width, height] = useWindowSize();
 
     useEffect(async () => {
@@ -55,25 +52,19 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
-                const timeoutId = setTimeout(async () => {
-                    await driverCustomerSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
-                    setTimoutInitiated(true)
-                }, 2000)
-                setTimeoutId(timeoutId)
-                console.log(timeoutId)
+                driverCustomerSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
                 // alert('added alert');
             } catch (err) {
                 setError(err);
                 console.log(error);
-            };
-        };
+            }
+        }
         async function removeAlert(customer_id,product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 const { data } = await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
-                clearTimeout(timeoutId)
-                if(timeoutInitiated) driverCustomerSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
+                driverCustomerSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
                 // alert('removed alert');
             } catch (err) {
                 setError1(err);

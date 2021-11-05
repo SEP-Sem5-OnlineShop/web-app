@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
     showMap: false,
     onlineDrivers: [],
-    alertedCustomers: []
+    alertedCustomers: {}
 }
 
 const mapSlice = createSlice({
@@ -26,8 +26,9 @@ const mapSlice = createSlice({
             state.onlineDrivers = drivers
         },
         setAlertedCustomer(state, action) {
-            if(action.payload && action.payload._id)
-                state.alertedCustomers = {...state.alertedCustomers, [action.payload._id]: action.payload}
+            if(action.payload && action.payload.customer && action.payload.productId)
+                state.alertedCustomers = {...state.alertedCustomers,
+                    [`${action.payload.customer._id}-${action.payload.productId}`]: action.payload.customer}
         },
         removeAlertedCustomer(state, action) {
             const customers = {...state.alertedCustomers}

@@ -14,12 +14,14 @@ export default function AlertMenu() {
     useEffect(() => {
         driverCustomerSocket.on("alert:set", (data) => {
             setAlerts(prevAlerts => [...prevAlerts, {key: `set-${data.productId}`, text: `Set alert for ${data.productName}`}])
-            dispatch(actions.map.setAlertedCustomer(data.customer))
-
+            if(data.customer) {
+                dispatch(actions.map.setAlertedCustomer({customer: data.customer, productId: data.productId}))
+            }
         })
         driverCustomerSocket.on("alert:unset", (data) => {
+            console.log("alert unset")
             setAlerts(prevAlerts => [...prevAlerts, {key: `unset-${data.productId}`, text: `Unset alert for ${data.productName}`}])
-            if(data.customer) dispatch(actions.map.removeAlertedCustomer(data.customer._id))
+            if(data.customer) dispatch(actions.map.removeAlertedCustomer(`${data.customer._id}-${data.productId}`))
         })
     }, [])
 

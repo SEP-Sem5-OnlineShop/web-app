@@ -3,12 +3,11 @@ import { Link, useParams } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 // import Axios from 'axios';
 import DriverProductComponent from '../../../components/customer/driverProductComponent';
-import RatingComponent from '../../../components/customer/ratingComponent';
 import LoadingBox from '../../../components/customer/loadingBox';
 import MessageBox from '../../../components/customer/messageBox';
-import {axios, driverApi} from "../../../api/index";
+import {axios} from "../../../api/index";
 import { useSelector } from 'react-redux';
-import { getFileUrl } from '../../../api/azure-storage-blob';
+import {driverCustomerSocket} from "../../../socket";
 
 
 const DriverScreen = () => {
@@ -120,7 +119,11 @@ const DriverScreen = () => {
                         ) : (
                           <>
                             {dailyStock.map((stockproduct) => (
-                                <DriverProductComponent stockproduct={stockproduct} vendor_id={vendor_id} customer_id={customer_id} key={stockproduct.productId} />
+                                <DriverProductComponent stockproduct={stockproduct}
+                                                        vendor_id={vendor_id}
+                                                        customer_id={customer_id}
+                                                        driver_id={driver_id}
+                                                        key={stockproduct.productId} />
                             ))}
                             </>
                         )}
