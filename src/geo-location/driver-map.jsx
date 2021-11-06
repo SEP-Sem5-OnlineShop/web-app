@@ -18,7 +18,6 @@ export default function DriverMap() {
 
     useEffect(async () => {
         // Initialize and add the map
-        console.log(customers)
         let map
         let latitudeLongitude = {lat: parseFloat(location['coordinates'][0]), lng: parseFloat(location['coordinates'][1])}
         if (navigator.geolocation) {

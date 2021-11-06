@@ -1,10 +1,10 @@
 import { io } from "socket.io-client";
 
-const URL = "http://localhost:8000";
+const URL = process.env.REACT_APP_BACKEND_API_URL || ""
 const socket = io(URL, { autoConnect: false });
-export const alertSocket = io("http://localhost:8000/alert",{ autoConnect: false })
-export const driverCustomerSocket = io("http://localhost:8000/driver",{ autoConnect: false })
-export const mapSocket = io("http://localhost:8000/map", { autoConnect: false })
+export const alertSocket = io(`${URL}/alert`,{ autoConnect: false })
+export const driverCustomerSocket = io(`${URL}/driver`,{ autoConnect: false })
+export const mapSocket = io(`${URL}/map`, { autoConnect: false })
 
 socket.onAny((event, ...args) => {
     console.log(event, args);
