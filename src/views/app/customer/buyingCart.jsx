@@ -17,7 +17,7 @@ const BuyingCart = () => {
 
     const [order, setOrder] = useState({});
     const history = useHistory();
-    
+
     useEffect(() => {
         async function loadOrder(orderId){
             try {
@@ -71,15 +71,15 @@ const BuyingCart = () => {
                     <div className="flex h-full w-full justify-center items-center">
                         {/* <h3>Qr Code Scan by WebCam</h3> */}
                         <QrReader
-                          delay={300}
-                          style={{width: '30%'}}
-                          onError={handleErrorWebCam}
-                          onScan={handleScanWebCam}
+                            delay={300}
+                            style={{width: '30%'}}
+                            onError={handleErrorWebCam}
+                            onScan={handleScanWebCam}
                         />
                     </div>
                 ) : null }
             </div>
-        
+
             <div>
                 {scanResultWebCam ? (
                     <div className="mx-1 my-2 sm:mx-12 sm:my-8">
@@ -111,12 +111,12 @@ const BuyingCart = () => {
                                 <tbody>
                                 {order.products && <>
                                     {order.products.map((product) => (
-                                    <tr key={product._id}>
-                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap text-left text-textLight"><ProductName product_id={product.product_id} /></td>
-                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap ">{product.price}</td>
-                                        <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-center border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap ">{product.items}</td>
-                                    </tr>
-                                ))}
+                                        <tr key={product._id}>
+                                            <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap text-left text-textLight"><ProductName product_id={product.product_id} /></td>
+                                            <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-middle border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap ">{product.price}</td>
+                                            <td className="border-t-0 px-2 py-2 sm:px-6 sm:py-4 align-center border-l-0 border-r-0 text-sm sm:text-base whitespace-nowrap ">{product.items}</td>
+                                        </tr>
+                                    ))}
                                 </>
                                 }
                                 </tbody>
@@ -149,28 +149,28 @@ const ProductName = ({product_id}) => {
     const [error3, setError3] = useState(null);
     useEffect(() => {
         async function detailsProduct(product_id){
-          try {
-              const { data } = (await axios.get(`app/customer/product/${product_id}`)).data;
-              console.log('buying cart product details');
-              console.log(data);
-              setProductDetails(data);
-              setLoading3(false);
-              setError3(null);
-          } catch (err) {
-              setLoading3(false);
-              console.log(err);
-              setError3(err);
-          };
-      };
-      if (product_id) {
-          detailsProduct(product_id);
-      };
+            try {
+                const { data } = (await axios.get(`app/customer/product/${product_id}`)).data;
+                console.log('buying cart product details');
+                console.log(data);
+                setProductDetails(data);
+                setLoading3(false);
+                setError3(null);
+            } catch (err) {
+                setLoading3(false);
+                console.log(err);
+                setError3(err);
+            };
+        };
+        if (product_id) {
+            detailsProduct(product_id);
+        };
     }, [product_id]);
-  
+
     return (
         <span className="">{ productDetails.product_name }</span>
     );
-  }
+}
 
 // testing card
 //   MasterCard : 5307732125531191

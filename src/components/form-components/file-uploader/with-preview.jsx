@@ -15,6 +15,7 @@ export default function FileUploaderWithPreview(props) {
         label: props.label || false,
         setFileName: props.setFileName || (()=>{}),
         formikFieldName: props.formikFieldName || "",
+        name: props.name || null
     }
 
     const [showFilePreview, setShowFilePreview] = useState(true)
@@ -56,7 +57,7 @@ export default function FileUploaderWithPreview(props) {
                     <div>
                         <FileUploader
                             files={image}
-
+                            name={comProps.name}
                             setFiles={setImage}
                             maxFiles={comProps.maxFiles}
                             allowMultiple={comProps.allowMultiple}

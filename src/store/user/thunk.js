@@ -1,7 +1,7 @@
 import userSlice from "./index"
 import {authApi} from "../../api/index"
 
-import {driverSocket} from "../../socket/index"
+import {driverCustomerSocket} from "../../socket/index"
 import driver from "../../api/app/driver";
 
 /**
@@ -24,13 +24,13 @@ export function localSignIn(username, password) {
                 const userID = data.data._id || ""
                 const username = data.data.telephone || ""
                 if(role === "driver" || role === "customer") {
-                    driverSocket.auth = {role, userID, username}
-                    driverSocket.connect()
-                    driverSocket.on("driver:session", ({sessionID}) => {
+                    driverCustomerSocket.auth = {role, userID, username}
+                    driverCustomerSocket.connect()
+                    driverCustomerSocket.on("driver:session", ({sessionID}) => {
                         window.localStorage.setItem("sessionID", sessionID)
                     })
-                    driverSocket.emit("join", {userId: userID})
-                    driverSocket.emit("driver:login", {userId: data.data._id})
+                    await driverCustomerSocket.emit("join", {userId: userID})
+                    await driverCustomerSocket.emit("driver:login", {userId: data.data._id})
                 }
             }
             return {status, data}
@@ -45,16 +45,19 @@ export function signOUt() {
     return async (dispatch, getState) => {
         try {
             const {status, data} = await authApi.logout()
+            const sessionID = await window.localStorage.getItem("sessionID")
+            driverCustomerSocket.emit("all:logout", {sessionId: sessionID})
             if(getState().user.role === "driver"){
-                driverSocket.emit("driver:logout", {userId: getState().user.userData._id})
-                window.localStorage.removeItem("sessionID")
-                driverSocket.disconnect()
+                await driverCustomerSocket.emit("driver:logout", {userId: getState().user.userData._id})
             }
+            driverCustomerSocket.disconnect()
+            window.localStorage.removeItem("sessionID")
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
             dispatch(userSlice.actions.setRole("guest"))
             dispatch(userSlice.actions. setIsLogin("no"))
             window.localStorage.removeItem("userData")
+            window.localStorage.removeItem("sessionID")
             window.localStorage.setUserData("token", "")
             window.localStorage.setItem("role", "guest")
             window.localStorage.setItem("isLogin", "no")

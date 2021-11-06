@@ -118,7 +118,7 @@ export default function AddDriver({ edit }) {
                                     className="mb-4"
                                 />
                                 <div className="mt-8 flex justify-end">
-                                    <button onClick={(e) => { e.preventDefault(); formik.handleSubmit() }}
+                                    <button data-testid={'submit-button'} onClick={(e) => { e.preventDefault(); formik.handleSubmit() }}
                                         className="rounded-lg p-2 text-white bg-textLight">Submit</button>
                                 </div>
                             </form>

@@ -8,7 +8,6 @@ import MessageBox from '../../../components/customer/messageBox';
 import {axios, driverApi} from "../../../api/index";
 import { useSelector } from 'react-redux';
 import { getFileUrl } from '../../../api/azure-storage-blob';
-// import {driverSocket} from "../../../socket";
 import DriverCard from "../../../components/card/driver-card";
 
 

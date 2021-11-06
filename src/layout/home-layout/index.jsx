@@ -32,10 +32,8 @@ export default function MainLayout(props) {
             }
         }
         verifyScreen()
-        console.log("outside")
         window.addEventListener("resize", verifyScreen)
         return () => {
-            console.log("unmounted")
             window.removeEventListener("resize", verifyScreen)
         }
     }, [])

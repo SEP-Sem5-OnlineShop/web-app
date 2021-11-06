@@ -30,7 +30,8 @@ export default function FileUpload(props) {
         circle: props.circle || false,
         label: props.label || 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
         setFileName: props.setFileName || (() => { }),
-        formikFieldName: props.formikFieldName || ""
+        formikFieldName: props.formikFieldName || "",
+        name: props.name || "files"
     }
     return (
         <div>
@@ -73,7 +74,7 @@ export default function FileUpload(props) {
                     }
 
                 }
-                name="files"
+                name={comProps.name}
                 labelIdle={comProps.label}
             />
         </div>

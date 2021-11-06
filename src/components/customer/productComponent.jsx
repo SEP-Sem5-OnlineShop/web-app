@@ -5,7 +5,7 @@ import {axios} from "../../api/index";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getFileUrl } from "../../api/azure-storage-blob";
-import {driverSocket} from "../../socket/index"
+import {driverCustomerSocket} from "../../socket/index"
 
 const ProductComponent = ({ product, vendor_id, customer_id }) => {
     
@@ -20,11 +20,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     // const [error, setError] = useState(null);
     // const [error1, setError1] = useState(null);
     // const [error2, setError2] = useState(null);
-
-    const [timeoutId, setTimeoutId] = useState(0)
-    const [timeoutInitiated, setTimoutInitiated] = useState(false)
-
-    const [width, ] = useWindowSize();
+    const [width, height] = useWindowSize();
 
     useEffect(() => {
         let mounted = true
@@ -61,24 +57,19 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 await axios.post(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
-                const timeoutId = setTimeout(async () => {
-                    await driverSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
-                    setTimoutInitiated(true)
-                }, 2000)
-                setTimeoutId(timeoutId)
-                console.log(timeoutId)
+                driverCustomerSocket.emit("alert:create", {room: "61559c6de403553fb8f2a3ca", payload: payload})
+                // alert('added alert');
             } catch (err) {
-                // setError1(err);
-                console.log(err);
-            };
-        };
+                setError(err);
+                console.log(error);
+            }
+        }
         async function removeAlert(customer_id,product_id){
             try {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem("token")}`
                 await axios.delete(`app/customer/${customer_id}/alerts/${product_id}`);
                 const payload = {productId: product_id, productName: product.product_name, customer: customer}
-                clearTimeout(timeoutId)
-                if(timeoutInitiated) driverSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
+                driverCustomerSocket.emit("alert:remove", {room: "61559c6de403553fb8f2a3ca", payload: payload})
             } catch (err) {
                 // setError2(err);
                 console.log(err);
