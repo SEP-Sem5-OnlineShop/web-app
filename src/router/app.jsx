@@ -17,27 +17,32 @@ import AlertScreen from "../views/app/customer/alertScreen";
 import OrderHistoryScreen from "../views/app/customer/orderHistoryScreen";
 import CustomerProfileScreen from "../views/app/customer/customerProfileScreen";
 import CustomerNotificationScreen from "../views/app/customer/customerNotificationScreen";
-import History from '../views/app/history'
+import History from '../views/app/customer/history'
 
 import AddProduct from '../views/app/product/add'
 import Profile from '../views/app/profile'
 import ProductList from "../views/app/product/list";
-import DailyStockLoad from "../views/app/product/daily-stock"
 
 import AddDriver from '../views/app/vendor/driver/add'
 import DriversList from '../views/app/vendor/driver/list'
+
+import VehiclesList from "../views/app/vendor/vehicle/list";
+
 import InnerPageLayout from "../layout/inner-page-layout";
 import VendorProfile from "../views/app/vendor/profile/index"
 import DriverProfile from '../views/app/driver/profile'
 import SelectRoute from "../views/app/driver/select-route";
 import Cart from "../views/app/driver/cart";
-import DashboardLayout from "../layout/dashboard-layour";
+import DashboardLayout from "../layout/dashboard-layout";
 import SellingCart from "../views/app/driver/sell/sellingCart";
 import BuyingCart from "../views/app/customer/buyingCart";
+import AddVehicle from "../views/app/vendor/vehicle/add";
+import DailyWork from "../views/app/vendor/daily-work";
 
 export default function AppRouter() {
     const match = useRouteMatch()
     const role = useSelector(state => state.user.role)
+    const isLogin = useSelector(state => state.user.isLogin)
     return (
         <React.Fragment>{
             role === "driver" ?
@@ -68,25 +73,33 @@ export default function AppRouter() {
                             <AddProduct />
                         </Route>
                         <Route exact={true} path={`${match.path}/products/stock/daily`}>
-                            <DailyStockLoad />
+                            <DailyWork />
                         </Route>
                         <Route exact={true} path={`${match.path}/products`}>
                             <ProductList />
                         </Route>
-
-                <Route exact={true} path={`${match.path}/driver`}>
-                    <AddDriver />
-                </Route>
-                <Route exact={true} path={`${match.path}/drivers`}>
-                    <DriversList />
-                </Route>
-                <Route exact={true} path={`${match.path}/driver/:id`}>
-                    <AddDriver />
-                </Route>
-                <Route path={`${match.path}/profile`}>
-                    <VendorProfile />
-                </Route>
-            </DashboardLayout> :
+                        <Route exact={true} path={`${match.path}/driver`}>
+                            <AddDriver />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/drivers`}>
+                            <DriversList />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/driver/:id`}>
+                            <AddDriver />
+                        </Route>
+                        <Route path={`${match.path}/profile`}>
+                            <VendorProfile />
+                        </Route>
+                        <Route path={`${match.path}/vehicles`}>
+                            <VehiclesList />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/vehicle`} >
+                            <AddVehicle />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/vehicle/:id`} >
+                            <AddVehicle />
+                        </Route>
+                    </DashboardLayout> :
             role === "customer" ?
             <>
             <InnerPageLayout>
@@ -122,8 +135,8 @@ export default function AppRouter() {
                 </Switch>
             </InnerPageLayout>
             </> :
-            // <Redirect to="/404" />
-            null
+            <Redirect to="/" />
+            // null
         }
         </React.Fragment>
     )

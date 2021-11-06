@@ -19,7 +19,7 @@ const variants = {
   }
 };
 
-export const MenuItem = ({ menuName, link, freeze }) => {
+export const MenuItem = ({ menuName, link, freeze, id }) => {
   const history = useHistory()
   const location = useLocation()
   return (
@@ -29,6 +29,7 @@ export const MenuItem = ({ menuName, link, freeze }) => {
       whileTap={{ scale: 0.95 }}
       className="py-3 cursor-pointer"
       onClick={() => history.push(link)}
+      data-testid={id}
     >
       <div className="icon-placeholder" />
       <div className={location.pathname === link ? `${freeze ? "text-white" : "text-textLight"} 

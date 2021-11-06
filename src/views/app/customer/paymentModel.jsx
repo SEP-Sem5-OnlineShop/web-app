@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PaymentModal = ({ orderId, name, amount, customer }) => {
+const PaymentModal = ({ orderId, name, amount, customer, handlePay }) => {
     
   console.log(customer);
   // Put the payment variables here
@@ -31,6 +31,7 @@ const PaymentModal = ({ orderId, name, amount, customer }) => {
   // Called when user completed the payment. It can be a successful payment or failure
   window.payhere.onCompleted = function onCompleted(orderId) {
     console.log("Payment completed. OrderID:" + orderId);
+    handlePay();
     //Note: validate the payment and show success or failure page to the customer
   };
 
@@ -50,7 +51,9 @@ const PaymentModal = ({ orderId, name, amount, customer }) => {
     window.payhere.startPayment(payment);
   }
 
-  return <button onClick={pay}>Pay with Payhere</button>;
+  return(
+    <button className="py-1 px-4 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={pay}>Pay</button>
+  ) 
 };
 
 export default PaymentModal;

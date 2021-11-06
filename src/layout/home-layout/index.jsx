@@ -5,14 +5,17 @@ import { useSelector, useDispatch } from "react-redux"
 import { actions } from "../../store"
 import SideNavigation from "../mobile-navigation"
 import LoginRegister from "./login-register"
+import {IconContext} from "react-icons";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 import logo from "../../assets/svg/logo/logo-264A75.svg";
+import CustomerMap from "../../geo-location/index-map";
 
 export default function MainLayout(props) {
     const [isOpen, toggleOpen] = useCycle(false, true);
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
-    const dashboardStrings = useSelector(state => state.language.languageFile.dashboard)
+    const showMap = useSelector(state => state.map.showMap)
     const [isMobile, setIsMobile] = useState(false)
     const isLogin = useSelector(state => state.user.isLogin)
     const dispatch = useDispatch()
@@ -63,6 +66,13 @@ export default function MainLayout(props) {
                         </div> */}
 
                         <div className="flex items-center">
+
+                            <IconContext.Provider value={{ color: "#264A75", size: "2rem"}} >
+                                <div className="mr-2" onClick={() => dispatch(actions.map.setLanguage(!showMap))}>
+                                    <FaMapMarkerAlt />
+                                </div>
+                            </IconContext.Provider>
+
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))}
                                 className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
                                 <option value="english" key="english">English</option>
@@ -72,7 +82,7 @@ export default function MainLayout(props) {
                             {
                                 isLogin === "yes" ?
                                     <LoginRegister className="mr-4" freeze={!isMobile} /> :
-                                    <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
+                                    <button data-testid={'login-register-button'} onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
                                         Login | Register</button>
                             }
                         </div>
@@ -81,7 +91,12 @@ export default function MainLayout(props) {
 
                 <div className="w-full mt-28 bg-white rounded-t-3xl lg:rounded-t-6xl"
                     style={{ minHeight: 'calc(100vh - 7rem)' }}>
-                    {props.children}
+                    {
+                        showMap ?
+                            <CustomerMap />
+                            :
+                            props.children
+                    }
                 </div>
 
             </div>

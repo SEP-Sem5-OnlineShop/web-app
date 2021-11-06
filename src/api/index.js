@@ -4,6 +4,7 @@ import vendor from './app/vendor'
 import driver from './app/driver'
 import product from './app/product'
 import stock from './app/stock'
+import vehicle from "./app/vehicle";
 import vendorRequest from "./general/vendorRequest";
 import store, {actions} from "../store/index"
 import customer from './general/customer';
@@ -11,8 +12,8 @@ import customer from './general/customer';
 /*
  * Setup axios  
  */
-const BASE_URL = 'https://ontheway-backend-auth-api.herokuapp.com/api'
-// const BASE_URL = 'http://localhost:8000/api'
+// const BASE_URL = 'https://ontheway-backend-auth-api.herokuapp.com/api'
+const BASE_URL = process.env.REACT_APP_BACKEND_API_URL || ""
 Axios.defaults.baseURL = BASE_URL
 Axios.defaults.withCredentials = true
 
@@ -34,21 +35,28 @@ Axios.interceptors.response.use(async response => {
     },
     async function (error) {
         const originalRequest = error.config;
-        if(error.response.status === 401 && error.response.data.message === "Token Expired!") {
+        if(
+            error && error.response &&
+            error.response.status === 401 &&
+            error.response.data.message === "Token Expired!") {
             // Force logout and login again
             store.dispatch(actions.user.setUserData({}))
             store.dispatch(actions.user.setAuthToken(""))
             store.dispatch(actions.user.setRole("guest"))
+            store.dispatch(actions.user.setIsLogin("no"))
             window.localStorage.removeItem("userData")
             window.localStorage.removeItem("token")
             window.localStorage.setItem("role", "guest")
         }
-        else if(error.response.status === 401 && error.response.data.message === "Session is invalid!") {
-            const {status, data} = await auth.token()
-            setAuthToken(data.accessToken)
-            originalRequest.headers.Authorization = `Bearer ${data.accessToken}`
-            originalRequest._retry = true;
-            return axiosApiInstance(originalRequest)
+        else if(
+            error && error.response && error.response.status === 401 && error.response.data.message === "Session is invalid!") {
+            const data = await auth.token()
+            if(data && data.data) {
+                setAuthToken(data.data.accessToken)
+                originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`
+                originalRequest._retry = true;
+                return axiosApiInstance(originalRequest)
+            }
         }
         else return error
     }
@@ -72,3 +80,4 @@ export const productApi = product
 export const stockApi = stock
 export const vendorRequestApi = vendorRequest
 export const customerApi = customer
+export const vehicleApi = vehicle

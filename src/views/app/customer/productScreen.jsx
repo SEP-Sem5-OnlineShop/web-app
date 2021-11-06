@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useEffect, useState, useLayoutEffect } from 'react';
+import { Link, useHistory, useParams } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 import RatingComponent from '../../../components/customer/ratingComponent';
 import ReviewComponent from '../../../components/customer/reviewComponent';
@@ -30,6 +30,8 @@ const ProductScreen = () => {
     const [alert, setAlert] = useState(false);
     const [error1, setError1] = useState(null);
     const [error2, setError2] = useState(null);
+
+    const [width, height] = useWindowSize();
 
 
     useEffect(() => {
@@ -124,7 +126,7 @@ const ProductScreen = () => {
         ) : (error) ? (
             <MessageBox variant="danger">{error}</MessageBox>
         ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-16">
+        <div className="mx-1 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-16">
             <div className="relative">
                 <div  className="w-full h-full bg-center bg-cover rounded-xl" style={{ minHeight: '50vh', backgroundImage: `url(${getFileUrl(product.imageUrl)})` }}>
                 </div>
@@ -139,9 +141,12 @@ const ProductScreen = () => {
             </div>
             <div>
                 <span className="text-xl sm:text-2xl md:text-4xl font-bold text-textLight">{product.product_name}</span>
+                <div>
+                    <VendorName vendor_id={product.seller} />
+                </div>
                 <div className="mt-4 flex">
-                    <RatingComponent rating={product.rating} size={25} />
-                    <span className="px-2">{product.rating} ({product.numReviews}+)</span>
+                    <RatingComponent rating={product.rating} size={width>600?25:width>480?22:width>400?18:16} />
+                    <span className="px-2">{(Math.round(product.rating * 10) / 10).toFixed(1)} ({product.numReviews}+)</span>
                 </div>
                 <div className="mt-4">
                     <span className="text-sm sm:text-lg text-secondary">{productStrings.available}: { product.stock }</span>
@@ -155,10 +160,13 @@ const ProductScreen = () => {
             </div>
             <div>
                 <div className="text-xl text-textLight font-medium">{productStrings.reviews}</div>
+                    {(product.reviews && product.reviews.length < 1) && <>
+                        <div className="text-xs text-text ml-2 mt-2">No Reviews</div>
+                    </>}
                 <div className="mt-4">
                     {product.reviews && <>
                         {product.reviews.map((review) => (
-                            <ReviewComponent key={review._id} review={review} />
+                            <ReviewComponent key={review._id} review={review} width={width} />
                         ))}
                     </>}
                 </div>
@@ -170,3 +178,45 @@ const ProductScreen = () => {
 };
  
 export default ProductScreen;
+
+const VendorName = ({vendor_id}) => {
+    const [vendorDetails, setVendorDetails] = useState({})
+    const [loading3, setLoading3] = useState(true);
+    const [error3, setError3] = useState(null);
+    useEffect(() => {
+        async function detailsVendor(vendor_id){
+          try {
+            const { data } = await axios.get(`gen/customer/vendors/${vendor_id}`);
+            console.log('vendor screen vendor details');
+            console.log(data);
+            setVendorDetails(data);
+            setLoading3(false);
+            setError3(null);
+          } catch (err) {
+            setLoading3(false);
+            console.log(err);
+            setError3(err);
+          };
+        };
+        if (vendor_id) {
+            detailsVendor(vendor_id);
+        };
+      }, [vendor_id]);
+  
+    return (
+      <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${vendor_id}`}>{ vendorDetails.vendor_name }</Link>
+    );
+}
+
+function useWindowSize() {
+const [size, setSize] = useState([0, 0]);
+useLayoutEffect(() => {
+    function updateSize() {
+    setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+}, []);
+return size;
+};

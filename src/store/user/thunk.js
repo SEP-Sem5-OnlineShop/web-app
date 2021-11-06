@@ -1,6 +1,9 @@
 import userSlice from "./index"
 import {authApi} from "../../api/index"
 
+import {driverCustomerSocket, mapSocket} from "../../socket/index"
+import driver from "../../api/app/driver";
+
 /**
  * Thunk action
  * Local login
@@ -17,6 +20,20 @@ export function localSignIn(username, password) {
                 dispatch(userSlice.actions.setAuthToken(data.accessToken))
                 dispatch(userSlice.actions.setRole(data.data.role))
                 dispatch(userSlice.actions.setIsLogin("yes"))
+                const role = data.data.role || ""
+                const userID = data.data._id || ""
+                const username = data.data.telephone || ""
+                if(role === "driver" || role === "customer") {
+                    driverCustomerSocket.auth = {role, userID, username}
+                    driverCustomerSocket.connect()
+                    mapSocket.connect()
+                    driverCustomerSocket.on("driver:session", ({sessionID}) => {
+                        console.log(sessionID)
+                        window.localStorage.setItem("sessionID", sessionID)
+                    })
+                    driverCustomerSocket.emit("join", {userId: userID})
+                    driverCustomerSocket.emit("driver:login", {userId: data.data._id})
+                }
             }
             return {status, data}
         }
@@ -27,16 +44,25 @@ export function localSignIn(username, password) {
 }
 
 export function signOUt() {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         try {
             const {status, data} = await authApi.logout()
+            const sessionID = await window.localStorage.getItem("sessionID")
+            driverCustomerSocket.emit("all:logout", {sessionId: sessionID})
+            if(getState().user.role === "driver"){
+                driverCustomerSocket.emit("driver:logout", {userId: getState().user.userData._id})
+                driverCustomerSocket.disconnect()
+            }
+            window.localStorage.removeItem("sessionID")
             dispatch(userSlice.actions.setUserData({}))
             dispatch(userSlice.actions.setAuthToken(""))
             dispatch(userSlice.actions.setRole("guest"))
-            dispatch(userSlice.actions.setIsLogin("no"))
+            dispatch(userSlice.actions. setIsLogin("no"))
             window.localStorage.removeItem("userData")
+            window.localStorage.removeItem("sessionID")
             window.localStorage.setUserData("token", "")
             window.localStorage.setItem("role", "guest")
+            window.localStorage.setItem("isLogin", "no")
         }
         catch (error) {
 

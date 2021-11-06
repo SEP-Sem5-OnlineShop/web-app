@@ -10,7 +10,6 @@ import mushroom from "../../assets/svg/icons/Property 1=Mushroom.svg"
 
 export default function IconPanel() {
     const dashboardStrings = useSelector(state => state.language.languageFile.dashboard)
-    console.log(dashboardStrings)
     return (
         <div className='h-full flex'>
             <div className='h-full flex flex-col items-center justify-between mx-4'>

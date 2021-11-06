@@ -16,7 +16,6 @@ export default function InnerPageLayout(props) {
     const selectedLanguage = useSelector(state => state.language.language)
     const [isMobile, setIsMobile] = useState(false)
     const isLogin = useSelector(state => state.user.isLogin)
-    const token = useSelector(state => state.user.token)
 
     useEffect(() => {
         function verifyScreen() {

@@ -1,5 +1,5 @@
 import React from "react";
-import InputWithValidation from "../../../../components/input-with-validation";
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
 
 export default function Step1(props) {
 

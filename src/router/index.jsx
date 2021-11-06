@@ -15,10 +15,14 @@ import ProductScreen from "../views/app/customer/productScreen";
 import VendorScreen from "../views/app/customer/vendorScreen";
 import Page404 from "../views/404"
 import { actions } from "../store"
-import DashboardLayout from "../layout/dashboard-layour";
+import DashboardLayout from "../layout/dashboard-layout";
 import Dashboard from "../views/app/driver/dashboard";
 import VendorDashboard from "../views/app/vendor/dashboard/index"
 import CreatePassword from "../views/other/create-password";
+import {alertSocket, driverCustomerSocket} from "../socket";
+import {axios} from "../api";
+import driverApi from "../api/app/driver";
+import DriverScreen from "../views/app/customer/driverScreen";
 
 export default function MainRouter() {
 
@@ -38,8 +42,37 @@ export default function MainRouter() {
         dispatch(actions.user.setAuthToken(token))
         dispatch(actions.user.setRole(role))
         dispatch(actions.user.setIsLogin(isLogin))
+        if(userData) {
+            driverCustomerSocket.emit("join", {userId: userData._id})
+        }
+        const sessionID = window.localStorage.getItem("sessionID")
+        if(sessionID) {
+            driverCustomerSocket.auth = {sessionID, role}
+            driverCustomerSocket.connect()
+        }
+
 
     }, [dispatch])
+
+    useEffect(async () => {
+        let mounted = true
+        const socket = axios.CancelToken.source()
+        driverCustomerSocket.on("driver:showLogin", async (data) => {
+            const driver = await driverApi.getDriver(socket, data)
+            if(driver && driver.data && driver.status===200)
+                dispatch(actions.map.setOnlineDriver(driver.data.data))
+        })
+        driverCustomerSocket.on("driver:showLogout", (data) => {
+            dispatch(actions.map.removeOnlineDriver(data))
+        })
+        return () => {
+            socket.cancel()
+            mounted = false
+        }
+    }, [])
+
+
+
     const role = useSelector(state => state.user.role)
     return (
         <Router>
@@ -84,6 +117,9 @@ export default function MainRouter() {
                         </Route>
                         <Route path={`/vendor_:id/product_:pid`} exact>
                             <ProductScreen />
+                        </Route>
+                        <Route path={`/vendor_:id/driver_:did`} exact>
+                            <DriverScreen />
                         </Route>
                     </Switch>
                 </InnerPageLayout>

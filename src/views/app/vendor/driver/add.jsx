@@ -15,7 +15,7 @@ import { useSelector } from "react-redux"
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 
 import CardTemplate from "../../../../components/card/template";
-import InputWithValidation from "../../../../components/input-with-validation";
+import InputWithValidation from "../../../../components/form-components/input-with-validation";
 import { toast } from "react-toastify";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
@@ -118,7 +118,7 @@ export default function AddDriver({ edit }) {
                                     className="mb-4"
                                 />
                                 <div className="mt-8 flex justify-end">
-                                    <button onClick={(e) => { e.preventDefault(); formik.handleSubmit() }}
+                                    <button data-testid={'submit-button'} onClick={(e) => { e.preventDefault(); formik.handleSubmit() }}
                                         className="rounded-lg p-2 text-white bg-textLight">Submit</button>
                                 </div>
                             </form>

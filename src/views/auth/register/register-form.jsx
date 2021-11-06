@@ -1,5 +1,5 @@
 import React, {forwardRef, useState} from "react";
-import InputWithValidation from "../../../components/input-with-validation";
+import InputWithValidation from "../../../components/form-components/input-with-validation";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
@@ -50,7 +50,7 @@ const RegisterForm = (props, ref) => {
                 <form className='w-5/6 flex flex-col justify-center items-center' onSubmit={formik.handleSubmit}>
                     <AnimateSharedLayout>
                         <motion.div className="w-full" layout>
-                            <ItemTemplate title='Your Details' isOpen={true}>
+                            <ItemTemplate title='Your Details' buttonId={'your-details-button'} isOpen={true}>
                                 <InputWithValidation
                                     label='First Name'
                                     id='firstName'
@@ -73,12 +73,12 @@ const RegisterForm = (props, ref) => {
                                     formik={formik}
                                 />
                             </ItemTemplate>
-                            <ItemTemplate title='Password' disabled={
+                            <ItemTemplate title='Password' buttonId={'password-button'} disabled={
                                 formik.errors.firstName || formik.errors.lastName || formik.errors.telephone ||
                                 !formik.values.firstName || !formik.values.lastName || !formik.values.telephone
                             }>
                                 <InputWithValidation
-                                    label='Password'
+                                    label='Create Password'
                                     id='password'
                                     name='password'
                                     type='password'
@@ -91,7 +91,13 @@ const RegisterForm = (props, ref) => {
                                     type='confirmPassword'
                                     formik={formik}
                                 />
-                                <button type="submit" className="w-full py-4 mt-2 rounded-xl bg-primary text-black font-bold">
+                                <button
+                                    disabled={
+                                        formik.errors.password || formik.errors.confirmPassword ||
+                                            !formik.values.password || !formik.values.confirmPassword
+                                    }
+                                    data-testid={'submit-button'}
+                                    type="submit" className="w-full py-4 mt-2 rounded-xl bg-primary text-black font-bold">
                                     Submit
                                 </button>
                             </ItemTemplate>
@@ -109,7 +115,7 @@ function ItemTemplate(props) {
 
     return (
         <motion.div layout>
-            <button type="button" disabled={props.disabled || false} onClick={toggleOpen}
+            <button data-testid={props.buttonId} type="button" disabled={props.disabled || false} onClick={toggleOpen}
                     className="w-full p-2 mt-2 rounded-xl bg-primary text-black font-bold disabled:opacity-50">
                 {props.title}
             </button>
