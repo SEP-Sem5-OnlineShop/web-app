@@ -49,6 +49,7 @@ export default function MainRouter() {
         if(sessionID) {
             driverCustomerSocket.auth = {sessionID, role}
             driverCustomerSocket.connect()
+            console.log({sessionID, role})
         }
 
 
