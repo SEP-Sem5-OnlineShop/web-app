@@ -17,7 +17,7 @@ const ProductComponent = ({ product, vendor_id, customer_id }) => {
     const [alert, setAlert] = useState(false);
 
     // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState(null);
+    const [error, setError] = useState(null);
     // const [error1, setError1] = useState(null);
     // const [error2, setError2] = useState(null);
     const [width, height] = useWindowSize();
