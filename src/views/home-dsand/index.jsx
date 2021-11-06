@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { axios } from "../../api";
 import LoadingBox from "../../components/customer/loadingBox";
 import MessageBox from "../../components/customer/messageBox";
+import HomeProductItem from "./home-item/homeproductitem";
 
 
 export default function HomeDsand() {
@@ -17,6 +18,7 @@ export default function HomeDsand() {
     const [vendors, setVendors] = useState([])
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [products, setPoducts] = useState([])
 
     useEffect(() => {
         let mounted = true;
@@ -33,6 +35,27 @@ export default function HomeDsand() {
                 setLoading(false);
                 console.log(err);
                 setError(err);
+            }
+        })()
+        return () => {
+            mounted = false
+        }
+    }, []);
+    
+    useEffect(() => {
+        let mounted = true;
+        (async function listProducts(){
+            try {
+                const { data } = await axios.get(`gen/customer/home/productlist`);
+                console.log('home screen product list');
+                console.log(data);
+                if(mounted) setPoducts(data);
+                // if(mounted) setLoading1(false);
+                // if(mounted) setError1(null);
+            } catch (err) {
+                // setLoading1(false);
+                console.log(err);
+                // setError1(err);
             }
         })()
         return () => {
@@ -78,10 +101,10 @@ export default function HomeDsand() {
                         <MessageBox variant="danger">{error}</MessageBox>
                     ) : (
                         <SwiperSliderContainer>
-                            {vendors && <>
-                                {vendors.map((vendor) => (
-                                    <SwiperSlide key={vendor._id}>
-                                        <HomeItem vendor={vendor} />
+                            {products && <>
+                                {products.map((product) => (
+                                    <SwiperSlide key={product._id}>
+                                        <HomeProductItem product={product} />
                                     </SwiperSlide>
                                 ))}
                             </>}
