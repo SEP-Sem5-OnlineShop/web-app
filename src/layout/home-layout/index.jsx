@@ -77,7 +77,7 @@ export default function MainLayout(props) {
                             </IconContext.Provider>
 
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))}
-                                className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
+                                className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4 dark:bg-secondary dark:text-white">
                                 <option value="english" key="english">English</option>
                                 <option value="sinhala" key="sinhala">සිංහල</option>
                                 <option value="tamil" key="tamil">தமிழ்</option>
