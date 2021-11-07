@@ -14,27 +14,27 @@ export default function IconPanel() {
         <div className='h-full flex'>
             <div className='h-full flex flex-col items-center justify-between mx-4'>
                 <img className="w-16" src={fruits} alt='fruit' />
-                <span className='text-sm font-semibold'>{dashboardStrings.iconPanel.fruits}</span>
+                <span className='text-sm font-semibold dark:text-white'>{dashboardStrings.iconPanel.fruits}</span>
             </div>
             <div className='h-full flex flex-col items-center justify-between mx-4'>
                 <img className="w-16" src={mushroom} alt='fruit' />
-                <span className='text-sm font-semibold'>{dashboardStrings.iconPanel.vegetables}</span>
+                <span className='text-sm font-semibold dark:text-white'>{dashboardStrings.iconPanel.vegetables}</span>
             </div>
             <div className='h-full flex flex-col items-center justify-between mx-4'>
                 <img className="w-16" src={bread} alt='fruit' />
-                <span className='text-sm font-semibold'>{dashboardStrings.iconPanel.bakery}</span>
+                <span className='text-sm font-semibold dark:text-white'>{dashboardStrings.iconPanel.bakery}</span>
             </div>
             <div className='h-full flex flex-col items-center justify-between mx-4'>
                 <img className="w-16" src={plant} alt='fruit' />
-                <span className='text-sm font-semibold'>{dashboardStrings.iconPanel.plants}</span>
+                <span className='text-sm font-semibold dark:text-white'>{dashboardStrings.iconPanel.plants}</span>
             </div>
             <div className='h-full flex flex-col items-center justify-between mx-4'>
                 <img className="w-16" src={egg} alt='fruit' />
-                <span className='text-sm font-semibold'>{dashboardStrings.iconPanel.eggs}</span>
+                <span className='text-sm font-semibold dark:text-white'>{dashboardStrings.iconPanel.eggs}</span>
             </div>
             <div className='h-full flex flex-col items-center justify-between mx-4'>
                 <img className="w-16" src={iceCream} alt='fruit' />
-                <span className='text-sm font-semibold'>{dashboardStrings.iconPanel.desserts}</span>
+                <span className='text-sm font-semibold dark:text-white'>{dashboardStrings.iconPanel.desserts}</span>
             </div>
         </div>
     )

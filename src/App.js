@@ -15,7 +15,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 function App() {
 
     return (
-        <div className="App">
+        <div className="App dark">
             <Provider store={store}>
                 <ToastContainer
                     position="top-right"

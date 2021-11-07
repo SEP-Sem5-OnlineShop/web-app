@@ -72,7 +72,7 @@ export default function HomeDsand() {
                 </div>
 
                 <div className="w-11/12 mb-10 mt-8">
-                    <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.todaysDeals}</span>
+                    <span className="text-xl lg:text-3xl font-medium dark:text-white">{dashboardStrings.todaysDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full relative z-0">
                     {loading ? (
                         <LoadingBox></LoadingBox>
@@ -93,7 +93,7 @@ export default function HomeDsand() {
                 </div>
 
                 <div className="w-11/12 mb-10">
-                    <span className="text-xl lg:text-3xl font-medium">{dashboardStrings.hotDeals}</span>
+                    <span className="text-xl lg:text-3xl font-medium dark:text-white">{dashboardStrings.hotDeals}</span>
                     <div className="mt-4 lg:mt-8 w-full">
                     {loading ? (
                         <LoadingBox></LoadingBox>

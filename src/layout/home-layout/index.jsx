@@ -91,7 +91,7 @@ export default function MainLayout(props) {
                     </div>
                 </div>
 
-                <div className="w-full mt-28 bg-white rounded-t-3xl lg:rounded-t-6xl"
+                <div className="w-full mt-28 bg-white rounded-t-3xl lg:rounded-t-6xl dark:bg-secondary"
                     style={{ minHeight: 'calc(100vh - 7rem)' }}>
                     {
                         showMap ?
