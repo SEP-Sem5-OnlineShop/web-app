@@ -10,6 +10,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 
 import logo from "../../assets/svg/logo/logo-264A75.svg";
 import CustomerMap from "../../geo-location/index-map";
+import Toggle from "../../components/ThemeToggle";
 
 export default function MainLayout(props) {
     const [isOpen, toggleOpen] = useCycle(false, true);
@@ -74,6 +75,7 @@ export default function MainLayout(props) {
                                     <FaMapMarkerAlt />
                                 </div>
                             </IconContext.Provider>
+                            <Toggle/>
 
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))}
                                 className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
