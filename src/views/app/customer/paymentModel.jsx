@@ -52,7 +52,7 @@ const PaymentModal = ({ orderId, name, amount, customer, handlePay }) => {
   }
 
   return(
-    <button className="py-1 px-4 bg-textLight text-primary rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={pay}>Pay</button>
+    <button className="py-1 px-4 bg-textLight text-primary dark:text-white rounded-md transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={pay}>Pay</button>
   ) 
 };
 
