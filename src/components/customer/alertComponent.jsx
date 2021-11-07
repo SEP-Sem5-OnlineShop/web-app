@@ -75,7 +75,7 @@ const AlertComponent = ({ alert, handleRemove }) => {
     return (
         <div>
         {(alert.product_id && alert.user_id) ?
-        <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-28 sm:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400" >
+        <div className="flex justify-between rounded-2xl overflow-hidden shadow-md bg-white h-28 sm:h-36 transform hover:scale-105 hover:shadow-lg transition ease-out duration-400 dark:bg-secondary" >
             <Link to={`/vendor_${product.seller}/product_${alert.product_id}`}>
             <img src={ `${getFileUrl(product.imageUrl)}` } alt="" className="h-full w-20 sm:w-36 sm:h-36 object-cover"/>
             </Link>
@@ -85,7 +85,7 @@ const AlertComponent = ({ alert, handleRemove }) => {
                 <span className="text-sm sm:text-lg text-secondary">{productStrings.currency} { product.price }</span>
             </div>
             <div className="mr-1 my:4 sm:mx-4 flex flex-col items-end justify-center">
-                <button className="rounded-xl shadow w-10 h-10 sm:w-12 sm:h-12 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400" onClick={() => handleRemove(alert.user_id,alert.product_id)}>
+                <button className="rounded-xl shadow w-10 h-10 sm:w-12 sm:h-12 flex justify-center items-center bg-white transform hover:scale-110 hover:shadow-md transition ease-out duration-400 dark:bg-text" onClick={() => handleRemove(alert.user_id,alert.product_id)}>
                     <span className="text-3xl sm:text-4xl text-danger">x</span>
                 </button>
             </div>
