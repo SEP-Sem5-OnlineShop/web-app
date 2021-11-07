@@ -100,18 +100,18 @@ const DriverScreen = () => {
               {/* <div className="h-24 xs:h-32 sm:h-40 md:h-52 w-full flex sm:px-10 items-end relative"> */}
               <div className="h-24 w-full flex sm:px-10 items-end relative">
               <Link to={`/vendor_${vendor_id}/driver_${driver_id}`}>
-                  <span className="ml-2 xs:ml-4 sm:ml-6 mt-2 xs:mt-3 sm:mt-4 text-sm xss:text-base xs:text-lg sm:text-xl md:text-2xl text-text font-semibold relative">{driver.firstName || "driver"} {driver.lastName || "name"}</span>
+                  <span className="ml-2 xs:ml-4 sm:ml-6 mt-2 xs:mt-3 sm:mt-4 text-sm xss:text-base xs:text-lg sm:text-xl md:text-2xl text-text font-semibold relative dark:text-white">{driver.firstName || "driver"} {driver.lastName || "name"}</span>
               </Link>
               {/* <Link to={`/vendor_${vendor_id}`}>
                   <span style={{'WebkitTextFillColor': 'white', 'WebkitTextStrokeWidth': '1px', 'WebkitTextStrokeColor': '#000000', 'textShadow': '3px 3px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'} } className="ml-2 my-2 xs:ml-4 xs:my-4 sm:ml-6 sm:my-6 text-sm xss:text-base xs:text-xl sm:text-2xl md:text-3xl text-white font-semibold relative">{vendor.vendor_name || "vendor name"}</span>
                 </Link> */}
               </div>
               <div className="w-full flex-row sm:px-10">
-                <p className="ml-2 xs:ml-4 sm:ml-6 mt-1 xs:mt-2 sm:mt-3 text-xs xs:text-sm sm:text-base md:text-lg text-text">{driver.telephone || "telephone"} </p>
-                <p className="ml-2 xs:ml-4 sm:ml-6 mt-1 xs:mt-2 sm:mt-2 text-xs xs:text-sm sm:text-base md:text-lg text-text">{driver.email || "email"} </p>
+                <p className="ml-2 xs:ml-4 sm:ml-6 mt-1 xs:mt-2 sm:mt-3 text-xs xs:text-sm sm:text-base md:text-lg text-text dark:text-white">{driver.telephone || "telephone"} </p>
+                <p className="ml-2 xs:ml-4 sm:ml-6 mt-1 xs:mt-2 sm:mt-2 text-xs xs:text-sm sm:text-base md:text-lg text-text dark:text-white">{driver.email || "email"} </p>
               </div>
 
-              <div className="w-full bg-white relative" style={{minHeight: 'calc(100vh - 11rem)'}}>
+              <div className="w-full bg-white relative dark:bg-secondary" style={{minHeight: 'calc(100vh - 11rem)'}}>
                   {/* <div className="px-4 pt-2 sm:px-14 sm:pt-6">
                       <RatingComponent rating={vendor.rating} size={width>600?25:width>480?22:width>400?18:16} />
                       <span className="text-xs xs:text-sm sm:text-base">{(Math.round(vendor.rating * 10) / 10).toFixed(1)} ({vendor.ratingCount}+)</span>

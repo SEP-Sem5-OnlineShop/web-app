@@ -227,7 +227,7 @@ const VendorName = ({vendor_id}) => {
       }, [vendor_id]);
   
     return (
-      <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${vendor_id}`}>{ vendorDetails.vendor_name }</Link>
+      <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold dark:text-buttonColor" to={`/vendor_${vendor_id}`}>{ vendorDetails.vendor_name }</Link>
     );
 }
 

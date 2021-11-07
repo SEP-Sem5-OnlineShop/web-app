@@ -52,7 +52,7 @@ export default function InnerPageLayout(props) {
                     </AnimatePresence>
                     <SideNavigation isOpen={isOpen} toggleOpen={toggleOpen} />
                     {/* <div className="bg-food-style opacity-40 w-full h-full absolute top-0 left-0 z-0" /> */}
-                    <div className="h-20 bg-white w-full fixed flex px-10 top-0 left-0 justify-end md:justify-between items-center z-10">
+                    <div className="h-20 bg-white w-full fixed flex px-10 top-0 left-0 justify-end md:justify-between items-center z-10 dark:bg-text">
                         <div className="hidden md:flex h-full items-center">
                             <img className="cursor-pointer ml-8" style={{height: 80}} onClick={() => history.push("/")} src={logo} alt="logo" />
                         </div>
@@ -60,7 +60,7 @@ export default function InnerPageLayout(props) {
 
                         <div className="flex items-center">
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))} 
-                                className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
+                                className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4 dark:text-white dark:bg-secondary">
                                 <option value="english" key="english">English</option>
                                 <option value="sinhala" key="sinhala">සිංහල</option>
                                 <option value="tamil" key="tamil">தமிழ்</option>
@@ -68,7 +68,7 @@ export default function InnerPageLayout(props) {
                             {
                                 isLogin === "yes" ?
                                 <LoginRegister className="mr-4" freeze={!isMobile} /> :
-                                <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
+                                <button onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black dark:text-white dark:bg-secondary">
                                 Login | Register</button>
                             }
                         </div>
