@@ -31,7 +31,7 @@ export const Navigation = (props) => {
           <div>
             <img className="cursor-pointer lg:ml-0" style={{ height: 80 }} onClick={() => history.push("/")} src={logo} alt="logo" /> :
             <button onClick={() => history.push("/auth/login")}
-              className={`rounded-lg px-2 py-2 ${props.freeze ? "bg-white bg-textLight" :
+              className={`rounded-lg px-2 py-2 ${props.freeze ? "bg-white text-textLight" :
                 "bg-textLight text-white"} w-full`}>
               Login | Register
           </button>

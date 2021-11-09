@@ -13,7 +13,7 @@ export default function EditableCardItem(props) {
     const [value, setValue] = useState(false)
     return (
         <motion.div layout className="mb-8">
-            <motion.div className="text-text font-medium">{comProps.label}</motion.div>
+            <motion.div className="text-text font-medium dark:text-white">{comProps.label}</motion.div>
             <AnimatePresence>
                 {
                     !value &&
@@ -22,7 +22,7 @@ export default function EditableCardItem(props) {
                                     animate={{opacity: 1, display: "flex"}}
                                     exit={{opacity: 0, display: "none"}}
                                     className="flex justify-between">
-                            <span>{comProps.fieldValue}</span>
+                            <span className="dark:text-white">{comProps.fieldValue}</span>
                             <button onClick={() => setValue(true)}
                                     className="bg-buttonColor text-secondary font-semibold rounded
                                                 py-1 px-4 h-8">Edit</button>

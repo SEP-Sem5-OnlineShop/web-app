@@ -68,14 +68,14 @@ const ReviewComponent = ({ review, width }) => {
                     </div>
                     <div className="ml-4">
                         <p className="flex">
-                            <span className="font-bold text-text text-sm xxs:text-base sm:text-base">{customer.name || 'anonymous'}</span>
+                            <span className="font-bold text-text text-sm xxs:text-base sm:text-base dark:text-white">{customer.name || 'anonymous'}</span>
                         </p>
-                        <p className="text-text text-xs xxs:text-sm sm:text-sm">{new Date(review.createdAt).toUTCString() || ''}</p>
+                        <p className="text-text text-xs xxs:text-sm sm:text-sm dark:text-white">{new Date(review.createdAt).toUTCString() || ''}</p>
                         <RatingComponent rating={review.rating} size={width>600?20:width>480?18:width>400?16:14} />
                     </div>
                 </div>
                 <div className="mt-1 mb-6 sm:mb-10">
-                    <span className="mt-1 text-secondary text-xs xxs:text-sm sm:text-base">
+                    <span className="mt-1 text-secondary text-xs xxs:text-sm sm:text-base dark:text-white">
                         {para1}
                     </span>
                     <AnimatePresence>
@@ -83,7 +83,7 @@ const ReviewComponent = ({ review, width }) => {
                             <motion.span
                                 initial={{ opacity: 0, display: "none" }}
                                 animate={{ opacity: 1, display: "inline" }}
-                                exit={{ opacity: 0, display: "none" }} className="mt-1 text-secondary text-xs xxs:text-sm sm:text-base">
+                                exit={{ opacity: 0, display: "none" }} className="mt-1 text-secondary text-xs xxs:text-sm sm:text-base dark:text-white">
                                 {` ${para2}`}
                             </motion.span>
                         }

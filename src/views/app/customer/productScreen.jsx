@@ -154,28 +154,28 @@ const ProductScreen = () => {
                 </div>
             </div>
             <div>
-                <span className="text-xl sm:text-2xl md:text-4xl font-bold text-textLight">{product.product_name}</span>
+                <span className="text-xl sm:text-2xl md:text-4xl font-bold text-textLight dark:text-white">{product.product_name}</span>
                 <div>
                     <VendorName vendor_id={product.seller} />
                 </div>
                 <div className="mt-4 flex">
                     <RatingComponent rating={product.rating} size={width>600?25:width>480?22:width>400?18:16} />
-                    <span className="px-2">{(Math.round(product.rating * 10) / 10).toFixed(1)} ({product.numReviews}+)</span>
+                    <span className="px-2 dark:text-white">{(Math.round(product.rating * 10) / 10).toFixed(1)} ({product.numReviews}+)</span>
                 </div>
                 <div className="mt-4">
-                    <span className="text-sm sm:text-lg text-secondary">{productStrings.available}: { product.stock }</span>
+                    <span className="text-sm sm:text-lg text-secondary dark:text-white">{productStrings.available}: { product.stock }</span>
                 </div>
                 <div className="mt-4">
-                    <span className="text-sm sm:text-lg text-secondary">{productStrings.price}: {productStrings.currency} { product.price }</span>
+                    <span className="text-sm sm:text-lg text-secondary dark:text-white">{productStrings.price}: {productStrings.currency} { product.price }</span>
                 </div>
                 <div className="mt-4 sm:mt-8">
-                    <span className="text-sm sm:text-lg text-secondary">{parse(`${product.description}`)}</span>
+                    <span className="text-sm sm:text-lg text-secondary dark:text-white">{parse(`${product.description}`)}</span>
                 </div>
             </div>
             <div>
-                <div className="text-xl text-textLight font-medium">{productStrings.reviews}</div>
+                <div className="text-xl text-textLight font-medium dark:text-white">{productStrings.reviews}</div>
                     {(product.reviews && product.reviews.length < 1) && <>
-                        <div className="text-xs text-text ml-2 mt-2">No Reviews</div>
+                        <div className="text-xs text-text ml-2 mt-2 dark:text-white">No Reviews</div>
                     </>}
                 <div className="mt-4 sm:mt-6">
                     {product.reviews && <>
@@ -227,7 +227,7 @@ const VendorName = ({vendor_id}) => {
       }, [vendor_id]);
   
     return (
-      <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold" to={`/vendor_${vendor_id}`}>{ vendorDetails.vendor_name }</Link>
+      <Link className="text-xs xs:text-sm sm:text-base md:text-lg text-secondary font-semibold dark:text-buttonColor" to={`/vendor_${vendor_id}`}>{ vendorDetails.vendor_name }</Link>
     );
 }
 
