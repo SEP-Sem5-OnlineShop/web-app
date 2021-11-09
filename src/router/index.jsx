@@ -55,23 +55,6 @@ export default function MainRouter() {
 
     }, [dispatch])
 
-    useEffect(async () => {
-        let mounted = true
-        const socket = axios.CancelToken.source()
-        driverCustomerSocket.on("driver:showLogin", async (data) => {
-            const driver = await driverApi.getDriver(socket, data)
-            if(driver && driver.data && driver.status===200)
-                dispatch(actions.map.setOnlineDriver(driver.data.data))
-        })
-        driverCustomerSocket.on("driver:showLogout", (data) => {
-            dispatch(actions.map.removeOnlineDriver(data))
-        })
-        return () => {
-            socket.cancel()
-            mounted = false
-        }
-    }, [])
-
 
 
     const role = useSelector(state => state.user.role)

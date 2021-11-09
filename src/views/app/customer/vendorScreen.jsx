@@ -1,4 +1,4 @@
-import { useEffect, useState, useLayoutEffect } from 'react';
+import {useEffect, useState, useLayoutEffect, useRef} from 'react';
 import { Link, useParams } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 import ProductComponent from '../../../components/customer/productComponent';
@@ -9,6 +9,8 @@ import {axios, driverApi} from "../../../api/index";
 import { useSelector } from 'react-redux';
 import { getFileUrl } from '../../../api/azure-storage-blob';
 import DriverCard from "../../../components/card/driver-card";
+import {driverCustomerSocket} from "../../../socket";
+import {actions} from "../../../store";
 
 
 const VendorScreen = () => {
@@ -27,13 +29,31 @@ const VendorScreen = () => {
   const [error, setError] = useState(null);
   const [loading1, setLoading1] = useState(true);
   const [error1, setError1] = useState(null);
-  const [drivers, setDrivers] = useState({})
+  const [drivers, _setDrivers] = useState({})
+  const driversRef = useRef(drivers)
+
+  const setDrivers = data => {
+    driversRef.current = data
+    _setDrivers(data)
+  }
 
   const [width, ] = useWindowSize();
 
-  useEffect(() => {
-      setDrivers(onlineDrivers)
-  }, [onlineDrivers])
+  useEffect( () => {
+    driverCustomerSocket.on("driver:showLogin", async (data) => {
+      const socket = axios.CancelToken.source()
+      const driver = await driverApi.getDriver(socket, data)
+      if(driver && driver.data && driver.status===200 && driver.data.data.driver.vendorId === vendor_id) {
+        // setDrivers(prevState => {return {...prevState, [data]: driver.data.data}})
+        setDrivers({...driversRef.current, [data]: driver.data.data})
+      }
+    })
+    driverCustomerSocket.on("driver:showLogout", (data) => {
+      const tempDrivers = {...driversRef.current}
+      delete tempDrivers[data]
+      setDrivers(tempDrivers)
+    })
+  }, [])
 
   useEffect(() => {
     let mounted = true;
@@ -129,7 +149,6 @@ const VendorScreen = () => {
                   <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8 mx-1 sm:mx-4 md:mx-8'}>
                       {
                           Object.values(drivers).map(item => {
-                              console.log(drivers)
                               return (
                                   <DriverCard key={item._id} data={item} vendor_id={vendor_id} />
                               )
