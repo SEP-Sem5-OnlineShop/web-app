@@ -140,7 +140,7 @@ const VendorScreen = () => {
 
                   <div className="px-2 py-4 sm:px-12 sm:py-8">
                       {(!loading1 && products && products.length < 1) && <>
-                          <div className="text-xs sm:text-sm text-text ml-2 mt-2">No Products</div>
+                          <div className="text-xs sm:text-sm text-text ml-2 mt-2 dark:text-white">No Products</div>
                       </>}
                       <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
                         {(loading1 ) ? (

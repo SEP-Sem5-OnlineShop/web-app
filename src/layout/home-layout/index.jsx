@@ -67,7 +67,7 @@ export default function MainLayout(props) {
                             <input className="bg-o p-2 rounded-lg w-full outline-none" 
                             placeholder={dashboardStrings.searchBox} />
                         </div> */}
-                        <Toggle/>
+                        
                         <div className="flex items-center">
 
                             <IconContext.Provider value={{ color: "#264A75", size: "2rem"}} >
@@ -85,9 +85,10 @@ export default function MainLayout(props) {
                             {
                                 isLogin === "yes" ?
                                     <LoginRegister className="mr-4" freeze={!isMobile} /> :
-                                    <button data-testid={'login-register-button'} onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
+                                    <button data-testid={'login-register-button'} onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black dark:bg-secondary dark:text-white">
                                         Login | Register</button>
                             }
+                            <Toggle/>
                         </div>
                     </div>
                 </div>
