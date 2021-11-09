@@ -40,7 +40,7 @@ export default function Profile() {
         <React.Fragment>
             <div className="flex justify-center">
                 <div className="w-full flex flex-col items-center justify-center p-8">
-                    <div className="w-full text-3xl font-medium">My Account</div>
+                    <div className="w-full text-3xl font-medium dark:text-white">My Account</div>
                     <div className="mt-4">
                         <FilePond
                             ref={ref}
@@ -48,7 +48,7 @@ export default function Profile() {
                             stylePanelLayout="circle"
                         />
                     </div>
-                    <CardTemplate>
+                    <CardTemplate className="dark:bg-black">
                         <EditableCardItem
                             formik={nameFormik}
                             label="Display Name"
@@ -64,11 +64,11 @@ export default function Profile() {
                             fieldValue="dsandaruwan7@gmail.com"
                         />
                     </CardTemplate>
-                    <CardTemplate>
+                    <CardTemplate className="dark:bg-black">
                         <div className="">
-                            <div className="text-text font-medium">Password</div>
+                            <div className="text-text font-medium dark:text-white">Password</div>
                             <div className="flex justify-between">
-                                <span>*************</span>
+                                <span className="dark:text-white">*************</span>
                                 <button className="bg-buttonColor text-secondary font-semibold rounded py-1 px-4">Change</button>
                             </div>
                         </div>

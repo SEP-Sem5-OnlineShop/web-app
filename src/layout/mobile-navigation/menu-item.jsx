@@ -33,7 +33,7 @@ export const MenuItem = ({ menuName, link, freeze, id }) => {
     >
       <div className="icon-placeholder" />
       <div className={location.pathname === link ? `${freeze ? "text-white" : "text-textLight"} 
-      transform scale-105 font-medium` : !freeze ? "text-secondary" : "text-white"} >{menuName}</div>
+      transform scale-105 font-medium` : !freeze ? "text-secondary dark:text-white" : "text-white dark:text-secondary"} >{menuName}</div>
     </motion.li>
   );
 };

@@ -119,11 +119,11 @@ const VendorScreen = () => {
               </div>
               </Link>
 
-              <div className="w-full bg-white relative" style={{minHeight: 'calc(100vh - 11rem)'}}>
+              <div className="w-full bg-white relative dark:bg-secondary" style={{minHeight: 'calc(100vh - 11rem)'}}>
                   <div className="px-4 pt-2 sm:px-14 sm:pt-6">
                       <RatingComponent rating={vendor.rating} size={width>600?25:width>480?22:width>400?18:16} />
-                      <span className="text-xs xs:text-sm sm:text-base">{(Math.round(vendor.rating * 10) / 10).toFixed(1)} ({vendor.ratingCount}+)</span>
-                      <p className="mt-2 text-xs xs:text-sm sm:text-base">{vendor.vendor_description}</p>
+                      <span className="text-xs xs:text-sm sm:text-base dark:text-white">{(Math.round(vendor.rating * 10) / 10).toFixed(1)} ({vendor.ratingCount}+)</span>
+                      <p className="mt-2 text-xs xs:text-sm sm:text-base dark:text-white">{vendor.vendor_description}</p>
                   </div>
 
                   <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8 mx-1 sm:mx-4 md:mx-8'}>
@@ -139,7 +139,7 @@ const VendorScreen = () => {
 
                   <div className="px-2 py-4 sm:px-12 sm:py-8">
                       {(!loading1 && products && products.length < 1) && <>
-                          <div className="text-xs sm:text-sm text-text ml-2 mt-2">No Products</div>
+                          <div className="text-xs sm:text-sm text-text ml-2 mt-2 dark:text-white">No Products</div>
                       </>}
                       <div className="mt-4 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-10">
                         {(loading1 ) ? (

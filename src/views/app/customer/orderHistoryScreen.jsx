@@ -88,7 +88,7 @@ const OrderHistoryScreen = () => {
             <MessageBox variant="danger">{error}</MessageBox>
         ) : (
             <div className="sm:px-2 sm:py-2 md:px-12 md:py-12">
-                <h1 className="text-base sm:text-lg md:text-2xl text-secondary flex flex-col">Order History</h1>
+                <h1 className="text-base sm:text-lg md:text-2xl text-secondary flex flex-col dark:text-white">Order History</h1>
                 <div className="mt-4 md:mt-8 md:mx-6 grid grid-cols-1 gap-4 lg:gap-6">
                     {orders && <>
                         {orders.map((order) => (
