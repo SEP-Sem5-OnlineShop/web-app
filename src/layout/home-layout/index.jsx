@@ -58,7 +58,7 @@ export default function MainLayout(props) {
                 </AnimatePresence>
                 <SideNavigation isOpen={isOpen} toggleOpen={toggleOpen} />
                 <div className="bg-primary w-full h-28 fixed top-0 left-0 z-10">
-                    <div className={`bg-food-style h-full w-full flex px-10 justify-end lg:justify-between items-center`}>
+                    <div className={`bg-food-style h-full w-full flex px-2 xs:px-6 sm:px-10 justify-end lg:justify-between items-center`}>
                         <div className="hidden lg:block h-full flex items-center">
                             <img className="ml-4 h-3/4 cursor-pointer" onClick={() => history.push("/")} src={logo} alt="logo" />
                         </div>
@@ -77,7 +77,7 @@ export default function MainLayout(props) {
                             </IconContext.Provider>
 
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))}
-                                className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4 dark:bg-secondary dark:text-white">
+                                className="rounded-lg xs:px-2 py-2 bg-cardColor shadow text-black text-xs xs:text-sm mr-2 xs:mr-4 dark:bg-secondary dark:text-white">
                                 <option value="english" key="english">English</option>
                                 <option value="sinhala" key="sinhala">සිංහල</option>
                                 <option value="tamil" key="tamil">தமிழ்</option>
@@ -85,7 +85,7 @@ export default function MainLayout(props) {
                             {
                                 isLogin === "yes" ?
                                     <LoginRegister className="mr-4" freeze={!isMobile} /> :
-                                    <button data-testid={'login-register-button'} onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black dark:bg-secondary dark:text-white">
+                                    <button data-testid={'login-register-button'} onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg xs:px-2 py-2 bg-cardColor shadow text-black dark:bg-secondary dark:text-white">
                                         Login | Register</button>
                             }
                             <Toggle/>
