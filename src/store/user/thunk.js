@@ -20,6 +20,7 @@ export function localSignIn(username, password) {
                 dispatch(userSlice.actions.setAuthToken(data.accessToken))
                 dispatch(userSlice.actions.setRole(data.data.role))
                 dispatch(userSlice.actions.setIsLogin("yes"))
+                localStorage.setItem("refreshToken", data.refreshToken)
                 const role = data.data.role || ""
                 const userID = data.data._id || ""
                 const username = data.data.telephone || ""
