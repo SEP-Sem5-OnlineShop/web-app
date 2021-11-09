@@ -7,9 +7,6 @@ import {
 } from "react-router-dom";
 
 import { useSelector } from "react-redux"
-import { useDispatch } from "react-redux"
-
-import { actions } from "../store"
 
 import AlertScreen from "../views/app/customer/alertScreen";
 import OrderHistoryScreen from "../views/app/customer/orderHistoryScreen";
@@ -33,6 +30,7 @@ import SellingCart from "../views/app/driver/sell/sellingCart";
 import BuyingCart from "../views/app/customer/buyingCart";
 import AddVehicle from "../views/app/vendor/vehicle/add";
 import DailyWork from "../views/app/vendor/daily-work";
+import VendorReport from "../views/app/vendor/reports/vendorReport";
 
 export default function AppRouter() {
     const match = useRouteMatch()
@@ -93,6 +91,9 @@ export default function AppRouter() {
                         </Route>
                         <Route exact={true} path={`${match.path}/vehicle/:id`} >
                             <AddVehicle />
+                        </Route>
+                        <Route exact={true} path={`${match.path}/reports`} >
+                            <VendorReport />
                         </Route>
                     </DashboardLayout> :
             role === "customer" ?

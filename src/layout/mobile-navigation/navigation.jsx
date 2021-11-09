@@ -55,6 +55,7 @@ const itemIds = [
   { name: "Product List", link: "/app/products", accessLevel: "vendor", id:"product-list" },
   { name: "Vehicles List", link: "/app/vehicles", accessLevel: "vendor", id:"vehicles-list" },
   { name: "Drivers List", link: "/app/drivers", accessLevel: "vendor", id:"drivers-list" },
+  { name: "Reports", link: "/app/reports", accessLevel: "vendor", id:"reports" },
 
   { name: "Dashboard", link: "/", accessLevel: "driver" },
   // { name: "Select Route", link: "/app/select-route", accessLevel: "driver" },
