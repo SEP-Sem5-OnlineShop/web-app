@@ -35,7 +35,7 @@ export default function TableWithPaginationGlobalSearch({columns, data, tableNam
                 <div className={'w-full flex justify-between'}>
                     <div className="w-full text-3xl font-medium">{tableName}</div>
                     <Link to={`/app/${link || ''}`}>
-                        <LoadingButton text={`Add New ${type || ''}`} />
+                        <LoadingButton dataTestId={`add-new-${link || ''}`} text={`Add New ${type || ''}`} />
                     </Link>
                 </div>
                 <CardTemplate style={{overFlowX: "auto"}}>

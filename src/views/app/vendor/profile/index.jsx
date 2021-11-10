@@ -4,10 +4,9 @@ import * as Yup from "yup";
 import InputWithValidation from "../../../../components/form-components/input-with-validation";
 import CardTemplate from "../../../../components/card/template";
 import { useDispatch, useSelector } from "react-redux";
-import { getFileUrl } from "../../../../api/azure-storage-blob";
 import { driverApi, authApi } from "../../../../api"
-import { actions } from "../../../../store/index"
-import FileUploader from "../../../../components/form-components/file-uploader"
+import { actions, thunks } from "../../../../store/index"
+import LoadingButton from "../../../../components/form-components/loading-button";
 
 export default function Profile() {
 
@@ -28,7 +27,10 @@ export default function Profile() {
             lastName: '',
             telephone: '',
             email: '',
-            licenseNumber: ''
+            vendor: {
+                shopName: '',
+                permitNumber: ''
+            }
         },
         validationSchema: Yup.object({
             firstName: Yup.string()
@@ -39,8 +41,10 @@ export default function Profile() {
                 .required('Required'),
             email: Yup.string()
                 .required('Required'),
-            licenseNumber: Yup.string()
-                .required('Required'),
+            vendor: Yup.object({
+                shopName: Yup.string().required('Required'),
+                permitNumber: Yup.string().required('Required')
+            })
         }),
         onSubmit: async values => {
             try {
@@ -60,7 +64,7 @@ export default function Profile() {
                     console.log(e.message)
                 }
             }
-            // await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+            await dispatch(thunks.user.localSignIn(values.telephone, values.password))
         },
     });
 
@@ -99,16 +103,21 @@ export default function Profile() {
     })
 
     useEffect(async () => {
-        formik.setFieldValue("licenseNumber", userData.driver.licenseNumber)
+        let mounted = true
         try {
             const { data, status } = await driverApi.getImage()
-            if (data.data && status === 200 && data.message == "Success") {
-                setImageUrl(data.data)
-                setShowFileUploader(false)
+            if (data && data.data && status === 200 && data.message == "Success") {
+                if (mounted) {
+                    setImageUrl(data.data)
+                    setShowFileUploader(false)
+                }
             }
         }
         catch (e) {
-
+            throw e
+        }
+        return () => {
+            mounted = false
         }
     }, [userData])
 
@@ -161,6 +170,14 @@ export default function Profile() {
                             />
                             <InputWithValidation
                                 formik={formik}
+                                label="Shop Name"
+                                id="shopName"
+                                name="vendor.shopName"
+                                disabled={disabled}
+                                value={userData.vendor ? userData.vendor.shopName : ""}
+                            />
+                            <InputWithValidation
+                                formik={formik}
                                 label="Telephone"
                                 id="telephone"
                                 name="telephone"
@@ -175,18 +192,43 @@ export default function Profile() {
                             />
                             <InputWithValidation
                                 formik={formik}
-                                label="License Number"
-                                id="licenseNumber"
-                                name="licenseNumber"
+                                label="Permit Number"
+                                id="permitNumber"
+                                name="vendor.permitNumber"
                                 disabled={true}
+                                value={userData.vendor ? userData.vendor.permitNumber : ""}
                             />
                             <div className="mt-8 flex justify-end">
                                 {
+                                    !disabled ?
+                                        <LoadingButton text={'Cancel'} outlined={true}
+                                                       onClick={() => setDisabled(true)} /> :
+                                        null
+                                }
+                                {
                                     disabled ?
-                                        <button onClick={(e) => { e.preventDefault(); setDisabled(false) }} type="button"
+                                        <button onClick={(e) => {
+                                            e.preventDefault();
+                                            setDisabled(false)
+                                        }} type="button"
+                                                data-testid='update-details-button'
                                             className="rounded-lg p-2 text-white bg-textLight">Update Details</button> :
-                                        <button onClick={(e) => { e.preventDefault(); formik.handleSubmit(); setDisabled(true) }} type="submit"
-                                            className="rounded-lg p-2 text-white bg-textLight">Submit</button>
+                                        <button
+                                            disabled={
+                                                formik.touched.vendor ?
+                                                    (!formik.touched.firstName || !formik.touched.lastName || !formik.touched.vendor.shopName ||
+                                                        !formik.values.firstName || !formik.values.lastName || !formik.values.vendor.shopName ||
+                                                        formik.errors.firstName || formik.errors.lastName || formik.errors.vendor.shopName) : true
+                                            }
+                                            data-testid='submit-button'
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                formik.handleSubmit();
+                                                setDisabled(true)
+                                            }} type="submit"
+                                            className="rounded-lg p-2 text-white bg-textLight">
+                                            Submit
+                                        </button>
                                 }
                             </div>
                         </CardTemplate>

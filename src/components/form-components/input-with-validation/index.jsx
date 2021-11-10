@@ -36,8 +36,9 @@ export default function InputWithValidation (props) {
                     compProps.label
                         ?
                     <label
-                    className={`font-medium text-secondary text-sm xs:text-lg md:text-base`}
-                    style={compProps.labelStyles}>
+                        htmlFor={compProps.id}
+                        className={`font-medium text-secondary text-sm xs:text-lg md:text-base`}
+                        style={compProps.labelStyles}>
                         {compProps.label}</label>
                         :
                         null
@@ -48,7 +49,9 @@ export default function InputWithValidation (props) {
                     type={compProps.type}
                     onChange={compProps.formik.handleChange}
                     onBlur={compProps.formik.handleBlur}
-                    value={compProps.formik.values ? compProps.formik.values[compProps.name] : compProps.value}
+                    value={compProps.formik.values && compProps.formik.values[compProps.name] ?
+                        compProps.formik.values[compProps.name] :
+                        compProps.value ? compProps.value : ''}
                     readOnly={compProps.readOnly}
                     disabled={compProps.disabled}
                     className={

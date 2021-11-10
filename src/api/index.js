@@ -13,7 +13,8 @@ import customer from './general/customer';
  * Setup axios  
  */
 // const BASE_URL = 'https://ontheway-backend-auth-api.herokuapp.com/api'
-const BASE_URL = 'http://localhost:8000/api'
+// const BASE_URL = 'http://20.102.65.167:8000/api'
+const BASE_URL = "http://localhost:8000/api"
 Axios.defaults.baseURL = BASE_URL
 Axios.defaults.withCredentials = true
 
@@ -50,9 +51,12 @@ Axios.interceptors.response.use(async response => {
         }
         else if(
             error && error.response && error.response.status === 401 && error.response.data.message === "Session is invalid!") {
-            const data = await auth.token()
+            const refreshToken = window.localStorage.getItem("refreshToken")
+            const data = await auth.token(refreshToken)
             if(data && data.data) {
                 setAuthToken(data.data.accessToken)
+                window.localStorage.setItem("token", data.data.accessToken)
+                window.localStorage.setItem("refreshToken", data.data.refreshToken)
                 originalRequest.headers.Authorization = `Bearer ${data.data.accessToken}`
                 originalRequest._retry = true;
                 return axiosApiInstance(originalRequest)

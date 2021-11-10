@@ -364,8 +364,9 @@ export default function DailyStockLoad({vehicleId}) {
                                        onClick={async  () => await reAssignDrivers(vendorId)}
                                        loading={assignDriverLoading}
                                        buttonOutlined={true}
+                                       disabled={!driver || !area}
                             />
-                            <ModelBody buttonText={'Submit'}
+                            <ModelBody buttonText={isStockThere ? 'Update Stock' : 'Submit'}
                                        modalText={'Do you want to proceed with this data?'}
                                        onClick={async () => {
                                            if(!driver) toast.info("Please assign a driver!")

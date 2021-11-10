@@ -130,7 +130,11 @@ const DriverScreen = () => {
                         ) : (
                           <>
                             {dailyStock.map((stockproduct) => (
-                                <DriverProductComponent stockproduct={stockproduct} vendor_id={vendor_id} customer_id={customer_id} key={stockproduct.productId} />
+                                <DriverProductComponent stockproduct={stockproduct}
+                                                        vendor_id={vendor_id}
+                                                        customer_id={customer_id}
+                                                        driver_id={driver_id}
+                                                        key={stockproduct.productId} />
                             ))}
                             </>
                         )}

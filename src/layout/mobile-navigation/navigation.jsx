@@ -40,7 +40,7 @@ export const Navigation = (props) => {
       <motion.ul className="mt-8" variants={variants}>
         {itemIds.map(i => (
           i.accessLevel === role &&
-          <MenuItem freeze={props.freeze} menuName={i.name} link={i.link} key={i.name} />
+          <MenuItem id={i.id} freeze={props.freeze} menuName={i.name} link={i.link} key={i.name} />
         ))}
       </motion.ul>
     </div>
@@ -50,11 +50,12 @@ export const Navigation = (props) => {
 const itemIds = [
   { name: "Vendor Registration", link: "/register/vendor", accessLevel: "guest" },
 
-  { name: "Dashboard", link: "/", accessLevel: "vendor" },
-  { name: "Load Daily Stock", link: "/app/products/stock/daily", accessLevel: "vendor" },
-  { name: "Product List", link: "/app/products", accessLevel: "vendor" },
-  { name: "Vehicles List", link: "/app/vehicles", accessLevel: "vendor" },
-  { name: "Drivers List", link: "/app/drivers", accessLevel: "vendor" },
+  { name: "Dashboard", link: "/", accessLevel: "vendor", id:"dashboard" },
+  { name: "Load Daily Stock", link: "/app/products/stock/daily", accessLevel: "vendor", id:"load-daily-stock" },
+  { name: "Product List", link: "/app/products", accessLevel: "vendor", id:"product-list" },
+  { name: "Vehicles List", link: "/app/vehicles", accessLevel: "vendor", id:"vehicles-list" },
+  { name: "Drivers List", link: "/app/drivers", accessLevel: "vendor", id:"drivers-list" },
+  { name: "Reports", link: "/app/reports", accessLevel: "vendor", id:"reports" },
 
   { name: "Dashboard", link: "/", accessLevel: "driver" },
   // { name: "Select Route", link: "/app/select-route", accessLevel: "driver" },

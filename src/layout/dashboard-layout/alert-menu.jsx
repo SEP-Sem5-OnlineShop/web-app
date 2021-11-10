@@ -3,7 +3,7 @@ import React, {Fragment, useEffect, useState} from 'react'
 
 import { IconContext } from "react-icons";
 import { MdNotifications, MdNotificationsActive } from "react-icons/md";
-import {driverSocket} from "../../socket";
+import {driverCustomerSocket} from "../../socket";
 import {useDispatch} from "react-redux";
 import {actions} from "../../store";
 
@@ -12,14 +12,16 @@ export default function AlertMenu() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        driverSocket.on("alert:set", (data) => {
+        driverCustomerSocket.on("alert:set", (data) => {
             setAlerts(prevAlerts => [...prevAlerts, {key: `set-${data.productId}`, text: `Set alert for ${data.productName}`}])
-            dispatch(actions.map.setAlertedCustomer(data.customer))
-
+            if(data.customer) {
+                dispatch(actions.map.setAlertedCustomer({customer: data.customer, productId: data.productId}))
+            }
         })
-        driverSocket.on("alert:unset", (data) => {
+        driverCustomerSocket.on("alert:unset", (data) => {
+            console.log("alert unset")
             setAlerts(prevAlerts => [...prevAlerts, {key: `unset-${data.productId}`, text: `Unset alert for ${data.productName}`}])
-            if(data.customer) dispatch(actions.map.removeAlertedCustomer(data.customer._id))
+            if(data.customer) dispatch(actions.map.removeAlertedCustomer(`${data.customer._id}-${data.productId}`))
         })
     }, [])
 

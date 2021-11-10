@@ -13,10 +13,10 @@ export default function ProductList() {
         let source = axios.CancelToken.source()
         try {
             setLoading(true)
-            const {data, status} =  await productApi.getList(source)
+            const data =  await productApi.getList(source)
             const list = []
-            if(data && status===200) {
-                data.data.forEach((item, index) => {
+            if(data && data.data && data.data.data && data.status===200) {
+                data.data.data.forEach((item, index) => {
                     list.push({
                         'col1': index+1,
                         'col2': item.product_name || "",
