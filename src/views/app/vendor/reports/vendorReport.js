@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { CSVLink } from "react-csv";
 import {vendorApi} from '../../../../api/index'
+import CardDashboard from "../../../../components/card-desktop/index"
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -113,26 +114,39 @@ const header = [
 
 
   return (
-      <div>
+    <div className="text-xl ">
+      <div className="flex justify-center grid grid-col-1 md:grid-cols-2 pl-2 md:pl-48">
           <div>
-              Pick Start date:
+              Start date:
+              
+              <DatePicker className="bg-accent w-64 mt-4 pl-20 rounded-lg" selected={startDate} onChange={(date) => setStartDate(date)} />
           </div>
-            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+            
 
             <div>
-              Pick End date:
+              End date:
+              <DatePicker className="bg-accent w-64 mt-4 pl-20 rounded-lg" selected={EndDate} onChange={(date) => setEndDate(date)} />
           </div>
-            <DatePicker selected={EndDate} onChange={(date) => setEndDate(date)} />
-            <div>
+            
+
+            </div>
+
+            <br></br>
+
+            <div className="flex justify-center py-8">
+
+            {/* <CardDashboard content= */}
+            
             {(sDate<=eDate && eDate<=today)?(
-              <li><CSVLink data={csvData}>
+              <CardDashboard content={
+              <CSVLink data={csvData}>
                 Purchase Details
-            </CSVLink></li>
+            </CSVLink>}/>
             ):(
               ""
             )}
 
-
+            
 
 
 </div>
