@@ -33,6 +33,22 @@ export function localSignIn(username, password) {
                     await driverCustomerSocket.emit("join", {userId: userID})
                     await driverCustomerSocket.emit("driver:login", {userId: data.data._id})
                 }
+                if(role === "customer") {
+                    Notification.requestPermission().then((result) => {
+                        if (result === 'granted') {
+                            driverCustomerSocket.on("distance-alert:set", (data) => {
+                                const title = 'OnTheWay'
+                                const body = `A mobile vendor of ${data.driver ? data.driver.shop : ""} near in your area. Driver's name: ${data.firstName || ""} ${data.lastName || ""} Vehicle: ${data.driver && data.driver.vehicle ? data.driver.vehicle.brand : ""} ${data.driver && data.driver.vehicle ? data.driver.vehicle.model : ""}`;
+                                // const img = `data/img/${games[randomItem].slug}.jpg`;
+                                const options = {
+                                    body: body,
+                                    // icon: notifImg,
+                                };
+                                new Notification(title, options);
+                            })
+                        }
+                    });
+                }
             }
             return {status, data}
         }

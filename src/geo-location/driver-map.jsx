@@ -1,9 +1,10 @@
-import React, {useEffect} from "react"
-import {driverApi} from "../api";
+import React, {useEffect, useRef} from "react"
+import {axios, driverApi} from "../api";
 import {Loader} from "@googlemaps/js-api-loader";
 import {useDispatch, useSelector} from "react-redux";
 import {actions} from "../store";
 import {getFileUrl} from "../api/azure-storage-blob";
+import {driverCustomerSocket} from "../socket";
 
 export default function DriverMap() {
     const loader = new Loader({
@@ -15,6 +16,7 @@ export default function DriverMap() {
     const userData = useSelector(state => state.user.userData)
     const location = useSelector(state => state.user.userData.location)
     const customers = useSelector(state => state.map.alertedCustomers)
+    const notifiedCustomersRef = useRef([])
 
     useEffect(async () => {
         // Initialize and add the map
@@ -48,15 +50,23 @@ export default function DriverMap() {
                     icon: "https://img.icons8.com/color/48/000000/truck--v2.png"
                 })
 
-                const updateMarkerWindow = (origin, destination, marker) => {
+                const updateMarkerWindow = (origin, destination, marker, customerId) => {
                     let infoWindow;
                     distanceMatrixService.getDistanceMatrix(
                         {
                             origins: [origin],
                             destinations: [destination],
                             travelMode: 'DRIVING',
-                        }, (response, status) => {
+                        }, async (response, status) => {
                             const result = response.rows[0].elements[0]
+                            const distance = parseFloat(result.distance.text.split(" ")[0])
+                            if(notifiedCustomersRef.current.indexOf(customerId) === -1 && distance < 1) {
+                                notifiedCustomersRef.current = [...notifiedCustomersRef.current, customerId]
+                                driverCustomerSocket.emit("distanceAlert", {
+                                    room: customerId,
+                                    payload: userData
+                                })
+                            }
                             marker.setMap(map)
                             if(result && result.duration) {
                                 infoWindow = new google.maps.InfoWindow({
@@ -91,7 +101,7 @@ export default function DriverMap() {
                             size: 18
                         })
                         const destination = new google.maps.LatLng(driverLatLng[0], driverLatLng[1])
-                        updateMarkerWindow(origin, destination, marker)
+                        updateMarkerWindow(origin, destination, marker, customer._id)
                     })
                 }
 
