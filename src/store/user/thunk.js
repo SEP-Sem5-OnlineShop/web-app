@@ -14,7 +14,8 @@ import driver from "../../api/app/driver";
 export function localSignIn(username, password) {
     return async (dispatch) => {
         try {
-            const {status, data} = await authApi.login(username, password)
+            const result = await authApi.login(username, password)
+            const {data, status} = result
             if (status === 200) {
                 dispatch(userSlice.actions.setUserData(data.data))
                 dispatch(userSlice.actions.setAuthToken(data.accessToken))
@@ -49,11 +50,13 @@ export function localSignIn(username, password) {
                         }
                     });
                 }
+                return {status, data}
             }
-            return {status, data}
+            return result
         }
         catch (error) {
-
+            console.log(error)
+            return  error
         }
     };
 }
