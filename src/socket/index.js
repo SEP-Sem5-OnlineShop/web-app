@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const URL = "https://ontheway.thilinatlm.live/"
+const URL = "https://ontheway.thilinatlm.live/ws"
 // const URL = "http://localhost:8000"
 const socket = io(URL, { autoConnect: false });
 export const alertSocket = io(`${URL}/alert`,{ autoConnect: false })
