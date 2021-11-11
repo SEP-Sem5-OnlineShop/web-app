@@ -1,6 +1,7 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { useHistory, useLocation } from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const variants = {
   open: {
@@ -20,6 +21,7 @@ const variants = {
 };
 
 export const MenuItem = ({ menuName, link, freeze, id }) => {
+  const role = useSelector(state => state.user.userData.role)
   const history = useHistory()
   const location = useLocation()
   return (
@@ -32,8 +34,9 @@ export const MenuItem = ({ menuName, link, freeze, id }) => {
       data-testid={id}
     >
       <div className="icon-placeholder" />
-      <div className={location.pathname === link ? `${freeze ? "text-white" : "text-textLight"} 
-      transform scale-105 font-medium` : !freeze ? "text-secondary dark:text-white" : "text-white dark:text-secondary"} >{menuName}</div>
+      <div className={location.pathname === link ? `${freeze ? "text-text" : "text-textLight"} 
+      transform scale-105 font-medium` : !freeze ? `text-secondary ${role === "customer" ? 'dark:text-white' : ""}` :
+          `text-white ${role === "customer" ? "dark:text-secondary" : ""}`} >{menuName}</div>
     </motion.li>
   );
 };

@@ -5,6 +5,7 @@ import {vendorApi} from '../../../../api/index'
 import CardDashboard from "../../../../components/card-desktop/index"
 
 import "react-datepicker/dist/react-datepicker.css";
+import {useSelector} from "react-redux";
 
 function convert(str) {
     let months = {
@@ -33,9 +34,10 @@ export default function VendorReport(){
   let eDate =(convert(EndDate.toString()))
   let today=convert((new Date()).toString())
 
+    const userData = useSelector(state => state.user.userData) || {}
 
 
-  /////////////////////////////////
+    /////////////////////////////////
   // const validationSchema = Yup.object({
   //   sDate: Yup.date().default(() => new Date()),
   //   eDate: Yup.date().default(() => new Date()),
@@ -52,7 +54,7 @@ export default function VendorReport(){
 
   React.useEffect(async () => {
     try{
-      const result = await vendorApi.getVendorPurchaseList('613eb365af0d5b2c142fa326'); /////////change this into params id
+      const result = await vendorApi.getVendorPurchaseList(userData._id); /////////change this into params id
  
       setPurchases(result.data);
       console.log(typeof(result.data))
