@@ -7,6 +7,7 @@ import {useDispatch} from "react-redux";
 import {motion} from "framer-motion";
 
 import { useHistory } from "react-router-dom";
+import {toast} from "react-toastify";
 
 const LoginForm = (props, ref) => {
 
@@ -31,13 +32,17 @@ const LoginForm = (props, ref) => {
         onSubmit: async values => {
             setLoading(true)
             try {
-                const {data, status} = await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+                const result = await dispatch(thunks.user.localSignIn(values.telephone, values.password))
+                const {status, data} = result
                 if(status === 200 && data && data.message === "Success") {
                     history.push('/')
                 }
+                else {
+                    toast.error(result.response.data.message)
+                }
             }
             catch(e) {
-                console.log("error")
+                console.log(e.response)
             }
             setLoading(false)
             // history.push("/")
