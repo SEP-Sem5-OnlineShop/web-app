@@ -67,7 +67,7 @@ export default function VendorReport(){
 
   console.log(purchases)
 const header = [
-    ["vendor_id"],[ "totalItems"], ["totalCost"],["createdAt"],["discount"],[""],["Product id"]
+    [ "totalItems"], ["totalCost"],["createdAt"],["discount"],[""],["Product id"]
     
   ];
 
@@ -87,8 +87,7 @@ const header = [
     console.log(sDate<=date && date<eDate)
     if(eDate<=(convert((new Date()).toString())) && sDate<=eDate){
     if(sDate<=date && date<=eDate){
-    
-        purchase.push((element.vendor_id).toString())
+
         purchase.push((element.totalItems).toString())
         purchase.push((element.totalCost).toString())
         purchase.push((element.createdAt).toString())

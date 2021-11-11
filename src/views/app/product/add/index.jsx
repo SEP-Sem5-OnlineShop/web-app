@@ -166,7 +166,7 @@ export default function AddProduct({ edit }) {
                         label="Category"
                         type="text"
                         className="mb-4"
-                        items={['Fruits', 'Vegetables', 'Bakery', 'Plants', 'Dessert']}
+                        items={["Fruit", "Vegetable", "Bakery", "Plant", "Dessert", "Other"]}
                     />
                     <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Description</label>
                     <Editor editorState={editorState}
