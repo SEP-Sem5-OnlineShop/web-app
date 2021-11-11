@@ -7,9 +7,9 @@ const PaymentModal = ({ orderId, name, amount, customer, handlePay }) => {
   var payment = {
     sandbox: true, // if the account is sandbox or real
     merchant_id: '1218835', // Replace your Merchant ID
-    return_url: 'https://ontheway-sep.netlify.app/',
+    return_url: 'https://ontheway.thilinatlm.live/',
     cancel_url: '',
-    notify_url: 'https://ontheway-backend-auth-api.herokuapp.com/api/app/customer/notify',
+    notify_url: 'https://ontheway.thilinatlm.live/api/app/customer/notify',
     order_id: orderId,
     items: name,
     amount: amount, 
