@@ -17,6 +17,7 @@ export default function DashboardLayout(props) {
     let history = useHistory()
     const dispatch = useDispatch()
     const selectedLanguage = useSelector(state => state.language.language)
+    const role = useSelector(state => state.user.userData.role)
     const showMap = useSelector(state => state.map.showMap)
     const isLogin = useSelector(state => state.user.isLogin)
     const [freeze, setFreeze] = useState(false)
@@ -81,24 +82,16 @@ export default function DashboardLayout(props) {
                     <SideNavigation noToggle={freeze} freeze={freeze} isOpen={isOpen} toggleOpen={setIsOpen} />
                     {/* <div className="bg-food-style opacity-40 w-full h-full absolute top-0 left-0 z-0" /> */}
                     <div className={`h-20 bg-white fixed flex ${freeze ? 'px-10' : 'px-4'} top-0 lg:top-0
-                    ${freeze ? 'justify-between' : 'justify-end'} items-center z-10 w-mobile lg:w-desktop inset-0 lg:inset-300`}>
-                        <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))}
-                            className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
-                            <option value="english" key="english">English</option>
-                            <option value="sinhala" key="sinhala">සිංහල</option>
-                            <option value="tamil" key="tamil">தமிழ்</option>
-                        </select>
+                    ${!freeze || (role === "driver" || role === "vendor")  ? 'justify-end' : 'justify-between'} items-center z-10 w-mobile lg:w-desktop inset-0 lg:inset-300`}>
 
                         <div className="flex items-center">
 
-                            <IconContext.Provider value={{ color: "#264A75", size: "1.5rem"}} >
-                                <div className="mr-2" onClick={() => dispatch(actions.map.setLanguage(!showMap))}>
-                                    <FaMapMarkerAlt />
-                                </div>
-                            </IconContext.Provider>
-
                             <div className="flex items-center">
-                                <AlertMenu />
+                                {
+                                    role === "driver" ?
+                                    <AlertMenu />
+                                    : null
+                                }
                                 {
                                     isLogin === "yes" ?
                                         <LoginRegister className="mr-4" freeze={freeze} /> :
@@ -112,9 +105,6 @@ export default function DashboardLayout(props) {
                     <div className="w-full bg-white relative p-4 sm:p-8"
                         style={childStyle}>
                         {
-                            showMap ?
-                                <DriverMap />
-                                :
                                 props.children
                         }
                     </div>

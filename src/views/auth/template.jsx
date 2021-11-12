@@ -3,8 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 
 import logo from '../../assets/svg/logo/logo-big.svg'
 import sideDesign from '../../assets/svg/fixes/edge-corner.svg'
-import googleLogo from '../../assets/svg/icons/google.svg'
-import facebookLogo from '../../assets/svg/icons/facebook.svg'
+import logoHome from "../../assets/svg/logo/logo-264A75.svg";
 import streetFood from '../../assets/svg/designs/street-food.svg'
 import donuts from '../../assets/svg/designs/donut-love.svg'
 
@@ -64,16 +63,11 @@ export default function AuthTemplate(props) {
                             {props.children}
                         </div>
 
-                        <div className="text-sm text-text flex justify-center mt-0 md:mt-5 relative z-index-10">Or Login with Email</div>
+                        <div className="text-sm text-text flex justify-center mt-0 md:mt-5 relative z-index-10">Or Stay as a Guest</div>
 
                         {/*google and facebook login buttons*/}
-                        <div className="flex justify-center mt-3 relative z-index-10">
-                            <button className="rounded-xl w-14 h-14 flex justify-center items-center p-1 bg-white ">
-                                <img width={32} src={googleLogo} alt="google-logo"/>
-                            </button>
-                            <button className="rounded-xl w-14 h-14 ml-5 flex justify-center items-center p-1 bg-white">
-                                <img width={14} src={facebookLogo} alt="google-logo"/>
-                            </button>
+                        <div className="flex justify-center mt-3 relative z-index-10 cursor-pointer">
+                            <img className={"w-48"} onClick={() => history.push("/")} src={logoHome} alt={"main-logo"} />
                         </div>
 
                         <div className="mt-4 relative z-index-10">
@@ -87,9 +81,9 @@ export default function AuthTemplate(props) {
                             {
                                 props.login ?
                                     <div className="flex justify-center">
-                                        <span className="text-secondary text-xs xxs:text-sm xs:text-base">Forgot password?</span>
-                                        <span
-                                            className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">Change password</span>
+                                        {/*<span className="text-secondary text-xs xxs:text-sm xs:text-base">Forgot password?</span>*/}
+                                        {/*<span*/}
+                                        {/*    className="text-secondary font-semibold text-xs xxs:text-sm xs:text-base ml-2">Change password</span>*/}
                                     </div> : ""
                             }
                         </div>

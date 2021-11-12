@@ -17,6 +17,7 @@ export default function MainLayout(props) {
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
     const showMap = useSelector(state => state.map.showMap)
+    const role = useSelector(state => state.user.userData.role)
     const [isMobile, setIsMobile] = useState(false)
     const isLogin = useSelector(state => state.user.isLogin)
     const dispatch = useDispatch()
@@ -68,11 +69,15 @@ export default function MainLayout(props) {
                         
                         <div className="flex items-center">
 
-                            <IconContext.Provider value={{ color: "#264A75", size: "2rem"}} >
-                                <div className="mr-2" onClick={() => dispatch(actions.map.setLanguage(!showMap))}>
-                                    <FaMapMarkerAlt />
-                                </div>
-                            </IconContext.Provider>
+                            {
+                                isLogin === "yes" && role === "customer" ?
+                                    <IconContext.Provider value={{ color: "#264A75", size: "2rem"}} >
+                                        <div className="mr-2 cursor-pointer" onClick={() => dispatch(actions.map.setLanguage(!showMap))}>
+                                            <FaMapMarkerAlt />
+                                        </div>
+                                    </IconContext.Provider>
+                                    : null
+                            }
 
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))}
                                 className="rounded-lg xs:px-1 sm:px-2 py-2 bg-cardColor shadow text-black text-xs md:text-sm mr-2 xs:mr-3 md:mr-4 dark:bg-secondary dark:text-white">
@@ -94,7 +99,7 @@ export default function MainLayout(props) {
                 <div className="w-full mt-28 bg-white rounded-t-3xl lg:rounded-t-6xl dark:bg-secondary"
                     style={{ minHeight: 'calc(100vh - 7rem)' }}>
                     {
-                        showMap ?
+                        isLogin === "yes" && showMap && role === "customer" ?
                             <CustomerMap />
                             :
                             props.children
