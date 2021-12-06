@@ -2,6 +2,7 @@ import MainRouter from "./router";
 import { Provider } from "react-redux";
 import store from "./store/index";
 import { ToastContainer } from "react-toastify"
+import ErrorBoundary from "./ErrorBoundary"
 
 // Import Swiper styles
 import 'swiper/swiper-bundle.css'
@@ -28,7 +29,9 @@ function App() {
                     draggable
                     pauseOnHover
                 />
-                <MainRouter />
+                <ErrorBoundary>
+                    <MainRouter />
+                </ErrorBoundary>
             </Provider>
         </div>
     );

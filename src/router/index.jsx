@@ -34,10 +34,10 @@ export default function MainRouter() {
         dispatch(actions.language.setLanguage(selectedLanguage))
 
         // Set user data, token and role when page refreshing
-        const userData = JSON.parse(window.localStorage.getItem("userData"))
-        const token = window.localStorage.getItem("token")
-        const role = window.localStorage.getItem("role")
-        const isLogin = window.localStorage.getItem("isLogin")
+        const userData = JSON.parse(window.localStorage.getItem("userData") || "{}")
+        const token = window.localStorage.getItem("token") || ""
+        const role = window.localStorage.getItem("role") || "guest"
+        const isLogin = window.localStorage.getItem("isLogin") || "no"
         dispatch(actions.user.setUserData(userData))
         dispatch(actions.user.setAuthToken(token))
         dispatch(actions.user.setRole(role))
