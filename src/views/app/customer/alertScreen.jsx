@@ -87,7 +87,7 @@ const AlertScreen = () => {
           <MessageBox variant="danger">{error}</MessageBox>
       ) : (
           <div className="px-2 py-4 sm:px-12 sm:py-12">
-              <h1 className="text-xl xs:text-2xl sm:text-3xl text-secondary flex flex-col">Alerts</h1>
+              <h1 className="text-xl xs:text-2xl sm:text-3xl text-secondary flex flex-col dark:text-white">Alerts</h1>
               {(alerts && alerts.length < 1) && <>
                   <div className="text-xs xs:text-sm sm:text-base text-text ml-2 mt-2 sm:ml-4 sm:mt-4">No Alerts</div>
               </>}

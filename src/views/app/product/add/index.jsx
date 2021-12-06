@@ -16,6 +16,7 @@ import { actions } from "../../../../store/index"
 // importing created components
 import CardTemplate from "../../../../components/card/template";
 import InputWithValidation from "../../../../components/form-components/input-with-validation";
+import SelectWithValidation from "../../../../components/form-components/select-with-validation";
 import FileUploaderWithPreview from "../../../../components/form-components/file-uploader/with-preview"
 
 // importing api
@@ -44,7 +45,7 @@ export default function AddProduct({ edit }) {
         product_name: '',
         price: '',
         discount: '',
-        category: '',
+        category: 'Fruits',
         description: '',
         imageThumbnailUrl: '',
         imageUrl: ''
@@ -59,6 +60,8 @@ export default function AddProduct({ edit }) {
             price: Yup.number('Must be a number')
                 .required('Required'),
             discount: Yup.number('Must be a number'),
+            category: Yup.string()
+                .required('Required'),
             imageUrl: Yup.string()
                 .required("Image is required"),
             imageThumbnailUrl: Yup.string()
@@ -101,13 +104,6 @@ export default function AddProduct({ edit }) {
 
     const setImageName = async (fieldName, fileName) => {
         await formik.setFieldValue(fieldName, fileName)
-    }
-
-    const resetDescription = () => {
-        const contentBlock = htmlToDraft("");
-        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-        const editorState = EditorState.createWithContent(contentState);
-        setEditorState(editorState)
     }
 
     useEffect(async () => {
@@ -163,6 +159,15 @@ export default function AddProduct({ edit }) {
                         type="text"
                         className="mb-4"
                     />
+                    <SelectWithValidation
+                        formik={formik}
+                        id="category"
+                        name="category"
+                        label="Category"
+                        type="text"
+                        className="mb-4"
+                        items={["Fruit", "Vegetable", "Bakery", "Plant", "Dessert", "Other"]}
+                    />
                     <label className='font-medium text-secondary text-sm xs:text-lg md:text-base'>Description</label>
                     <Editor editorState={editorState}
                             webDriverTestID={'description'}
@@ -192,13 +197,15 @@ export default function AddProduct({ edit }) {
                         <ModelBody modalText={"Do you want to proceed?"}
                                    dataTestId={'add-new-product'}
                                    loading={loading}
-                                   buttonText={id ? 'Update Vehicle' : 'Add Vehicle'} color={'warn'}
+                                   buttonText={id ? 'Update Product' : 'Add Product'} color={'warn'}
                                    onClick={async (e) => {
                                        e.preventDefault()
+                                       console.log(formik.values)
                                        const errors = await formik.validateForm()
                                        const errorMessage = Object.values(errors).join('\n')
                                        if(errorMessage) toast.error(errorMessage)
-                                       else await formik.handleSubmit()
+                                       else
+                                           await formik.handleSubmit()
                                    }}
                         />
                     </div>

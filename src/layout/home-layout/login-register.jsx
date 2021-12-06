@@ -4,7 +4,7 @@ import { Fragment } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { thunks } from "../../store"
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 export default function Example(props) {
   const userData = useSelector(state => state.user.userData)
@@ -25,7 +25,9 @@ export default function Example(props) {
     <div className="text-right">
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-secondary bg-cardColor rounded-md bg-opacity-70 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+          <Menu.Button className={`inline-flex justify-center w-full px-2 xs:px-4 py-2 text-xs md:text-sm font-medium 
+          text-secondary bg-cardColor rounded-md bg-opacity-70 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 
+          ${userData.role === "customer" ? "dark:text-white dark:bg-secondary" : ""}`}>
             {`Hi ${props.freeze ? userData.firstName : ""} ${props.freeze ? userData.lastName : ""}!`}
           </Menu.Button>
         </div>
@@ -38,7 +40,8 @@ export default function Example(props) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100
+          rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="px-1 py-1 ">
               <Menu.Item>
                 {({ active }) => (
@@ -51,7 +54,7 @@ export default function Example(props) {
                   </button>
                 )}
               </Menu.Item>
-              <Menu.Item>
+              {/* <Menu.Item>
                 {({ active }) => (
                   <button
                     className={`${active ? 'bg-violet-500 text-textLight' : 'text-gray-900'
@@ -62,7 +65,7 @@ export default function Example(props) {
                     </Link>
                   </button>
                 )}
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item>
                 {({ active }) => (
                   <button

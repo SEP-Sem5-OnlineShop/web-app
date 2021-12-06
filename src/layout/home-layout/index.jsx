@@ -10,12 +10,14 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 
 import logo from "../../assets/svg/logo/logo-264A75.svg";
 import CustomerMap from "../../geo-location/index-map";
+import Toggle from "../../components/ThemeToggle";
 
 export default function MainLayout(props) {
     const [isOpen, toggleOpen] = useCycle(false, true);
     let history = useHistory()
     const selectedLanguage = useSelector(state => state.language.language)
     const showMap = useSelector(state => state.map.showMap)
+    const role = useSelector(state => state.user.userData.role)
     const [isMobile, setIsMobile] = useState(false)
     const isLogin = useSelector(state => state.user.isLogin)
     const dispatch = useDispatch()
@@ -55,26 +57,30 @@ export default function MainLayout(props) {
                 </AnimatePresence>
                 <SideNavigation isOpen={isOpen} toggleOpen={toggleOpen} />
                 <div className="bg-primary w-full h-28 fixed top-0 left-0 z-10">
-                    <div className={`bg-food-style h-full w-full flex px-10 justify-end lg:justify-between items-center`}>
-                        <div className="hidden lg:block h-full flex items-center">
-                            <img className="ml-4 h-3/4 cursor-pointer" onClick={() => history.push("/")} src={logo} alt="logo" />
+                    <div className={`bg-food-style h-full w-full flex px-2 xs:px-6 sm:px-10 justify-end sm:justify-between items-center`}>
+                        <div className="hidden sm:flex h-full items-center">
+                            <img className="ml-4 h-4/6 md:h-3/4 cursor-pointer" onClick={() => history.push("/")} src={logo} alt="logo" />
                         </div>
 
                         {/* <div className="sm:w-full md:w-3/4 lg:w-1/2">
                             <input className="bg-o p-2 rounded-lg w-full outline-none" 
                             placeholder={dashboardStrings.searchBox} />
                         </div> */}
-
+                        
                         <div className="flex items-center">
 
-                            <IconContext.Provider value={{ color: "#264A75", size: "2rem"}} >
-                                <div className="mr-2" onClick={() => dispatch(actions.map.setLanguage(!showMap))}>
-                                    <FaMapMarkerAlt />
-                                </div>
-                            </IconContext.Provider>
+                            {
+                                isLogin === "yes" && role === "customer" ?
+                                    <IconContext.Provider value={{ color: "#264A75", size: "2rem"}} >
+                                        <div className="mr-2 cursor-pointer" onClick={() => dispatch(actions.map.setLanguage(!showMap))}>
+                                            <FaMapMarkerAlt />
+                                        </div>
+                                    </IconContext.Provider>
+                                    : null
+                            }
 
                             <select value={selectedLanguage} onChange={(e) => dispatch(actions.language.setLanguage(e.target.value))}
-                                className="rounded-lg px-2 py-2 bg-cardColor shadow text-black text-sm mr-4">
+                                className="rounded-lg xs:px-1 sm:px-2 py-2 bg-cardColor shadow text-black text-xs md:text-sm mr-2 xs:mr-3 md:mr-4 dark:bg-secondary dark:text-white">
                                 <option value="english" key="english">English</option>
                                 <option value="sinhala" key="sinhala">සිංහල</option>
                                 <option value="tamil" key="tamil">தமிழ்</option>
@@ -82,17 +88,18 @@ export default function MainLayout(props) {
                             {
                                 isLogin === "yes" ?
                                     <LoginRegister className="mr-4" freeze={!isMobile} /> :
-                                    <button data-testid={'login-register-button'} onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg px-2 py-2 bg-cardColor shadow text-black">
+                                    <button data-testid={'login-register-button'} onClick={() => history.push("/auth/login")} className="hidden sm:block rounded-lg xs:px-1 sm:px-2 py-2 bg-cardColor shadow text-black dark:bg-secondary dark:text-white">
                                         Login | Register</button>
                             }
+                            <Toggle/>
                         </div>
                     </div>
                 </div>
 
-                <div className="w-full mt-28 bg-white rounded-t-3xl lg:rounded-t-6xl"
+                <div className="w-full mt-28 bg-white rounded-t-3xl lg:rounded-t-6xl dark:bg-secondary"
                     style={{ minHeight: 'calc(100vh - 7rem)' }}>
                     {
-                        showMap ?
+                        isLogin === "yes" && showMap && role === "customer" ?
                             <CustomerMap />
                             :
                             props.children
