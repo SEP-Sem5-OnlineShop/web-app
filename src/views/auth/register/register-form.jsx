@@ -3,11 +3,13 @@ import InputWithValidation from "../../../components/form-components/input-with-
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
+import {useHistory} from "react-router-dom";
 
 import {authApi} from "../../../api/index"
+import {toast} from "react-toastify";
 
 const RegisterForm = (props, ref) => {
-
+    const history = useHistory()
     const formik = useFormik({
         initialValues: {
             firstName: '',
@@ -34,15 +36,28 @@ const RegisterForm = (props, ref) => {
                 .required('Required').oneOf([Yup.ref('password'), null], 'Password not matched!'),
         }),
         onSubmit: async values => {
-            await authApi.register({
-                firstName: values.firstName,
-                lastName: values.lastName,
-                telephone: values.telephone,
-                role: "customer",
-                location: values.location,
-                password: values.password,
-                password_confirmation: values.confirmPassword
-            })
+            try {
+                const result = await authApi.register({
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    telephone: values.telephone,
+                    role: "customer",
+                    location: values.location,
+                    password: values.password,
+                    password_confirmation: values.confirmPassword
+                })
+                console.log(result.data)
+                if(result.status===201 && result.data.message === "Successful") {
+                    formik.resetForm()
+                    toast.success(result.data.data.message)
+                    history.push("/auth/login")
+                }
+                else
+                    toast.error(result.response.data.data)
+            }
+            catch (e) {
+                toast.error(e.response.data.message)
+            }
         },
     });
 
@@ -88,7 +103,7 @@ const RegisterForm = (props, ref) => {
                                     label='Confirm Password'
                                     id='confirmPassword'
                                     name='confirmPassword'
-                                    type='confirmPassword'
+                                    type='password'
                                     formik={formik}
                                 />
                                 <button
